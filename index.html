@@ -188,7 +188,7 @@ footer strong{color:var(--body)}
               </select>
             </div>
             <div class="fld"><label>¿Qué fecha te funciona?</label>
-              <select id="f-fecha">
+              <select id="f-fecha"><option value="">Cargando disponibilidad...</option></select><div id="cupos-info" style="font-size:11px;color:var(--muted);margin-top:6px;"></div>
                 <option value="">Elige una fecha...</option>
                 <option value="4 de julio">Sábado 4 de julio — 9:00 a 13:00</option>
                 <option value="11 de julio">Sábado 11 de julio — 9:00 a 13:00</option>
@@ -452,6 +452,63 @@ async function irAPagar(){
     btn.textContent = 'Pagar $1,200 MXN →';
   }
 }
+
+// Cargar cupos disponibles
+const CUPOS_URL = "https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/cupos";
+
+const ETIQUETAS = {
+  "4 de julio":  "Sabado 4 de julio - 9:00 a 13:00",
+  "11 de julio": "Sabado 11 de julio - 9:00 a 13:00",
+  "18 de julio": "Sabado 18 de julio - 9:00 a 13:00",
+  "25 de julio": "Sabado 25 de julio - 9:00 a 13:00"
+};
+
+async function cargarCupos(){
+  const sel = document.getElementById("f-fecha");
+  try {
+    const res = await fetch(CUPOS_URL);
+    const data = await res.json();
+    sel.innerHTML = "<option value=''>Elige una fecha...</option>";
+    (data.cupos || []).forEach(function(c){
+      const opt = document.createElement("option");
+      opt.value = c.fecha;
+      if(c.lleno){
+        opt.textContent = ETIQUETAS[c.fecha] + " - AGOTADO";
+        opt.disabled = true;
+      } else {
+        opt.textContent = ETIQUETAS[c.fecha] + " - " + c.disponibles + " lugares disponibles";
+      }
+      sel.appendChild(opt);
+    });
+  } catch(e){
+    sel.innerHTML = "<option value=''>Elige una fecha...</option>";
+    Object.keys(ETIQUETAS).forEach(function(f){
+      const opt = document.createElement("option");
+      opt.value = f;
+      opt.textContent = ETIQUETAS[f];
+      sel.appendChild(opt);
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  cargarCupos();
+  document.getElementById("f-fecha").addEventListener("change", function(){
+    const info = document.getElementById("cupos-info");
+    const opt = this.options[this.selectedIndex];
+    if(opt && opt.value){
+      if(opt.disabled){
+        info.style.color = "#EF4444";
+        info.textContent = "Esta fecha esta agotada. Elige otra.";
+      } else {
+        info.style.color = "#22C55E";
+        info.textContent = "Lugar disponible.";
+      }
+    } else {
+      info.textContent = "";
+    }
+  });
+});
 </script>
 </body>
 </html>
