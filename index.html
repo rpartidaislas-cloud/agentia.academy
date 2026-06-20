@@ -208,7 +208,7 @@ footer strong{color:var(--body)}
               </select>
             </div>
             <div class="fld"><label>¿Qué fecha te funciona?</label>
-              <select id="f-fecha"><option value="">Cargando disponibilidad...</option></select>
+              <select id="f-fecha"><option value="">Elige una fecha...</option></select>
 <div id="cupos-info" style="font-size:12px;font-weight:600;margin-top:8px;display:flex;align-items:center;gap:6px;"></div>
                 <option value="">Elige una fecha...</option>
                 <option value="4 de julio">Sábado 4 de julio — 9:00 a 13:00</option>
@@ -235,10 +235,10 @@ footer strong{color:var(--body)}
     <div class="s-title">4 talleres en julio.<br>Uno por semana.</div>
     <div class="fechas-cards" id="fechas-cards">
       <!-- Se llenan dinámicamente con JS -->
-      <div class="fecha-card-dyn"><div class="fecha-card-mes">Julio 2026</div><div class="fecha-card-dia">4</div><div class="fecha-card-dow">Sábado</div><div class="fecha-card-hora">9:00 – 13:00</div><div class="fecha-card-status status-disponible">✅ Cargando...</div></div>
-      <div class="fecha-card-dyn"><div class="fecha-card-mes">Julio 2026</div><div class="fecha-card-dia">11</div><div class="fecha-card-dow">Sábado</div><div class="fecha-card-hora">9:00 – 13:00</div><div class="fecha-card-status status-disponible">✅ Cargando...</div></div>
-      <div class="fecha-card-dyn"><div class="fecha-card-mes">Julio 2026</div><div class="fecha-card-dia">18</div><div class="fecha-card-dow">Sábado</div><div class="fecha-card-hora">9:00 – 13:00</div><div class="fecha-card-status status-disponible">✅ Cargando...</div></div>
-      <div class="fecha-card-dyn"><div class="fecha-card-mes">Julio 2026</div><div class="fecha-card-dia">25</div><div class="fecha-card-dow">Sábado</div><div class="fecha-card-hora">9:00 – 13:00</div><div class="fecha-card-status status-disponible">✅ Cargando...</div></div>
+      <div class="fecha-card-dyn"><div class="fecha-card-mes">Julio 2026</div><div class="fecha-card-dia">4</div><div class="fecha-card-dow">Sábado</div><div class="fecha-card-hora">9:00 – 13:00</div><div class="fecha-card-status status-disponible">✅ Aún hay lugares</div></div>
+      <div class="fecha-card-dyn"><div class="fecha-card-mes">Julio 2026</div><div class="fecha-card-dia">11</div><div class="fecha-card-dow">Sábado</div><div class="fecha-card-hora">9:00 – 13:00</div><div class="fecha-card-status status-disponible">✅ Aún hay lugares</div></div>
+      <div class="fecha-card-dyn"><div class="fecha-card-mes">Julio 2026</div><div class="fecha-card-dia">18</div><div class="fecha-card-dow">Sábado</div><div class="fecha-card-hora">9:00 – 13:00</div><div class="fecha-card-status status-disponible">✅ Aún hay lugares</div></div>
+      <div class="fecha-card-dyn"><div class="fecha-card-mes">Julio 2026</div><div class="fecha-card-dia">25</div><div class="fecha-card-dow">Sábado</div><div class="fecha-card-hora">9:00 – 13:00</div><div class="fecha-card-status status-disponible">✅ Aún hay lugares</div></div>
     </div>
   </div>
 </div>
@@ -698,12 +698,14 @@ async function cargarCupos(){
     });
 
   } catch(e){
+    // Si falla la API, mostrar disponible por default
+    renderCards([]);
     sel.innerHTML = "<option value=''>Elige una fecha...</option>";
-    Object.keys(ETIQUETAS).forEach(function(f){
-      cuposData[f] = { inscritos: 0, disponibles: 15, lleno: false, fecha: f };
+    DIAS_INFO.forEach(function(d){
+      cuposData[d.fecha] = { inscritos: 0, disponibles: 15, lleno: false, fecha: d.fecha };
       const opt = document.createElement("option");
-      opt.value = f;
-      opt.textContent = ETIQUETAS[f];
+      opt.value = d.fecha;
+      opt.textContent = "Sábado " + d.fecha;
       sel.appendChild(opt);
     });
   }
