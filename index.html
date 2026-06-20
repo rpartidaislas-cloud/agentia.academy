@@ -129,6 +129,26 @@ footer strong{color:var(--body)}
 .sticky-btn{flex:1;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;padding:13px;border:none;border-radius:10px;cursor:pointer}
 .rev{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
 .rev.in{opacity:1;transform:none}
+
+/* ── CARDS DE FECHAS DINÁMICAS ── */
+.section-fechas{padding:64px 0;border-top:1px solid var(--line)}
+.fechas-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:36px}
+.fecha-card-dyn{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px;text-align:center;transition:border-color .2s,transform .2s;cursor:pointer;position:relative;overflow:hidden}
+.fecha-card-dyn:hover{border-color:var(--amber);transform:translateY(-2px)}
+.fecha-card-dyn.agotada{opacity:.5;cursor:not-allowed}
+.fecha-card-dyn.agotada:hover{transform:none;border-color:var(--line)}
+.fecha-card-dyn::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0;background:var(--amber);opacity:0;transition:opacity .2s}
+.fecha-card-dyn:hover::before{opacity:1}
+.fecha-card-mes{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.fecha-card-dia{font-family:'DM Sans',sans-serif;font-size:2.8rem;font-weight:800;color:var(--white);line-height:1;margin-bottom:4px}
+.fecha-card-dow{font-size:12px;color:var(--muted);margin-bottom:12px}
+.fecha-card-hora{font-size:12px;color:var(--amber);font-weight:600;background:rgba(249,115,22,.1);border-radius:6px;padding:3px 10px;display:inline-block;margin-bottom:12px}
+.fecha-card-status{font-size:12px;font-weight:700;padding:5px 12px;border-radius:99px;display:inline-flex;align-items:center;gap:5px}
+.status-disponible{background:rgba(34,197,94,.1);color:#22C55E;border:1px solid rgba(34,197,94,.2)}
+.status-pocos{background:rgba(249,115,22,.12);color:var(--amber);border:1px solid rgba(249,115,22,.25)}
+.status-ultimos{background:rgba(249,115,22,.18);color:var(--amber);border:1px solid rgba(249,115,22,.4);animation:pulse-badge 2s ease infinite}
+.status-agotado{background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.2)}
+@keyframes pulse-badge{0%,100%{opacity:1}50%{opacity:.6}}
 </style>
 </head>
 <body>
@@ -188,7 +208,8 @@ footer strong{color:var(--body)}
               </select>
             </div>
             <div class="fld"><label>¿Qué fecha te funciona?</label>
-              <select id="f-fecha"><option value="">Cargando disponibilidad...</option></select><div id="cupos-info" style="font-size:11px;color:var(--muted);margin-top:6px;"></div>
+              <select id="f-fecha"><option value="">Cargando disponibilidad...</option></select>
+<div id="cupos-info" style="font-size:12px;font-weight:600;margin-top:8px;display:flex;align-items:center;gap:6px;"></div>
                 <option value="">Elige una fecha...</option>
                 <option value="4 de julio">Sábado 4 de julio — 9:00 a 13:00</option>
                 <option value="11 de julio">Sábado 11 de julio — 9:00 a 13:00</option>
@@ -202,6 +223,22 @@ footer strong{color:var(--body)}
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- FECHAS CON DISPONIBILIDAD DINAMICA -->
+<div class="section-fechas rev">
+  <div class="page">
+    <div class="s-label">Elige tu fecha</div>
+    <div class="s-title">4 talleres en julio.<br>Uno por semana.</div>
+    <div class="fechas-cards" id="fechas-cards">
+      <!-- Se llenan dinámicamente con JS -->
+      <div class="fecha-card-dyn"><div class="fecha-card-mes">Julio 2026</div><div class="fecha-card-dia">4</div><div class="fecha-card-dow">Sábado</div><div class="fecha-card-hora">9:00 – 13:00</div><div class="fecha-card-status status-disponible">✅ Cargando...</div></div>
+      <div class="fecha-card-dyn"><div class="fecha-card-mes">Julio 2026</div><div class="fecha-card-dia">11</div><div class="fecha-card-dow">Sábado</div><div class="fecha-card-hora">9:00 – 13:00</div><div class="fecha-card-status status-disponible">✅ Cargando...</div></div>
+      <div class="fecha-card-dyn"><div class="fecha-card-mes">Julio 2026</div><div class="fecha-card-dia">18</div><div class="fecha-card-dow">Sábado</div><div class="fecha-card-hora">9:00 – 13:00</div><div class="fecha-card-status status-disponible">✅ Cargando...</div></div>
+      <div class="fecha-card-dyn"><div class="fecha-card-mes">Julio 2026</div><div class="fecha-card-dia">25</div><div class="fecha-card-dow">Sábado</div><div class="fecha-card-hora">9:00 – 13:00</div><div class="fecha-card-status status-disponible">✅ Cargando...</div></div>
     </div>
   </div>
 </div>
@@ -359,12 +396,7 @@ footer strong{color:var(--body)}
     <div class="final-kicker">Sábados de julio 2026 · 9:00 a 13:00 · Google Meet</div>
     <div class="final-headline"><span class="amt">$1,200</span> y cuatro horas.<br>Un programa que trabaja por ti.</div>
     <div class="final-sub">15 lugares por fecha. Sin lista de espera cuando se llena.</div>
-    <div class="final-fechas">
-      <div class="final-fecha">Sáb 4 julio</div>
-      <div class="final-fecha">Sáb 11 julio</div>
-      <div class="final-fecha">Sáb 18 julio</div>
-      <div class="final-fecha">Sáb 25 julio</div>
-    </div>
+    <div class="final-fechas" id="final-fechas-list"></div>
     <button class="btn-final" id="btn-final" onclick="irAlForm()">Apartar mi lugar →</button>
     <div class="final-note">Pago seguro con Stripe · Tarjeta o OXXO · CFDI disponible</div>
   </div>
@@ -453,7 +485,7 @@ async function irAPagar(){
   }
 }
 
-// Cargar cupos disponibles
+// Cargar cupos con urgencia psicologica
 const CUPOS_URL = "https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/cupos";
 
 const ETIQUETAS = {
@@ -463,26 +495,61 @@ const ETIQUETAS = {
   "25 de julio": "Sabado 25 de julio - 9:00 a 13:00"
 };
 
+// Fechas del taller para calcular dias restantes
+const FECHAS_TALLER = {
+  "4 de julio":  new Date("2026-07-04"),
+  "11 de julio": new Date("2026-07-11"),
+  "18 de julio": new Date("2026-07-18"),
+  "25 de julio": new Date("2026-07-25")
+};
+
+// Texto de urgencia segun inscritos (sin revelar numero)
+function getUrgenciaTexto(inscritos, fecha){
+  if(inscritos >= 15) return { texto: "AGOTADO", color: "#EF4444", icono: "🔴" };
+
+  // Calcular dias restantes
+  const hoy = new Date();
+  const fechaTaller = FECHAS_TALLER[fecha];
+  const dias = Math.ceil((fechaTaller - hoy) / (1000 * 60 * 60 * 24));
+
+  if(inscritos >= 11) return { texto: "Ultimos lugares — se llena esta semana", color: "#F97316", icono: "🔥" };
+  if(inscritos >= 6)  return { texto: "Pocos lugares disponibles", color: "#F97316", icono: "⚡" };
+
+  // Urgencia por tiempo
+  if(dias <= 3)  return { texto: "Ultimas horas para inscribirse", color: "#F97316", icono: "⏰" };
+  if(dias <= 7)  return { texto: "Cierra inscripciones pronto", color: "#F97316", icono: "📅" };
+
+  return { texto: "Lugares disponibles", color: "#22C55E", icono: "✅" };
+}
+
+// Mapa de cupos por fecha (se llena al cargar)
+const cuposData = {};
+
 async function cargarCupos(){
   const sel = document.getElementById("f-fecha");
   try {
     const res = await fetch(CUPOS_URL);
     const data = await res.json();
+
     sel.innerHTML = "<option value=''>Elige una fecha...</option>";
+
     (data.cupos || []).forEach(function(c){
+      cuposData[c.fecha] = c;
       const opt = document.createElement("option");
       opt.value = c.fecha;
       if(c.lleno){
-        opt.textContent = ETIQUETAS[c.fecha] + " - AGOTADO";
+        opt.textContent = ETIQUETAS[c.fecha] + " — AGOTADO";
         opt.disabled = true;
       } else {
-        opt.textContent = ETIQUETAS[c.fecha] + " - " + c.disponibles + " lugares disponibles";
+        opt.textContent = ETIQUETAS[c.fecha];
       }
       sel.appendChild(opt);
     });
+
   } catch(e){
     sel.innerHTML = "<option value=''>Elige una fecha...</option>";
     Object.keys(ETIQUETAS).forEach(function(f){
+      cuposData[f] = { inscritos: 0, disponibles: 15, lleno: false, fecha: f };
       const opt = document.createElement("option");
       opt.value = f;
       opt.textContent = ETIQUETAS[f];
@@ -491,22 +558,23 @@ async function cargarCupos(){
   }
 }
 
+function actualizarInfo(fecha){
+  const info = document.getElementById("cupos-info");
+  if(!fecha){ info.innerHTML = ""; return; }
+
+  const c = cuposData[fecha] || { inscritos: 0, lleno: false };
+  const u = getUrgenciaTexto(c.inscritos, fecha);
+
+  info.innerHTML = "<span style='display:inline-flex;align-items:center;gap:5px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);border-radius:6px;padding:4px 10px;'>" +
+    "<span>" + u.icono + "</span>" +
+    "<span style='color:" + u.color + ";font-size:12px;font-weight:700;'>" + u.texto + "</span>" +
+    "</span>";
+}
+
 document.addEventListener("DOMContentLoaded", function(){
   cargarCupos();
   document.getElementById("f-fecha").addEventListener("change", function(){
-    const info = document.getElementById("cupos-info");
-    const opt = this.options[this.selectedIndex];
-    if(opt && opt.value){
-      if(opt.disabled){
-        info.style.color = "#EF4444";
-        info.textContent = "Esta fecha esta agotada. Elige otra.";
-      } else {
-        info.style.color = "#22C55E";
-        info.textContent = "Lugar disponible.";
-      }
-    } else {
-      info.textContent = "";
-    }
+    actualizarInfo(this.value);
   });
 });
 </script>
