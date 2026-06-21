@@ -766,14 +766,15 @@ async function generarPrompt(){
     'Máximo 250 palabras. Sin títulos ni secciones marcadas. Solo el texto del prompt listo para usar.';
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/proxy-claude', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-user-email': 'generador@creditos.agentia' },
       body: JSON.stringify({
         model: 'claude-haiku-4-5',
         max_tokens: 600,
         system: 'Eres experto en prompt engineering para profesionales en México. Creas prompts de sistema precisos, prácticos y en español mexicano profesional.',
-        messages: [{ role: 'user', content: userMsg }]
+        messages: [{ role: 'user', content: userMsg }],
+        tipo: 'generar_prompt'
       })
     });
     const data = await res.json();
