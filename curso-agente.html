@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curso AgentIA — Instructor Virtual</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0E0E14;--bg2:#16161E;--card:#1C1C26;--line:#28283A;--muted:#6B6B88;--sub:#A0A0C0;--body:#D0D0E0;--white:#F4F4F8;--amber:#F97316;--green:#22C55E;--purple:#8B5CF6;--r:12px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.header{background:var(--bg2);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-family:'DM Sans',sans-serif;font-weight:800;font-size:1rem}
+.logo span{color:var(--amber)}
+.progress-header{display:flex;align-items:center;gap:12px}
+.prog-text{font-size:12px;color:var(--muted)}
+.prog-bar{width:120px;height:4px;background:var(--line);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:var(--amber);border-radius:99px;transition:width .4s ease}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 53px)}
+@media(max-width:768px){.layout{grid-template-columns:1fr}}
+
+/* SIDEBAR */
+.sidebar{background:var(--bg2);border-right:1px solid var(--line);padding:24px 16px;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto}
+@media(max-width:768px){.sidebar{display:none}}
+.sidebar-title{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.mod-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:4px;transition:background .15s}
+.mod-item:hover{background:var(--card)}
+.mod-item.active{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2)}
+.mod-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;background:var(--line);color:var(--muted)}
+.mod-item.done .mod-num{background:rgba(34,197,94,.15);color:var(--green)}
+.mod-item.active .mod-num{background:var(--amber);color:#000}
+.mod-info{}
+.mod-title{font-size:13px;font-weight:600;color:var(--body);margin-bottom:2px}
+.mod-item.active .mod-title{color:var(--white)}
+.mod-sub{font-size:11px;color:var(--muted)}
+.perfil-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:20px}
+.perfil-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.perfil-val{font-size:13px;color:var(--white);font-weight:600}
+
+/* MAIN */
+.main{padding:32px 28px;max-width:760px}
+@media(max-width:768px){.main{padding:20px 16px}}
+
+/* PANTALLA DE BIENVENIDA */
+.welcome{text-align:center;padding:60px 20px}
+.welcome-ico{font-size:56px;margin-bottom:20px;display:block}
+.welcome-title{font-family:'DM Sans',sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:-.03em;margin-bottom:12px}
+.welcome-sub{font-size:16px;color:var(--sub);max-width:500px;margin:0 auto 32px;line-height:1.65}
+.welcome-form{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px;max-width:460px;margin:0 auto;text-align:left}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input,.field select{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:'Inter',sans-serif;font-size:14px;padding:11px 14px;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.field input:focus,.field select:focus{border-color:var(--amber)}
+.field select option{background:#1C1C26}
+.btn-start{width:100%;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:16px;padding:14px;border:none;border-radius:10px;cursor:pointer;margin-top:4px;transition:all .15s}
+.btn-start:hover{background:#FB923C}
+
+/* MÓDULO */
+.module{display:none}
+.module.active{display:block}
+.module-kicker{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+.module-title{font-family:'DM Sans',sans-serif;font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;letter-spacing:-.025em;margin-bottom:6px;line-height:1.2}
+.module-desc{font-size:14px;color:var(--muted);margin-bottom:28px}
+
+/* CONTENIDO DEL AGENTE */
+.agente-msg{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:20px;position:relative}
+.agente-msg::before{content:'🤖';position:absolute;top:-12px;left:16px;font-size:20px;background:var(--bg);padding:0 4px}
+.agente-msg p{font-size:14px;color:var(--body);line-height:1.75;margin-bottom:12px}
+.agente-msg p:last-child{margin-bottom:0}
+.agente-msg strong{color:var(--white)}
+.agente-msg .highlight{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13px;color:var(--amber)}
+.agente-msg .ejemplo{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13px;color:var(--sub);border-left:3px solid var(--amber)}
+.agente-msg .ejemplo strong{color:var(--white);display:block;margin-bottom:4px}
+
+/* CHAT */
+.chat-section{margin-bottom:20px}
+.chat-messages{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;min-height:60px}
+.msg{max-width:85%;padding:12px 16px;border-radius:12px;font-size:14px;line-height:1.6}
+.msg-user{background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.2);color:var(--white);align-self:flex-end;border-radius:12px 12px 2px 12px}
+.msg-agent{background:var(--card);border:1px solid var(--line);color:var(--body);align-self:flex-start;border-radius:12px 12px 12px 2px}
+.msg-agent.loading{color:var(--muted)}
+.chat-input-row{display:flex;gap:8px}
+.chat-input{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;color:var(--white);font-family:'Inter',sans-serif;font-size:14px;padding:11px 14px;outline:none;transition:border-color .15s}
+.chat-input:focus{border-color:var(--amber)}
+.chat-input::placeholder{color:var(--muted)}
+.btn-send{background:var(--amber);color:#000;font-weight:800;font-size:14px;padding:11px 18px;border:none;border-radius:10px;cursor:pointer;white-space:nowrap;transition:all .15s}
+.btn-send:hover{background:#FB923C}
+.btn-send:disabled{opacity:.5;cursor:not-allowed}
+
+/* ACCIONES */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.action-btn{padding:10px 16px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--body);transition:all .15s;display:flex;align-items:center;gap:6px}
+.action-btn:hover{border-color:var(--amber);color:var(--amber)}
+.action-btn.primary{background:var(--amber);color:#000;border-color:var(--amber);font-family:'DM Sans',sans-serif;font-weight:800}
+.action-btn.primary:hover{background:#FB923C}
+
+/* EJERCICIO */
+.ejercicio{background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.2);border-radius:14px;padding:20px;margin-bottom:20px;display:none}
+.ejercicio-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);margin-bottom:10px}
+.ejercicio-q{font-size:14px;color:var(--white);font-weight:600;margin-bottom:12px;line-height:1.5}
+textarea.ejercicio-input{width:100%;background:var(--bg2);border:1px solid rgba(139,92,246,.25);border-radius:8px;color:var(--white);font-family:'Inter',sans-serif;font-size:13px;padding:12px 14px;resize:vertical;min-height:80px;outline:none;transition:border-color .15s;line-height:1.6}
+textarea.ejercicio-input:focus{border-color:var(--purple)}
+textarea.ejercicio-input::placeholder{color:var(--muted)}
+.btn-ejercicio{margin-top:10px;padding:10px 20px;background:var(--purple);color:#fff;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;border:none;border-radius:8px;cursor:pointer;transition:all .15s}
+.btn-ejercicio:hover{background:#7C3AED}
+.feedback{display:none;margin-top:12px;padding:12px 14px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:8px;font-size:13px;color:var(--body);line-height:1.65}
+
+/* DOTS LOADING */
+.dots span{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--amber);animation:blink .8s ease infinite;margin:0 2px}
+.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,80%,100%{opacity:1}40%{opacity:.2}}
+
+/* COMPLETADO */
+.completed{text-align:center;padding:48px 20px;display:none}
+.completed-ico{font-size:52px;margin-bottom:16px;display:block}
+.completed-title{font-family:'DM Sans',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:10px}
+.completed-sub{font-size:15px;color:var(--sub);margin-bottom:28px;line-height:1.65}
+.cert{background:var(--card);border:1px solid var(--amber);border-radius:14px;padding:28px;max-width:440px;margin:0 auto 24px;text-align:center}
+.cert-title{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+.cert-name{font-family:'DM Sans',sans-serif;font-size:1.5rem;font-weight:800;color:var(--white);margin-bottom:6px}
+.cert-desc{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">Agent<span>IA</span> · <span style="font-weight:400;color:var(--muted)">Curso interactivo</span></div>
+  <div class="progress-header">
+    <div id="creditos-badge" style="display:none;font-size:12px;font-weight:700;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);color:var(--amber);padding:4px 12px;border-radius:99px;margin-right:8px">⚡ 10 créditos</div>
+    <div class="prog-text" id="prog-text">Módulo 0 de 4</div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="perfil-card" id="perfil-card" style="display:none">
+      <div class="perfil-label">Participante</div>
+      <div class="perfil-val" id="sb-nombre">—</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px" id="sb-prof">—</div>
+    </div>
+    <div class="sidebar-title">Contenido del curso</div>
+    <div class="mod-item active" id="nav-intro" onclick="goIntro()">
+      <div class="mod-num" style="background:rgba(139,92,246,.15);color:var(--purple)">0</div>
+      <div class="mod-info"><div class="mod-title">Introducción a la IA</div><div class="mod-sub">Qué es, modelos, costos y benchmarks</div></div>
+    </div>
+    <div class="mod-item" id="nav-0" onclick="goMod(0)">
+      <div class="mod-num">1</div>
+      <div class="mod-info"><div class="mod-title">IA sin humo: el panorama real</div><div class="mod-sub">Claude vs ChatGPT vs Gemini</div></div>
+    </div>
+    <div class="mod-item" id="nav-1" onclick="goMod(1)">
+      <div class="mod-num">2</div>
+      <div class="mod-info"><div class="mod-title">Así se construye un programa</div><div class="mod-sub">Demo en vivo con el agente</div></div>
+    </div>
+    <div class="mod-item" id="nav-2" onclick="goMod(2)">
+      <div class="mod-num">3</div>
+      <div class="mod-info"><div class="mod-title">Construye el tuyo</div><div class="mod-sub">Tu caso de uso real</div></div>
+    </div>
+    <div class="mod-item" id="nav-3" onclick="goMod(3)">
+      <div class="mod-num">4</div>
+      <div class="mod-info"><div class="mod-title">Integra el agente y suéltalo</div><div class="mod-sub">Automatización real</div></div>
+    </div>
+  </div>
+
+  <!-- CONTENIDO -->
+  <div class="main" id="main-content">
+
+    <!-- BIENVENIDA -->
+    <div id="screen-welcome" class="welcome">
+      <span class="welcome-ico">🤖</span>
+      <h1 class="welcome-title">Tu instructor de IA<br>te está esperando.</h1>
+      <p class="welcome-sub">Este curso lo imparte un agente de IA que adapta las explicaciones a tu trabajo. Cuéntame quién eres y empezamos.</p>
+      <div class="welcome-form">
+        <div class="field">
+          <label>¿Cómo te llamas?</label>
+          <input type="text" id="inp-nombre" placeholder="Tu nombre">
+        </div>
+        <div class="field">
+          <label>Tu correo electrónico</label>
+          <input type="email" id="inp-email" placeholder="tu@correo.com">
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">Para guardar tu progreso y tus créditos gratuitos</div>
+        </div>
+        <div class="field">
+          <label>¿A qué te dedicas?</label>
+          <select id="inp-prof">
+            <option value="">Selecciona...</option>
+            <option>Contador / Auditor</option>
+            <option>Abogado / Notario</option>
+            <option>Administrador / RH</option>
+            <option>Dueño de negocio</option>
+            <option>Médico / Profesional de salud</option>
+            <option>Otra profesión</option>
+          </select>
+        </div>
+        <button class="btn-start" onclick="iniciarCurso()">Comenzar el curso →</button>
+      </div>
+    </div>
+
+
+    <!-- PANTALLA INTRODUCCIÓN -->
+    <div id="screen-intro" style="display:none">
+
+      <div style="margin-bottom:28px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:8px">Introducción · Antes de empezar</div>
+        <h2 style="font-family:'DM Sans',sans-serif;font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;letter-spacing:-.025em;margin-bottom:6px;line-height:1.2">¿Qué es la IA generativa y cómo funciona?</h2>
+        <p style="font-size:14px;color:var(--muted)">Explora cada sección y pregúntale al agente lo que no entiendas.</p>
+      </div>
+
+      <!-- TABS -->
+      <div style="display:flex;gap:4px;padding:4px;background:var(--bg2);border-radius:var(--r);margin-bottom:20px;overflow-x:auto">
+        <button class="itab on" onclick="showItab('que',this)">¿Qué es la IA?</button>
+        <button class="itab" onclick="showItab('modelos',this)">Modelos</button>
+        <button class="itab" onclick="showItab('keys',this)">API Keys</button>
+        <button class="itab" onclick="showItab('costos',this)">Costos</button>
+        <button class="itab" onclick="showItab('bench',this)">Benchmarks</button>
+      </div>
+
+      <!-- PANEL: QUÉ ES LA IA -->
+      <div class="ipanel on" id="ip-que">
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:14px">
+          <p style="font-size:14px;color:var(--body);line-height:1.75;margin-bottom:14px">La <strong style="color:var(--white)">inteligencia artificial generativa</strong> es un tipo de IA capaz de crear contenido nuevo: texto, imágenes y código. A diferencia de la IA tradicional que solo clasifica, esta IA <em>genera</em> respuestas originales.</p>
+          <p style="font-size:14px;color:var(--body);line-height:1.75">Funciona con modelos de lenguaje grande (LLMs) entrenados con cantidades masivas de texto. Aprenden patrones del lenguaje y los usan para producir respuestas coherentes y útiles.</p>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:10px">¿Cómo funciona en la práctica?</div>
+        <div style="display:grid;gap:8px;margin-bottom:16px">
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;gap:12px;align-items:flex-start">
+            <div style="width:28px;height:28px;border-radius:6px;background:rgba(59,130,246,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px">💬</div>
+            <div><p style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px">Tú escribes un mensaje (prompt)</p><p style="font-size:12px;color:var(--muted)">Le dices a la IA qué necesitas con todo el contexto disponible.</p></div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;gap:12px;align-items:flex-start">
+            <div style="width:28px;height:28px;border-radius:6px;background:rgba(34,197,94,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px">🧠</div>
+            <div><p style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px">El modelo procesa tu texto en tokens</p><p style="font-size:12px;color:var(--muted)">Divide el texto en fragmentos y calcula la respuesta más probable token por token.</p></div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;gap:12px;align-items:flex-start">
+            <div style="width:28px;height:28px;border-radius:6px;background:rgba(249,115,22,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px">✨</div>
+            <div><p style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px">Recibes la respuesta generada</p><p style="font-size:12px;color:var(--muted)">El modelo produce texto hasta completar una respuesta coherente y útil.</p></div>
+          </div>
+        </div>
+        <div style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:var(--r);padding:14px;font-size:13px;color:var(--sub);line-height:1.7">
+          💡 <strong style="color:var(--white)">Analogía:</strong> Es como un empleado que leyó todo el internet antes de entrar a trabajar. No busca la respuesta en una base de datos — la <em>genera</em> basándose en todo lo que aprendió. Predice token por token cuál es la continuación más probable y útil.
+        </div>
+      </div>
+
+      <!-- PANEL: MODELOS -->
+      <div class="ipanel" id="ip-modelos">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Haz clic en cada modelo para ver sus detalles.</p>
+        <div id="ic-claude" class="icard sel" onclick="selICard('claude')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(249,115,22,.15);display:flex;align-items:center;justify-content:center;font-size:16px">🟠</div>
+            <div><div style="font-size:14px;font-weight:700;color:var(--white)">Claude <span style="font-size:11px;font-weight:600;background:rgba(59,130,246,.15);color:#60A5FA;padding:2px 8px;border-radius:4px">Anthropic</span></div><div style="font-size:12px;color:var(--muted)">El más preciso para análisis y redacción profesional</div></div>
+          </div>
+          <div class="ibar-row"><div class="ibar-lbl">Razonamiento</div><div class="ibar-track"><div class="ibar-fill" style="width:95%;background:#F97316"></div></div><div class="ibar-num">95</div></div>
+          <div class="ibar-row"><div class="ibar-lbl">Redacción</div><div class="ibar-track"><div class="ibar-fill" style="width:97%;background:#F97316"></div></div><div class="ibar-num">97</div></div>
+          <div class="ibar-row"><div class="ibar-lbl">Código</div><div class="ibar-track"><div class="ibar-fill" style="width:90%;background:#F97316"></div></div><div class="ibar-num">90</div></div>
+          <div class="idet" id="idet-claude">
+            <div class="ikv"><span class="ikv-k">Modelo económico</span><span class="ikv-v">Claude Haiku 3.5</span></div>
+            <div class="ikv"><span class="ikv-k">Contexto máximo</span><span class="ikv-v">200,000 tokens (~500 págs)</span></div>
+            <div class="ikv"><span class="ikv-k">Plan gratuito</span><span class="ikv-v" style="color:var(--green)">Sí — claude.ai</span></div>
+            <div class="ikv"><span class="ikv-k">Ideal para</span><span class="ikv-v">Contratos, facturas, redacción formal</span></div>
+          </div>
+        </div>
+        <div id="ic-chatgpt" class="icard" onclick="selICard('chatgpt')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(16,163,127,.15);display:flex;align-items:center;justify-content:center;font-size:16px">🟢</div>
+            <div><div style="font-size:14px;font-weight:700;color:var(--white)">ChatGPT <span style="font-size:11px;font-weight:600;background:rgba(34,197,94,.1);color:#4ADE80;padding:2px 8px;border-radius:4px">OpenAI</span></div><div style="font-size:12px;color:var(--muted)">El más conocido, versátil y con acceso a internet</div></div>
+          </div>
+          <div class="ibar-row"><div class="ibar-lbl">Razonamiento</div><div class="ibar-track"><div class="ibar-fill" style="width:92%;background:#10A37F"></div></div><div class="ibar-num">92</div></div>
+          <div class="ibar-row"><div class="ibar-lbl">Redacción</div><div class="ibar-track"><div class="ibar-fill" style="width:88%;background:#10A37F"></div></div><div class="ibar-num">88</div></div>
+          <div class="ibar-row"><div class="ibar-lbl">Código</div><div class="ibar-track"><div class="ibar-fill" style="width:93%;background:#10A37F"></div></div><div class="ibar-num">93</div></div>
+          <div class="idet" id="idet-chatgpt" style="display:none">
+            <div class="ikv"><span class="ikv-k">Modelo económico</span><span class="ikv-v">GPT-4o mini</span></div>
+            <div class="ikv"><span class="ikv-k">Contexto máximo</span><span class="ikv-v">128,000 tokens (~320 págs)</span></div>
+            <div class="ikv"><span class="ikv-k">Plan gratuito</span><span class="ikv-v" style="color:var(--green)">Sí — chatgpt.com</span></div>
+            <div class="ikv"><span class="ikv-k">Ideal para</span><span class="ikv-v">Tareas variadas, búsqueda web, código</span></div>
+          </div>
+        </div>
+        <div id="ic-gemini" class="icard" onclick="selICard('gemini')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(66,133,244,.15);display:flex;align-items:center;justify-content:center;font-size:16px">🔵</div>
+            <div><div style="font-size:14px;font-weight:700;color:var(--white)">Gemini <span style="font-size:11px;font-weight:600;background:rgba(234,179,8,.1);color:#FCD34D;padding:2px 8px;border-radius:4px">Google</span></div><div style="font-size:12px;color:var(--muted)">El más generoso en gratuito, integrado con Google</div></div>
+          </div>
+          <div class="ibar-row"><div class="ibar-lbl">Razonamiento</div><div class="ibar-track"><div class="ibar-fill" style="width:88%;background:#4285F4"></div></div><div class="ibar-num">88</div></div>
+          <div class="ibar-row"><div class="ibar-lbl">Redacción</div><div class="ibar-track"><div class="ibar-fill" style="width:85%;background:#4285F4"></div></div><div class="ibar-num">85</div></div>
+          <div class="ibar-row"><div class="ibar-lbl">Código</div><div class="ibar-track"><div class="ibar-fill" style="width:87%;background:#4285F4"></div></div><div class="ibar-num">87</div></div>
+          <div class="idet" id="idet-gemini" style="display:none">
+            <div class="ikv"><span class="ikv-k">Modelo económico</span><span class="ikv-v">Gemini 1.5 Flash</span></div>
+            <div class="ikv"><span class="ikv-k">Contexto máximo</span><span class="ikv-v">1,000,000 tokens (~2,500 págs)</span></div>
+            <div class="ikv"><span class="ikv-k">Plan gratuito</span><span class="ikv-v" style="color:var(--green)">Muy generoso — gemini.google.com</span></div>
+            <div class="ikv"><span class="ikv-k">Ideal para</span><span class="ikv-v">Gmail, Drive, Docs, archivos largos</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL: API KEYS -->
+      <div class="ipanel" id="ip-keys">
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:14px">
+          <p style="font-size:14px;color:var(--body);line-height:1.75">Una <strong style="color:var(--white)">API Key</strong> es una contraseña única que le da a tu programa permiso para usar la IA. Sin ella, la IA no sabe quién eres ni puede cobrarte el uso.</p>
+        </div>
+        <div style="display:grid;gap:8px;margin-bottom:14px">
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;font-size:13px;color:var(--body);line-height:1.6"><strong style="color:var(--white)">1. La obtienes gratis</strong> — cada empresa te da una llave al registrarte. No pagas hasta que la usas.</div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;font-size:13px;color:var(--body);line-height:1.6"><strong style="color:var(--white)">2. La guardas como contraseña</strong> — nunca la compartas ni la pongas en código público. Empieza con <code style="background:var(--bg2);padding:1px 6px;border-radius:4px;font-size:12px">sk-ant-</code> para Claude.</div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;font-size:13px;color:var(--body);line-height:1.6"><strong style="color:var(--white)">3. Tu programa la usa en cada llamada</strong> — cada vez que alguien usa tu programa, hace una llamada a la API y se cobra según los tokens usados.</div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;font-size:13px;color:var(--body);line-height:1.6"><strong style="color:var(--white)">4. Pagas solo lo que consumes</strong> — no hay mensualidad fija. 1,000 tokens ≈ 750 palabras.</div>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:10px">¿Dónde obtienes tu llave?</div>
+        <div style="display:grid;gap:8px">
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600;color:var(--white)">Claude</div><div style="font-size:12px;color:var(--muted)">console.anthropic.com</div></div><span style="font-size:11px;background:rgba(59,130,246,.1);color:#60A5FA;padding:3px 8px;border-radius:4px;font-weight:600">$5 crédito gratis</span></div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600;color:var(--white)">ChatGPT</div><div style="font-size:12px;color:var(--muted)">platform.openai.com</div></div><span style="font-size:11px;background:rgba(34,197,94,.1);color:#4ADE80;padding:3px 8px;border-radius:4px;font-weight:600">$5 crédito gratis</span></div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600;color:var(--white)">Gemini</div><div style="font-size:12px;color:var(--muted)">aistudio.google.com</div></div><span style="font-size:11px;background:rgba(234,179,8,.1);color:#FCD34D;padding:3px 8px;border-radius:4px;font-weight:600">Plan gratuito generoso</span></div>
+        </div>
+      </div>
+
+      <!-- PANEL: COSTOS -->
+      <div class="ipanel" id="ip-costos">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Los costos se miden en tokens. Aproximadamente 1,000 tokens = 750 palabras. Usa el simulador para estimar tu costo mensual real.</p>
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:14px">
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:var(--bg2);padding:8px 14px;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase">
+            <span>Modelo</span><span style="text-align:right">Entrada /1M</span><span style="text-align:right">Salida /1M</span>
+          </div>
+          <div class="precio-row"><span>Claude Haiku 3.5</span><span style="color:var(--green)">$0.80</span><span style="color:var(--green)">$4.00</span></div>
+          <div class="precio-row"><span>Claude Sonnet 4</span><span>$3.00</span><span>$15.00</span></div>
+          <div class="precio-row"><span>GPT-4o mini</span><span style="color:var(--green)">$0.15</span><span style="color:var(--green)">$0.60</span></div>
+          <div class="precio-row"><span>GPT-4o</span><span>$2.50</span><span>$10.00</span></div>
+          <div class="precio-row" style="border-bottom:none"><span>Gemini 1.5 Flash</span><span style="color:var(--green)">$0.075</span><span style="color:var(--green)">$0.30</span></div>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:10px">Simulador de costo mensual</div>
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px">
+          <div class="sl-row"><label>Documentos por día</label><input type="range" id="sl-docs" min="1" max="200" value="20" step="1" oninput="calcCosto()"><span id="out-docs">20</span></div>
+          <div class="sl-row"><label>Palabras por documento</label><input type="range" id="sl-words" min="100" max="2000" value="500" step="100" oninput="calcCosto()"><span id="out-words">500</span></div>
+          <div class="sl-row"><label>Días hábiles al mes</label><input type="range" id="sl-dias" min="10" max="22" value="20" step="1" oninput="calcCosto()"><span id="out-dias">20</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px">
+            <div style="background:var(--bg2);border-radius:8px;padding:12px;text-align:center"><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Claude Haiku</div><div style="font-size:22px;font-weight:800;color:var(--green);font-family:'DM Sans',sans-serif" id="cost-haiku">$0.00</div><div style="font-size:10px;color:var(--muted)">USD/mes</div></div>
+            <div style="background:var(--bg2);border-radius:8px;padding:12px;text-align:center"><div style="font-size:11px;color:var(--muted);margin-bottom:4px">GPT-4o mini</div><div style="font-size:22px;font-weight:800;color:var(--green);font-family:'DM Sans',sans-serif" id="cost-mini">$0.00</div><div style="font-size:10px;color:var(--muted)">USD/mes</div></div>
+            <div style="background:var(--bg2);border-radius:8px;padding:12px;text-align:center"><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Gemini Flash</div><div style="font-size:22px;font-weight:800;color:var(--green);font-family:'DM Sans',sans-serif" id="cost-gemini">$0.00</div><div style="font-size:10px;color:var(--muted)">USD/mes</div></div>
+          </div>
+          <p style="font-size:11px;color:var(--muted);margin-top:10px">Estimado. Incluye entrada + salida de igual tamaño promedio.</p>
+        </div>
+      </div>
+
+      <!-- PANEL: BENCHMARKS -->
+      <div class="ipanel" id="ip-bench">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Los benchmarks miden la capacidad de los modelos en pruebas estandarizadas. Scores sobre 100.</p>
+        <div style="display:grid;gap:12px">
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px">
+            <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:12px">MMLU — Conocimiento profesional (derecho, medicina, finanzas)</div>
+            <div class="ibar-row"><div class="ibar-lbl">Claude 3.7</div><div class="ibar-track"><div class="ibar-fill" style="width:91.5%;background:#F97316"></div></div><div class="ibar-num">91.5</div></div>
+            <div class="ibar-row"><div class="ibar-lbl">GPT-4o</div><div class="ibar-track"><div class="ibar-fill" style="width:88.7%;background:#10A37F"></div></div><div class="ibar-num">88.7</div></div>
+            <div class="ibar-row"><div class="ibar-lbl">Gemini 2.5</div><div class="ibar-track"><div class="ibar-fill" style="width:90%;background:#4285F4"></div></div><div class="ibar-num">90.0</div></div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px">
+            <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:12px">HumanEval — Generación de código funcional</div>
+            <div class="ibar-row"><div class="ibar-lbl">Claude 3.7</div><div class="ibar-track"><div class="ibar-fill" style="width:93%;background:#F97316"></div></div><div class="ibar-num">93.0</div></div>
+            <div class="ibar-row"><div class="ibar-lbl">GPT-4o</div><div class="ibar-track"><div class="ibar-fill" style="width:90.2%;background:#10A37F"></div></div><div class="ibar-num">90.2</div></div>
+            <div class="ibar-row"><div class="ibar-lbl">Gemini 2.5</div><div class="ibar-track"><div class="ibar-fill" style="width:87%;background:#4285F4"></div></div><div class="ibar-num">87.0</div></div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px">
+            <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:12px">Velocidad — Tokens por segundo (modelos económicos)</div>
+            <div class="ibar-row"><div class="ibar-lbl">Gemini Flash</div><div class="ibar-track"><div class="ibar-fill" style="width:98%;background:#4285F4"></div></div><div class="ibar-num">~220</div></div>
+            <div class="ibar-row"><div class="ibar-lbl">Claude Haiku</div><div class="ibar-track"><div class="ibar-fill" style="width:90%;background:#F97316"></div></div><div class="ibar-num">~200</div></div>
+            <div class="ibar-row"><div class="ibar-lbl">GPT-4o mini</div><div class="ibar-track"><div class="ibar-fill" style="width:82%;background:#10A37F"></div></div><div class="ibar-num">~180</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHAT DEL INTRO -->
+      <div style="margin-top:24px">
+        <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">¿Tienes preguntas? El agente te responde</div>
+        <div class="chat-messages" id="chat-intro" style="min-height:40px"></div>
+        <div class="chat-input-row" style="margin-top:10px">
+          <input class="chat-input" id="cinput-intro" placeholder="Ej: ¿Qué es un token? ¿Cuál IA me conviene para mi trabajo?" onkeydown="if(event.key==='Enter')sendChatIntro()">
+          <button class="btn-send" onclick="sendChatIntro()">Enviar</button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+          <button class="action-btn" onclick="preguntaRapida('¿Qué es exactamente un token y cómo afecta el costo?')">¿Qué es un token?</button>
+          <button class="action-btn" onclick="preguntaRapida('¿Cuál IA me conviene si soy contador y proceso facturas CFDI?')">¿Cuál IA me conviene?</button>
+          <button class="action-btn" onclick="preguntaRapida('¿Cuánto me costaría al mes usar Claude para automatizar mi trabajo?')">¿Cuánto cuesta en la práctica?</button>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;text-align:center">
+        <button class="action-btn primary" onclick="goMod(0)" style="padding:13px 32px;font-size:15px">Comenzar el Módulo 1 →</button>
+      </div>
+    </div>
+
+    <!-- MÓDULO 1 -->
+    <div id="mod-0" class="module">
+      <div class="module-kicker">Módulo 1 de 4</div>
+      <h2 class="module-title">IA sin humo: el panorama real</h2>
+      <p class="module-desc">Antes de construir nada, entendemos las herramientas disponibles y cuál conviene para tu trabajo.</p>
+
+      <div class="agente-msg" id="msg-0-intro">
+        <p>Hola <strong id="nombre-0"></strong>. Soy tu instructor para este curso. Voy a guiarte paso a paso para que al final tengas un programa con IA funcionando para <strong id="prof-0"></strong>.</p>
+        <p>Empecemos con lo más importante: entender qué herramientas existen y cuál te conviene. Mucha gente usa ChatGPT porque es la más conocida, pero no siempre es la mejor opción.</p>
+        <div class="highlight">🔑 Las 3 IAs más usadas en México para trabajo profesional son Claude (Anthropic), ChatGPT (OpenAI) y Gemini (Google). Cada una tiene ventajas distintas.</div>
+        <p><strong>Claude</strong> — creado por Anthropic. Sobresale en redacción, análisis de documentos largos y seguir instrucciones complejas. Es el que usamos en este curso.</p>
+        <p><strong>ChatGPT</strong> — el más conocido. Muy versátil, con acceso a internet en la versión Plus. Bueno para tareas generales.</p>
+        <p><strong>Gemini</strong> — de Google. Se integra bien con Gmail, Drive y Docs. Plan gratuito generoso.</p>
+        <div class="ejemplo"><strong>¿Cuál elegir para tu caso?</strong>Para análisis de contratos, redacción formal y trabajo con documentos → Claude. Para tareas rápidas variadas → ChatGPT. Para integración con Google Workspace → Gemini.</div>
+      </div>
+
+      <div class="chat-section">
+        <div class="chat-messages" id="chat-0"></div>
+        <div class="chat-input-row">
+          <input class="chat-input" id="cinput-0" placeholder="¿Tienes alguna duda sobre las IAs? Pregúntame..." onkeydown="if(event.key==='Enter')sendChat(0)">
+          <button class="btn-send" onclick="sendChat(0)">Enviar</button>
+        </div>
+      </div>
+
+      <div class="ejercicio" id="ej-0">
+        <div class="ejercicio-label">🎯 Ejercicio del módulo</div>
+        <div class="ejercicio-q" id="ej-0-q"></div>
+        <textarea class="ejercicio-input" id="ej-0-resp" placeholder="Escribe tu respuesta aquí..."></textarea>
+        <button class="btn-ejercicio" onclick="evaluarEjercicio(0)">Enviar respuesta →</button>
+        <div class="feedback" id="fb-0"></div>
+      </div>
+
+      <div class="actions" id="actions-0">
+        <button class="action-btn" onclick="pedirEjercicio(0)">🎯 Dame un ejercicio</button>
+        <button class="action-btn" onclick="pedirResumen(0)">📋 Resume este módulo</button>
+        <button class="action-btn primary" onclick="goMod(1)">Siguiente módulo →</button>
+      </div>
+    </div>
+
+    <!-- MÓDULO 2 -->
+    <div id="mod-1" class="module">
+      <div class="module-kicker">Módulo 2 de 4</div>
+      <h2 class="module-title">Así se construye un programa con IA</h2>
+      <p class="module-desc">Vamos a ver exactamente cómo se crea un programa paso a paso. No solo teoría — el proceso real.</p>
+
+      <div class="agente-msg" id="msg-1-intro">
+        <p>Muy bien <strong id="nombre-1"></strong>. Ahora viene la parte más importante: el <strong>prompt de sistema</strong>.</p>
+        <p>Piénsalo así: cuando contratas a alguien nuevo, le das un manual de bienvenida que explica quién es la empresa, cómo trabajar y qué se espera de él. El prompt de sistema hace exactamente eso con la IA — la convierte de asistente genérico en especialista de tu área.</p>
+        <div class="highlight">Un prompt de sistema bien escrito tiene exactamente <strong>5 partes</strong>. Sin alguna de ellas, la IA trabajará a medias.</div>
+      </div>
+
+      <!-- LAS 5 PARTES EXPLICADAS -->
+      <div style="display:grid;gap:12px;margin-bottom:20px">
+
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="width:28px;height:28px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--amber);flex-shrink:0">1</div>
+            <div style="font-size:14px;font-weight:700;color:var(--white)">Rol — ¿Quién ES la IA?</div>
+          </div>
+          <p style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:8px">Define exactamente qué tipo de experto es el agente. No digas "eres un asistente" — sé específico con la especialidad, experiencia y contexto.</p>
+          <div style="background:var(--bg2);border-left:3px solid var(--amber);border-radius:0 6px 6px 0;padding:10px 12px;font-size:12px;color:var(--muted)">
+            ❌ "Eres un asistente útil."<br>
+            ✅ "Eres un contador público certificado con 15 años de experiencia en fiscalidad mexicana, especializado en declaraciones ante el SAT y auditorías de empresas medianas."
+          </div>
+        </div>
+
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="width:28px;height:28px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--amber);flex-shrink:0">2</div>
+            <div style="font-size:14px;font-weight:700;color:var(--white)">Contexto — ¿En qué situación trabaja?</div>
+          </div>
+          <p style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:8px">Describe el entorno específico donde opera el agente: el tipo de empresa, el tipo de clientes, las herramientas que usa. Esto evita respuestas genéricas.</p>
+          <div style="background:var(--bg2);border-left:3px solid var(--amber);border-radius:0 6px 6px 0;padding:10px 12px;font-size:12px;color:var(--muted)">
+            ❌ Sin contexto → la IA inventa suposiciones incorrectas.<br>
+            ✅ "Trabajas para un despacho contable en Guadalajara que atiende a 40 empresas del sector manufactura con ingresos anuales de $5-50M MXN."
+          </div>
+        </div>
+
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="width:28px;height:28px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--amber);flex-shrink:0">3</div>
+            <div style="font-size:14px;font-weight:700;color:var(--white)">Tarea — ¿Qué hace exactamente?</div>
+          </div>
+          <p style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:8px">Describe la tarea principal con el mayor detalle posible. ¿Qué información recibe? ¿Qué proceso sigue? ¿Qué produce al final?</p>
+          <div style="background:var(--bg2);border-left:3px solid var(--amber);border-radius:0 6px 6px 0;padding:10px 12px;font-size:12px;color:var(--muted)">
+            ❌ "Clasifica facturas."<br>
+            ✅ "Cuando recibas una lista de facturas CFDI, analiza cada una según los criterios del SAT y clasifícala como: DEDUCIBLE (cumple requisitos), NO_DEDUCIBLE (no cumple) o REVISAR (requiere análisis adicional)."
+          </div>
+        </div>
+
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="width:28px;height:28px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--amber);flex-shrink:0">4</div>
+            <div style="font-size:14px;font-weight:700;color:var(--white)">Formato — ¿Cómo entrega el resultado?</div>
+          </div>
+          <p style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:8px">Especifica exactamente cómo quieres el resultado: ¿tabla?, ¿lista?, ¿correo?, ¿párrafos?, ¿con emojis o sin ellos?, ¿en cuántas palabras? Sin esto, la IA decide sola y a veces no es lo que necesitas.</p>
+          <div style="background:var(--bg2);border-left:3px solid var(--amber);border-radius:0 6px 6px 0;padding:10px 12px;font-size:12px;color:var(--muted)">
+            ✅ "Devuelve una tabla con columnas: N° | Concepto | Monto | Clasificación | Categoría SAT | Observación. Una fila por factura, sin texto adicional antes ni después."
+          </div>
+        </div>
+
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div style="width:28px;height:28px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--amber);flex-shrink:0">5</div>
+            <div style="font-size:14px;font-weight:700;color:var(--white)">Restricciones — ¿Qué NO debe hacer?</div>
+          </div>
+          <p style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:8px">Define los límites: qué no debe inventar, qué no debe asumir, cómo actuar cuando le falta información. Esta parte evita errores y alucinaciones de la IA.</p>
+          <div style="background:var(--bg2);border-left:3px solid var(--amber);border-radius:0 6px 6px 0;padding:10px 12px;font-size:12px;color:var(--muted)">
+            ✅ "Si una factura no tiene suficiente información para clasificarla, márcala como REVISAR y explica qué dato falta. Nunca inventes datos. Si no conoces la regla fiscal aplicable, di 'requiere revisión del contador'."
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CONSTRUCTOR DE PROMPT -->
+      <div style="background:rgba(249,115,22,.05);border:1px solid rgba(249,115,22,.2);border-radius:14px;padding:22px;margin-bottom:20px">
+        <div style="font-size:13px;font-weight:700;color:var(--amber);margin-bottom:4px">🛠 Construye TU prompt ahora</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:18px">Llena los 5 campos con tu caso real. El agente los combina y te genera el prompt completo.</div>
+
+        <div style="display:grid;gap:14px">
+          <div>
+            <label style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">
+              <span style="background:rgba(249,115,22,.15);width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px">1</span>
+              ROL — ¿Quién es el agente?
+            </label>
+            <textarea id="p-rol" rows="2" style="width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;transition:border-color .15s;line-height:1.6" placeholder="Ej: Eres un contador público certificado con experiencia en fiscalidad mexicana y declaraciones ante el SAT..." onfocus="this.style.borderColor='#F97316'" onblur="this.style.borderColor='#28283A'"></textarea>
+          </div>
+          <div>
+            <label style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">
+              <span style="background:rgba(249,115,22,.15);width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px">2</span>
+              CONTEXTO — ¿En qué empresa o situación trabaja?
+            </label>
+            <textarea id="p-ctx" rows="2" style="width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;transition:border-color .15s;line-height:1.6" placeholder="Ej: Trabajas en un despacho contable en Guadalajara que atiende a empresas del sector comercial y manufactura..." onfocus="this.style.borderColor='#F97316'" onblur="this.style.borderColor='#28283A'"></textarea>
+          </div>
+          <div>
+            <label style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">
+              <span style="background:rgba(249,115,22,.15);width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px">3</span>
+              TAREA — ¿Qué debe hacer exactamente?
+            </label>
+            <textarea id="p-tarea" rows="2" style="width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;transition:border-color .15s;line-height:1.6" placeholder="Ej: Cuando recibas una lista de facturas, analiza cada una y clasifícala como deducible, no deducible o revisar..." onfocus="this.style.borderColor='#F97316'" onblur="this.style.borderColor='#28283A'"></textarea>
+          </div>
+          <div>
+            <label style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">
+              <span style="background:rgba(249,115,22,.15);width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px">4</span>
+              FORMATO — ¿Cómo entrega el resultado?
+            </label>
+            <textarea id="p-fmt" rows="2" style="width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;transition:border-color .15s;line-height:1.6" placeholder="Ej: Tabla con columnas: N° | Concepto | Monto | Clasificación | Observación. Una fila por factura..." onfocus="this.style.borderColor='#F97316'" onblur="this.style.borderColor='#28283A'"></textarea>
+          </div>
+          <div>
+            <label style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">
+              <span style="background:rgba(249,115,22,.15);width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px">5</span>
+              RESTRICCIONES — ¿Qué NO debe hacer o asumir?
+            </label>
+            <textarea id="p-rest" rows="2" style="width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;transition:border-color .15s;line-height:1.6" placeholder="Ej: Nunca inventes datos. Si falta información, marca como REVISAR y explica qué falta. No uses lenguaje técnico excesivo..." onfocus="this.style.borderColor='#F97316'" onblur="this.style.borderColor='#28283A'"></textarea>
+          </div>
+        </div>
+
+        <button onclick="generarPromptCompleto()" style="width:100%;margin-top:16px;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;padding:12px;border:none;border-radius:9px;cursor:pointer;transition:all .15s">🤖 Generar mi prompt completo →</button>
+
+        <div id="prompt-resultado" style="display:none;margin-top:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <div style="font-size:12px;font-weight:700;color:var(--green)">✓ Tu prompt está listo</div>
+            <button onclick="copiarPromptMod2()" style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;cursor:pointer;border:1px solid rgba(34,197,94,.3);background:rgba(34,197,94,.08);color:var(--green)">Copiar</button>
+          </div>
+          <div id="prompt-resultado-txt" style="background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:14px;font-size:13px;color:var(--body);line-height:1.7;white-space:pre-wrap;font-family:monospace;max-height:280px;overflow-y:auto"></div>
+          <div id="prompt-cargando" style="display:none;padding:12px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px"><div class="dots"><span></span><span></span><span></span></div> Construyendo tu prompt...</div>
+        </div>
+      </div>
+
+      <div class="chat-section">
+        <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">¿Tienes dudas sobre alguna de las 5 partes?</div>
+        <div class="chat-messages" id="chat-1"></div>
+        <div class="chat-input-row">
+          <input class="chat-input" id="cinput-1" placeholder="Ej: ¿Cómo escribo el contexto si trabajo por mi cuenta?" onkeydown="if(event.key==='Enter')sendChat(1)">
+          <button class="btn-send" onclick="sendChat(1)">Enviar</button>
+        </div>
+      </div>
+
+      <div class="ejercicio" id="ej-1">
+        <div class="ejercicio-label">🎯 Ejercicio del módulo</div>
+        <div class="ejercicio-q" id="ej-1-q"></div>
+        <textarea class="ejercicio-input" id="ej-1-resp" placeholder="Pega aquí el prompt que construiste con el formulario de arriba..."></textarea>
+        <button class="btn-ejercicio" onclick="evaluarEjercicio(1)">Enviar respuesta →</button>
+        <div class="feedback" id="fb-1"></div>
+      </div>
+
+      <div class="actions" id="actions-1">
+        <button class="action-btn" onclick="pedirEjercicio(1)">🎯 Quiero retroalimentación de mi prompt</button>
+        <button class="action-btn" onclick="pedirResumen(1)">📋 Resume las 5 partes</button>
+        <button class="action-btn primary" onclick="goMod(2)">Siguiente módulo →</button>
+      </div>
+    </div>
+
+    <!-- MÓDULO 3 -->
+    <div id="mod-2" class="module">
+      <div class="module-kicker">Módulo 3 de 4</div>
+      <h2 class="module-title">Construye tu propio programa</h2>
+      <p class="module-desc">Ahora tú. Vamos a construir el programa para tu caso de uso específico.</p>
+
+      <div class="agente-msg">
+        <p><strong id="nombre-2"></strong>, llegó el momento más importante del curso: construir tu programa.</p>
+        <p>Basado en lo que sé de ti — que eres <strong id="prof-2"></strong> — voy a guiarte para crear un programa que automatice una tarea real de tu trabajo.</p>
+        <div class="highlight">🛠 En este módulo vas a: identificar tu tarea, escribir el prompt, probarlo y ajustarlo hasta que funcione perfectamente.</div>
+        <p>Primero dime: <strong>¿qué tarea de tu trabajo repites más seguido y más tiempo te consume?</strong></p>
+      </div>
+
+      <div class="chat-section">
+        <div class="chat-messages" id="chat-2"></div>
+        <div class="chat-input-row">
+          <input class="chat-input" id="cinput-2" placeholder="Cuéntame qué tarea quieres automatizar..." onkeydown="if(event.key==='Enter')sendChat(2)">
+          <button class="btn-send" onclick="sendChat(2)">Enviar</button>
+        </div>
+      </div>
+
+      <div class="ejercicio" id="ej-2">
+        <div class="ejercicio-label">🎯 Tu programa</div>
+        <div class="ejercicio-q" id="ej-2-q"></div>
+        <textarea class="ejercicio-input" id="ej-2-resp" placeholder="Pega aquí el prompt de sistema de tu programa..." rows="6"></textarea>
+        <button class="btn-ejercicio" onclick="evaluarEjercicio(2)">Probar con el agente →</button>
+        <div class="feedback" id="fb-2"></div>
+      </div>
+
+      <div class="actions" id="actions-2">
+        <button class="action-btn" onclick="pedirEjercicio(2)">🛠 Ayúdame a construirlo</button>
+        <button class="action-btn primary" onclick="goMod(3)">Siguiente módulo →</button>
+      </div>
+    </div>
+
+    <!-- MÓDULO 4 -->
+    <div id="mod-3" class="module">
+      <div class="module-kicker">Módulo 4 de 4</div>
+      <h2 class="module-title">Integra el agente y suéltalo a trabajar</h2>
+      <p class="module-desc">El último paso: conectar tu programa a tu flujo de trabajo real para que trabaje solo.</p>
+
+      <!-- API KEY SECTION -->
+      <div style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.25);border-radius:14px;padding:20px;margin-bottom:20px">
+        <div style="font-size:13px;font-weight:700;color:#A78BFA;margin-bottom:4px;display:flex;align-items:center;gap:8px">🔑 Configura tu acceso a la IA</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px">Para este módulo vas a usar una IA real. Incluimos una llave de muestra con <strong style="color:var(--white)">10 usos gratuitos</strong> para que practiques. Cuando se agoten, puedes obtener la tuya.</p>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end">
+          <div>
+            <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Tu API Key de Claude</label>
+            <input type="password" id="api-key-mod4" placeholder="Usar llave de muestra incluida (10 usos)" style="width:100%;background:var(--bg2);border:1px solid rgba(139,92,246,.25);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;outline:none">
+          </div>
+          <button onclick="verificarKey()" style="padding:10px 16px;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);border-radius:8px;color:#A78BFA;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap">Verificar →</button>
+        </div>
+        <div id="key-status" style="margin-top:10px;font-size:12px;color:var(--muted)"></div>
+        <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
+          <div style="flex:1;height:4px;background:var(--line);border-radius:99px;overflow:hidden">
+            <div id="usos-bar" style="height:100%;background:#8B5CF6;border-radius:99px;transition:width .3s"></div>
+          </div>
+          <div id="usos-txt" style="font-size:11px;color:var(--muted);white-space:nowrap">10/10 usos disponibles</div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--muted)">¿Quieres usos ilimitados? <a href="https://console.anthropic.com" target="_blank" style="color:#8B5CF6">Obtén tu propia key gratis →</a></div>
+      </div>
+
+      <div class="agente-msg">
+        <p>Estamos en el último módulo, <strong id="nombre-3"></strong>. Ya tienes tu programa. Ahora lo conectamos a tu flujo de trabajo para que funcione solo.</p>
+        <p>Esto es lo que lo convierte de "programa que pruebo" a "programa que trabaja por mí todos los días".</p>
+        <div class="highlight">🔗 Conectar tu programa significa: automatizar la entrada de información, automatizar la salida del resultado, y definir cuándo interviene un humano.</div>
+        <p>Las herramientas más accesibles para conectar tu programa son <strong>Make</strong>, <strong>Zapier</strong> y <strong>n8n</strong>. Todas tienen plan gratuito y no requieren código.</p>
+        <div class="ejemplo"><strong>Ejemplo de flujo automatizado:</strong>Cliente llena formulario → Make recibe los datos → llama a tu programa con IA → el resultado llega por correo al cliente. Todo sin que tú hagas nada.</div>
+        <p>¿Qué herramienta de las tres te parece más accesible para empezar? Cuéntame y te explico cómo conectar tu programa específico.</p>
+      </div>
+
+      <div class="chat-section">
+        <div class="chat-messages" id="chat-3"></div>
+        <div class="chat-input-row">
+          <input class="chat-input" id="cinput-3" placeholder="¿Cómo conecto esto a mi flujo de trabajo?" onkeydown="if(event.key==='Enter')sendChat(3)">
+          <button class="btn-send" onclick="sendChat(3)">Enviar</button>
+        </div>
+      </div>
+
+      <div class="ejercicio" id="ej-3">
+        <div class="ejercicio-label">🎯 Tu plan de implementación</div>
+        <div class="ejercicio-q" id="ej-3-q"></div>
+        <textarea class="ejercicio-input" id="ej-3-resp" placeholder="Describe tu plan de implementación..." rows="5"></textarea>
+        <button class="btn-ejercicio" onclick="evaluarEjercicio(3)">Revisar mi plan →</button>
+        <div class="feedback" id="fb-3"></div>
+      </div>
+
+      <div class="actions" id="actions-3">
+        <button class="action-btn" onclick="pedirEjercicio(3)">📋 Ayúdame con el plan</button>
+        <button class="action-btn primary" onclick="completarCurso()">🎓 Terminar el curso →</button>
+      </div>
+    </div>
+
+    <!-- COMPLETADO -->
+    <div class="completed" id="screen-completed">
+      <span class="completed-ico">🎓</span>
+      <h2 class="completed-title">¡Completaste el curso!</h2>
+      <p class="completed-sub" id="completed-sub"></p>
+      <div class="cert">
+        <div class="cert-title">Constancia de participación</div>
+        <div class="cert-name" id="cert-name"></div>
+        <div class="cert-desc">Completó el curso "Integra Agentes de IA en tu Organización"<br>AgentIA · <span id="cert-fecha"></span></div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button onclick="window.print()" style="padding:12px 22px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--body)">🖨️ Imprimir constancia</button>
+        <a href="https://argentia.agency" style="display:inline-flex;align-items:center;gap:6px;padding:12px 22px;border-radius:10px;font-size:14px;font-weight:800;background:var(--amber);color:#000;text-decoration:none;font-family:'DM Sans',sans-serif">Ver más cursos →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── ESTADO ──
+const state = {
+  nombre: '',
+  prof: '',
+  modActual: -1,
+  historial: { 0:[], 1:[], 2:[], 3:[] },
+  completados: []
+};
+
+const PROMPTS_EJEMPLO = {
+  'Contador / Auditor': '<strong>Rol:</strong> Eres un contador público certificado especializado en fiscalidad mexicana.\n<strong>Tarea:</strong> Cuando recibas una lista de facturas, clasifica cada una como DEDUCIBLE, NO_DEDUCIBLE o REVISAR según los criterios del SAT.\n<strong>Formato:</strong> Tabla con columnas: Concepto | Clasificación | Categoría | Observación.',
+  'Abogado / Notario': '<strong>Rol:</strong> Eres un abogado corporativo mexicano especializado en contratos comerciales.\n<strong>Tarea:</strong> Al recibir un contrato, identifica las cláusulas de riesgo y califica cada una con semáforo verde/amarillo/rojo.\n<strong>Formato:</strong> Lista numerada con cláusula, calificación y recomendación.',
+  'Administrador / RH': '<strong>Rol:</strong> Eres el asistente de RH de la empresa, experto en legislación laboral mexicana y políticas internas.\n<strong>Tarea:</strong> Responde preguntas de empleados sobre reglamento, vacaciones y prestaciones con base en la LFT y las políticas de la empresa.\n<strong>Formato:</strong> Respuesta clara, cita el artículo o política aplicable.',
+  'Dueño de negocio': '<strong>Rol:</strong> Eres el asesor comercial de mi negocio, conoces a fondo mis productos, precios y estilo de comunicación.\n<strong>Tarea:</strong> Genera cotizaciones profesionales cuando recibas los datos del cliente y el producto solicitado.\n<strong>Formato:</strong> Correo formal con saludo, descripción, precio total, tiempo de entrega y cierre cordial.',
+  'Médico / Profesional de salud': '<strong>Rol:</strong> Eres un asistente médico especializado en documentación clínica conforme a la NOM-004-SSA3-2012.\n<strong>Tarea:</strong> Genera notas clínicas estructuradas a partir de la descripción de la consulta.\n<strong>Formato:</strong> Nota con secciones: Motivo | Exploración | Diagnóstico | Plan | Pronóstico | Firma.',
+  'Otra profesión': '<strong>Rol:</strong> Eres un especialista en [tu área], con amplio conocimiento en [tu industria].\n<strong>Tarea:</strong> Cuando recibas [información de entrada], procesa y genera [resultado esperado].\n<strong>Formato:</strong> [Especifica el formato que necesitas].'
+};
+
+const EJ_PREGUNTAS = [
+  'Basándote en lo que acabas de aprender: ¿cuál de las 3 IAs (Claude, ChatGPT o Gemini) usarías para tu trabajo como {PROF} y por qué?',
+  'Escribe el prompt de sistema para un agente que te ayude con {TAREA}. Recuerda incluir: Rol, Contexto, Tarea, Formato y Restricciones.',
+  'Describe en 3-4 líneas: ¿qué tarea de tu trabajo quieres automatizar? ¿Qué información necesita el programa? ¿Qué resultado debe producir?',
+  'Crea tu Plan de Adopción IA: 1) ¿Qué herramienta de automatización usarás? 2) ¿Cuándo lo implementas? 3) ¿Cómo sabrás que está funcionando?'
+];
+
+// ── INTRO INTERACTIVO ──
+function goIntro(){
+  document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));
+  document.getElementById('screen-completed').style.display='none';
+  document.getElementById('screen-intro').style.display='block';
+  document.querySelectorAll('.mod-item').forEach(el=>el.classList.remove('active','done'));
+  document.getElementById('nav-intro').classList.add('active');
+  document.getElementById('prog-fill').style.width='0%';
+  document.getElementById('prog-text').textContent='Introducción';
+  document.getElementById('creditos-badge').style.display='flex';
+  actualizarCreditos(10);
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(calcCosto,100);
+}
+
+function showItab(id, btn){
+  document.querySelectorAll('.itab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.ipanel').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('ip-'+id).classList.add('on');
+}
+
+function selICard(id){
+  ['claude','chatgpt','gemini'].forEach(function(a){
+    document.getElementById('ic-'+a).classList.remove('sel');
+    document.getElementById('idet-'+a).style.display='none';
+  });
+  document.getElementById('ic-'+id).classList.add('sel');
+  document.getElementById('idet-'+id).style.display='block';
+}
+
+function calcCosto(){
+  const docs = parseInt(document.getElementById('sl-docs') ? document.getElementById('sl-docs').value : 20);
+  const words = parseInt(document.getElementById('sl-words') ? document.getElementById('sl-words').value : 500);
+  const dias = parseInt(document.getElementById('sl-dias') ? document.getElementById('sl-dias').value : 20);
+  if(document.getElementById('out-docs')) document.getElementById('out-docs').textContent = docs;
+  if(document.getElementById('out-words')) document.getElementById('out-words').textContent = words;
+  if(document.getElementById('out-dias')) document.getElementById('out-dias').textContent = dias;
+  const tokensPerDoc = (words / 0.75) * 2;
+  const totalM = (docs * tokensPerDoc * dias) / 1000000;
+  if(document.getElementById('cost-haiku')) document.getElementById('cost-haiku').textContent = '$'+(totalM * (0.80+4.00)/2).toFixed(2);
+  if(document.getElementById('cost-mini')) document.getElementById('cost-mini').textContent = '$'+(totalM * (0.15+0.60)/2).toFixed(2);
+  if(document.getElementById('cost-gemini')) document.getElementById('cost-gemini').textContent = '$'+(totalM * (0.075+0.30)/2).toFixed(2);
+}
+
+async function sendChatIntro(){
+  const input = document.getElementById('cinput-intro');
+  const msg = input.value.trim();
+  if(!msg) return;
+  input.value='';
+  addMsgIntro(msg,'user');
+  const loadId = addMsgIntro('<div class="dots"><span></span><span></span><span></span></div>','agent loading');
+  try {
+    const res = await fetch('https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/proxy-claude',{
+      method:'POST',headers:{'Content-Type':'application/json','x-user-email':state.email||'anonimo@curso.agentia'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,
+        system:'Eres un instructor experto en IA para profesionales en México. Respondes preguntas sobre inteligencia artificial generativa, modelos de lenguaje, API Keys y costos. Respuestas concisas, en español mexicano, con ejemplos cotidianos. Máximo 120 palabras.',
+        messages:[{role:'user',content:msg}]
+      })
+    });
+    const data = await res.json();
+    updateMsgById(loadId, data.content&&data.content[0]?data.content[0].text:'Error al responder.');
+  } catch(e){ updateMsgById(loadId,'Error de conexión.'); }
+}
+
+function preguntaRapida(msg){
+  document.getElementById('cinput-intro').value = msg;
+  sendChatIntro();
+}
+
+function addMsgIntro(html, type){
+  const cont = document.getElementById('chat-intro');
+  const id = 'imsg-'+Date.now();
+  const div = document.createElement('div');
+  div.id=id; div.className='msg msg-'+type.split(' ')[0];
+  if(type.includes('loading')) div.innerHTML=html; else div.textContent=html;
+  cont.appendChild(div);
+  cont.scrollTop=cont.scrollHeight;
+  return id;
+}
+
+function updateMsgById(id, text){
+  const el=document.getElementById(id);
+  if(el){el.className='msg msg-agent';el.textContent=text;}
+}
+
+// ── GENERADOR DE PROMPT MOD 2 ──
+async function generarPromptCompleto(){
+  const rol = document.getElementById('p-rol').value.trim();
+  const ctx = document.getElementById('p-ctx').value.trim();
+  const tarea = document.getElementById('p-tarea').value.trim();
+  const fmt = document.getElementById('p-fmt').value.trim();
+  const rest = document.getElementById('p-rest').value.trim();
+
+  if(!rol && !tarea){ alert('Llena al menos el Rol y la Tarea para continuar.'); return; }
+
+  const res_div = document.getElementById('prompt-resultado');
+  const txt_div = document.getElementById('prompt-resultado-txt');
+  const carg_div = document.getElementById('prompt-cargando');
+
+  res_div.style.display = 'block';
+  txt_div.style.display = 'none';
+  carg_div.style.display = 'flex';
+
+  const partes = [
+    rol ? 'ROL:\n'+rol : '',
+    ctx ? '\nCONTEXTO:\n'+ctx : '',
+    tarea ? '\nTAREA:\n'+tarea : '',
+    fmt ? '\nFORMATO DE RESPUESTA:\n'+fmt : '',
+    rest ? '\nRESTRICCIONES:\n'+rest : ''
+  ].filter(Boolean).join('\n');
+
+  try {
+    const res = await fetch('https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/proxy-claude',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-user-email':state.email||'anonimo@curso.agentia'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:600,
+        system:'Eres experto en prompt engineering. Toma las 5 partes que te dan y redáctalas como un prompt de sistema cohesivo, profesional y en español. Sin títulos, sin secciones marcadas, solo el texto del prompt fluido y natural. Máximo 200 palabras.',
+        messages:[{role:'user',content:'Construye el prompt de sistema con estas partes:\n\n'+partes+'\n\nContexto del usuario: '+state.prof}]
+      })
+    });
+    const data = await res.json();
+    const prompt = data.content&&data.content[0]?data.content[0].text:'Error al generar.';
+    txt_div.textContent = prompt;
+    txt_div.style.display = 'block';
+    window._promptMod2 = prompt;
+  } catch(e){
+    txt_div.textContent = 'Error de conexión. Intenta de nuevo.';
+    txt_div.style.display = 'block';
+  }
+  carg_div.style.display = 'none';
+}
+
+function copiarPromptMod2(){
+  if(window._promptMod2) navigator.clipboard.writeText(window._promptMod2);
+  const btn = event.currentTarget;
+  btn.textContent = '✓ Copiado';
+  setTimeout(()=>{ btn.textContent = 'Copiar'; }, 2000);
+}
+
+// ── INICIO ──
+function iniciarCurso(){
+  const nombre = document.getElementById('inp-nombre').value.trim();
+  const email = document.getElementById('inp-email').value.trim();
+  const prof = document.getElementById('inp-prof').value;
+  if(!nombre || !email || !prof){ alert('Completa todos los campos para continuar.'); return; }
+  if(!email.includes('@')){ alert('Ingresa un correo válido.'); return; }
+  state.nombre = nombre;
+  state.email = email;
+  state.prof = prof;
+  document.getElementById('sb-nombre').textContent = nombre;
+  document.getElementById('sb-prof').textContent = prof;
+  document.getElementById('perfil-card').style.display = 'block';
+  document.getElementById('screen-welcome').style.display = 'none';
+  goIntro();
+}
+
+// ── NAVEGACIÓN ──
+function goMod(n){
+  document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));
+  document.getElementById('screen-completed').style.display = 'none';
+  const mod = document.getElementById('mod-'+n);
+  if(!mod) return;
+  mod.classList.add('active');
+  state.modActual = n;
+
+  // Actualizar nav
+  document.querySelectorAll('.mod-item').forEach((el,i)=>{
+    el.classList.remove('active','done');
+    if(i < n) el.classList.add('done');
+    if(i === n) el.classList.add('active');
+  });
+
+  // Progress
+  const pct = Math.round((n/4)*100);
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('prog-text').textContent = 'Módulo '+(n+1)+' de 4';
+
+  // Personalizar contenido
+  personalizarMod(n);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function personalizarMod(n){
+  const {nombre, prof} = state;
+  const sel = id => document.getElementById(id);
+
+  if(n===0){
+    if(sel('nombre-0')) sel('nombre-0').textContent = nombre;
+    if(sel('prof-0')) sel('prof-0').textContent = prof.toLowerCase();
+  }
+  if(n===1){
+    if(sel('nombre-1')) sel('nombre-1').textContent = nombre;
+    if(sel('prof-1-ej')) sel('prof-1-ej').textContent = prof.toLowerCase();
+    const ejEl = sel('ej-prompt-ejemplo');
+    if(ejEl) ejEl.innerHTML = PROMPTS_EJEMPLO[prof] || PROMPTS_EJEMPLO['Otra profesión'];
+  }
+  if(n===2){
+    if(sel('nombre-2')) sel('nombre-2').textContent = nombre;
+    if(sel('prof-2')) sel('prof-2').textContent = prof;
+  }
+  if(n===3){
+    if(sel('nombre-3')) sel('nombre-3').textContent = nombre;
+    setTimeout(updateUsosBar, 100);
+  }
+}
+
+// ── CHAT ──
+async function sendChat(modN){
+  const input = document.getElementById('cinput-'+modN);
+  const msg = input.value.trim();
+  if(!msg) return;
+  input.value = '';
+
+  addMsg(modN, msg, 'user');
+  const loadId = addMsg(modN, '<div class="dots"><span></span><span></span><span></span></div>', 'agent loading');
+
+  state.historial[modN].push({role:'user', content:msg});
+
+  const sistema = buildSistema(modN);
+
+  try {
+    const res = await fetch('https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/proxy-claude',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-user-email':state.email||'anonimo@curso.agentia'},
+      body:JSON.stringify({
+        model:'claude-haiku-4-5',
+        max_tokens:600,
+        system:sistema,
+        messages:state.historial[modN],
+        tipo:'chat_curso'
+      })
+    });
+    const data = await res.json();
+    if(data.error === 'sin_creditos'){
+      updateMsg(loadId, 'Sin créditos disponibles.');
+      mostrarSinCreditos();
+      return;
+    }
+    if(data._creditos) actualizarCreditos(data._creditos.restantes);
+    const resp = data.content&&data.content[0]?data.content[0].text:'Lo siento, hubo un error. Intenta de nuevo.';
+    state.historial[modN].push({role:'assistant',content:resp});
+    updateMsg(loadId, resp);
+  } catch(e){
+    updateMsg(loadId, 'Error de conexión. Intenta de nuevo.');
+  }
+}
+
+function buildSistema(modN){
+  const {nombre, prof} = state;
+  const temas = [
+    'comparación entre Claude, ChatGPT y Gemini — precios, casos de uso y cuál conviene para '+prof,
+    'cómo escribir prompts de sistema efectivos para automatizar tareas de '+prof,
+    'cómo identificar qué tarea automatizar y cómo construir el programa con IA para '+prof,
+    'cómo conectar programas de IA a flujos de trabajo reales usando Make, Zapier o n8n para '+prof
+  ];
+  return `Eres un instructor experto en inteligencia artificial para profesionales en México. Estás impartiendo un curso interactivo a ${nombre}, quien trabaja como ${prof}.
+
+Estás en el Módulo ${modN+1} que trata sobre: ${temas[modN]}.
+
+Instrucciones de comportamiento:
+- Responde siempre en español mexicano, tono profesional pero cercano
+- Personaliza SIEMPRE las respuestas al contexto de ${prof}
+- Usa ejemplos concretos de su área de trabajo
+- Si pregunta algo fuera del tema del módulo, redirige amablemente al tema actual
+- Respuestas concisas: máximo 150 palabras
+- Usa emojis con moderación para hacer más visual la explicación
+- Si el participante está confundido, ofrece explicarlo de otra forma`;
+}
+
+function addMsg(modN, html, type){
+  const cont = document.getElementById('chat-'+modN);
+  const id = 'msg-'+Date.now();
+  const div = document.createElement('div');
+  div.id = id;
+  div.className = 'msg msg-'+type.split(' ')[0];
+  if(type.includes('loading')) div.innerHTML = html;
+  else div.textContent = html;
+  cont.appendChild(div);
+  cont.scrollTop = cont.scrollHeight;
+  return id;
+}
+
+function updateMsg(id, text){
+  const el = document.getElementById(id);
+  if(el){ el.className='msg msg-agent'; el.textContent=text; }
+}
+
+function actualizarCreditos(creditos){
+  const badge = document.getElementById('creditos-badge');
+  if(!badge) return;
+  badge.style.display = 'flex';
+  badge.textContent = '⚡ '+creditos+' crédito'+(creditos===1?'':'s');
+  if(creditos <= 3) badge.style.background='rgba(239,68,68,.1)';
+  else if(creditos <= 7) badge.style.background='rgba(234,179,8,.1)';
+  else badge.style.background='rgba(249,115,22,.1)';
+}
+
+function mostrarSinCreditos(){
+  const modal = document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px';
+  modal.innerHTML = '<div style="background:var(--card);border:1px solid var(--amber);border-radius:14px;padding:32px;max-width:400px;text-align:center">'+
+    '<div style="font-size:40px;margin-bottom:16px">⚡</div>'+
+    '<h3 style="font-family:DM Sans,sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:10px">Se agotaron tus créditos</h3>'+
+    '<p style="font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:24px">Recarga créditos para seguir practicando con el agente de IA.</p>'+
+    '<div style="display:grid;gap:10px">'+
+    '<a href="https://argentia.agency/#creditos" style="display:block;background:var(--amber);color:#000;font-family:DM Sans,sans-serif;font-weight:800;font-size:15px;padding:13px;border-radius:10px;text-decoration:none">Recargar créditos →</a>'+
+    '<button onclick="this.closest('div[style*=fixed]').remove()" style="background:transparent;border:1px solid var(--line);color:var(--muted);font-size:13px;padding:10px;border-radius:8px;cursor:pointer">Cerrar</button>'+
+    '</div></div>';
+  document.body.appendChild(modal);
+}
+
+// ── EJERCICIOS ──
+async function pedirEjercicio(modN){
+  const {nombre, prof} = state;
+  const tareaEj = EJ_PREGUNTAS[modN].replace('{PROF}',prof).replace('{TAREA}','tu tarea principal como '+prof);
+
+  document.getElementById('ej-'+modN).style.display='block';
+  document.getElementById('ej-'+modN+'-q').textContent = tareaEj;
+  document.getElementById('ej-'+modN).scrollIntoView({behavior:'smooth'});
+}
+
+async function pedirResumen(modN){
+  const input = document.getElementById('cinput-'+modN);
+  input.value = 'Dame un resumen breve de los puntos más importantes de este módulo.';
+  await sendChat(modN);
+}
+
+async function evaluarEjercicio(modN){
+  const resp = document.getElementById('ej-'+modN+'-resp').value.trim();
+  if(!resp){ alert('Escribe tu respuesta primero.'); return; }
+
+  const fb = document.getElementById('fb-'+modN);
+  fb.style.display='block';
+  fb.innerHTML='<div class="dots"><span></span><span></span><span></span></div> Evaluando tu respuesta...';
+
+  const {nombre, prof} = state;
+  const pregunta = document.getElementById('ej-'+modN+'-q').textContent;
+
+  try {
+    const res = await fetch('https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/proxy-claude',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-user-email':state.email||'anonimo@curso.agentia'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:400,
+        system:`Eres un instructor de IA evaluando la respuesta de ${nombre} (${prof}). Da retroalimentación constructiva, específica y alentadora en máximo 100 palabras. Señala qué está bien y qué puede mejorar. Termina con un ánimo positivo.`,
+        messages:[{role:'user',content:'Pregunta: '+pregunta+'\n\nRespuesta del participante: '+resp}]
+      })
+    });
+    const data = await res.json();
+    fb.textContent = data.content&&data.content[0]?data.content[0].text:'¡Buen trabajo! Continúa al siguiente módulo.';
+  } catch(e){
+    fb.textContent='Error al evaluar. Continúa al siguiente módulo.';
+  }
+}
+
+// ── API KEY SISTEMA ──
+const KEY_DEMO = 'DEMO_10_USES'; // Aquí va tu API key real
+const MAX_USOS_KEY = 10;
+const STORAGE_KEY = 'agentia_curso_usos';
+
+function getUsosKey(){ return parseInt(localStorage.getItem(STORAGE_KEY)||'0'); }
+function addUsoKey(){ localStorage.setItem(STORAGE_KEY, getUsosKey()+1); updateUsosBar(); }
+
+function updateUsosBar(){
+  const usos = getUsosKey();
+  const left = MAX_USOS_KEY - usos;
+  const pct = Math.max(0, (left/MAX_USOS_KEY)*100);
+  const bar = document.getElementById('usos-bar');
+  const txt = document.getElementById('usos-txt');
+  if(bar) bar.style.width = pct+'%';
+  if(txt) txt.textContent = left+'/'+MAX_USOS_KEY+' usos disponibles';
+  if(left<=0 && bar) bar.style.background='#EF4444';
+  else if(left<=3 && bar) bar.style.background='#F97316';
+}
+
+function getApiKey(){
+  const inp = document.getElementById('api-key-mod4');
+  if(inp && inp.value.trim()) return inp.value.trim();
+  return KEY_DEMO; // Usa la key de muestra
+}
+
+function verificarKey(){
+  const inp = document.getElementById('api-key-mod4');
+  const status = document.getElementById('key-status');
+  const val = inp ? inp.value.trim() : '';
+  if(!val){
+    status.innerHTML = '<span style="color:#22C55E">✓ Usando llave de muestra incluida — '+( MAX_USOS_KEY - getUsosKey())+' usos restantes</span>';
+  } else if(val.startsWith('sk-ant-')){
+    status.innerHTML = '<span style="color:#22C55E">✓ Tu API Key está configurada — usos ilimitados</span>';
+  } else {
+    status.innerHTML = '<span style="color:#EF4444">✕ Formato incorrecto. Debe empezar con sk-ant-</span>';
+  }
+  updateUsosBar();
+}
+
+function puedeUsarKey(){
+  const inp = document.getElementById('api-key-mod4');
+  const val = inp ? inp.value.trim() : '';
+  if(val && val.startsWith('sk-ant-')) return true; // Key propia = ilimitado
+  return getUsosKey() < MAX_USOS_KEY; // Key demo = límite 10
+}
+
+// ── COMPLETAR ──
+function completarCurso(){
+  document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));
+  document.querySelectorAll('.mod-item').forEach(el=>{ el.classList.remove('active'); el.classList.add('done'); });
+  document.getElementById('prog-fill').style.width='100%';
+  document.getElementById('prog-text').textContent='Curso completado ✓';
+
+  const comp = document.getElementById('screen-completed');
+  comp.style.display='block';
+  document.getElementById('cert-name').textContent=state.nombre;
+  document.getElementById('cert-fecha').textContent=new Date().toLocaleDateString('es-MX',{year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('completed-sub').textContent='Felicidades '+state.nombre+'. Completaste los 4 módulos del curso. Ya tienes las bases para construir e integrar agentes de IA en tu trabajo como '+state.prof+'.';
+  comp.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
