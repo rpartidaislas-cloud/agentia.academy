@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Llamadas a la IA — AgentIA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0E0E14;--bg2:#16161E;--card:#1C1C26;--line:#28283A;--muted:#6B6B88;--sub:#A0A0C0;--body:#D0D0E8;--white:#F4F4F8;--amber:#F97316;--green:#22C55E;--purple:#8B5CF6;--blue:#3B82F6;--r:12px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.header{background:var(--bg2);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'DM Sans',sans-serif;font-weight:800;font-size:1.1rem}
+.logo span{color:var(--amber)}
+.header-nav{display:flex;gap:16px;align-items:center}
+.header-link{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s}
+.header-link:hover{color:var(--amber)}
+.header-link.active{color:var(--white);font-weight:600}
+
+.hero{text-align:center;padding:64px 24px 48px}
+.hero-kicker{display:inline-flex;align-items:center;gap:6px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:var(--blue);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 14px;border-radius:99px;margin-bottom:16px}
+.hero-title{font-family:'DM Sans',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;margin-bottom:12px;line-height:1.15}
+.hero-sub{font-size:15px;color:var(--sub);max-width:540px;margin:0 auto 28px;line-height:1.65}
+.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:'DM Sans',sans-serif;font-size:1.6rem;font-weight:800;color:var(--white)}
+.hero-stat-lbl{font-size:12px;color:var(--muted)}
+
+.page{max-width:960px;margin:0 auto;padding:0 24px}
+
+/* EXPLICACIÓN */
+.explain{padding:48px 0;border-top:1px solid var(--line)}
+.explain-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+@media(max-width:640px){.explain-grid{grid-template-columns:1fr}}
+.explain-title{font-family:'DM Sans',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:12px;letter-spacing:-.02em}
+.explain-text{font-size:14px;color:var(--sub);line-height:1.75;margin-bottom:16px}
+.explain-cards{display:grid;gap:10px}
+.explain-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.explain-card-ico{font-size:20px;flex-shrink:0;margin-top:2px}
+.explain-card-t{font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px}
+.explain-card-s{font-size:12px;color:var(--muted);line-height:1.5}
+.flujo{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.flujo-title{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.flujo-step{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:13px;color:var(--body)}
+.flujo-step:last-child{margin-bottom:0}
+.flujo-num{width:22px;height:22px;border-radius:50%;background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.25);color:var(--blue);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.flujo-arrow{text-align:center;color:var(--muted);font-size:16px;margin:2px 0 2px 10px}
+
+/* SIMULADOR */
+.simulador{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:48px 0;margin-bottom:56px}
+.sim-title{font-family:'DM Sans',sans-serif;font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:6px}
+.sim-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px}
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+@media(max-width:640px){.sim-grid{grid-template-columns:1fr}}
+.sim-field{margin-bottom:16px}
+.sim-label{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.sim-label span{font-size:13px;font-weight:800;color:var(--white);text-transform:none;letter-spacing:0}
+input[type=range]{width:100%;accent-color:var(--blue)}
+.sim-select{width:100%;background:var(--card);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:'Inter',sans-serif;font-size:14px;padding:10px 12px;outline:none;-webkit-appearance:none}
+.sim-result{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.sim-result-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.sim-stat{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.sim-stat:last-child{border-bottom:none;padding-bottom:0}
+.sim-stat-label{color:var(--sub)}
+.sim-stat-val{font-weight:700;color:var(--white);font-family:'DM Sans',sans-serif}
+.sim-rec{margin-top:14px;padding:12px 14px;border-radius:8px;font-size:13px;font-weight:600;text-align:center}
+.rec-verde{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--green)}
+.rec-amber{background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);color:var(--amber)}
+.rec-purple{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);color:var(--purple)}
+.int-ejemplo-box{margin-top:10px;padding:10px 12px;background:var(--bg2);border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--muted);line-height:1.6}
+
+/* PROBADOR EN VIVO */
+.probador{margin-bottom:56px}
+.prob-title{font-family:'DM Sans',sans-serif;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:6px}
+.prob-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px}
+.prob-card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.prob-top{background:var(--bg2);border-bottom:1px solid var(--line);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.prob-top-left{font-size:13px;font-weight:600;color:var(--white)}
+.prob-top-badge{font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;display:flex;align-items:center;gap:6px}
+.prob-body{padding:20px;display:grid;gap:14px}
+.field-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+.field-input{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:'Inter',sans-serif;font-size:13px;padding:10px 12px;outline:none;transition:border-color .15s}
+.field-input:focus{border-color:var(--blue)}
+.field-input::placeholder{color:var(--muted)}
+textarea.field-input{resize:vertical;min-height:100px;line-height:1.6}
+.btn-probar{width:100%;background:var(--blue);color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;padding:13px;border:none;border-radius:10px;cursor:pointer;transition:all .15s}
+.btn-probar:hover{background:#2563EB}
+.btn-probar:disabled{opacity:.5;cursor:not-allowed}
+.prob-loading{display:none;align-items:center;gap:10px;font-size:13px;color:var(--muted);padding:12px 0}
+.dots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blue);animation:b .8s ease infinite;margin:0 2px}
+.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+@keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-7px)}}
+.prob-resultado{display:none;background:var(--bg2);border:1px solid rgba(34,197,94,.2);border-radius:10px;overflow:hidden}
+.prob-res-top{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line)}
+.prob-res-label{font-size:11px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:6px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.btn-copy-res{font-size:11px;font-weight:700;color:var(--muted);background:none;border:1px solid var(--line);border-radius:5px;cursor:pointer;padding:4px 10px}
+.prob-res-body{padding:14px;font-size:13px;color:var(--body);line-height:1.8;white-space:pre-wrap}
+.prob-res-footer{padding:8px 14px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+.prob-sin-creditos{display:none;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:10px;padding:20px;text-align:center;margin-top:14px}
+
+/* PLANES */
+.planes-title{font-family:'DM Sans',sans-serif;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:6px}
+.planes-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px}
+.planes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-bottom:56px}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .2s}
+.plan:hover{transform:translateY(-2px)}
+.plan.destacado{border-color:var(--blue)}
+.plan-top{padding:20px 20px 14px;border-bottom:1px solid var(--line)}
+.plan-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:4px;margin-bottom:10px}
+.badge-gratis{background:rgba(34,197,94,.12);color:var(--green)}
+.badge-starter{background:rgba(249,115,22,.12);color:var(--amber)}
+.badge-pro{background:rgba(59,130,246,.12);color:var(--blue)}
+.badge-ilim{background:rgba(139,92,246,.12);color:var(--purple)}
+.plan-nombre{font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:6px}
+.plan-precio-wrap{display:flex;align-items:baseline;gap:5px}
+.plan-precio{font-family:'DM Sans',sans-serif;font-size:2rem;font-weight:800;color:var(--white);letter-spacing:-.03em;line-height:1}
+.plan-precio-unit{font-size:13px;color:var(--muted)}
+.plan-calls{font-size:12px;color:var(--blue);font-weight:700;margin-top:4px}
+.plan-body{padding:14px 20px}
+.plan-feats{list-style:none;display:grid;gap:8px}
+.plan-feats li{font-size:13px;color:var(--body);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.plan-feats li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px}
+.plan-feats li.no{color:var(--muted)}
+.plan-feats li.no::before{content:'✕';color:var(--muted)}
+.plan-footer{padding:4px 20px 18px}
+.btn-plan{display:block;text-align:center;padding:11px;border-radius:10px;font-size:14px;font-weight:800;font-family:'DM Sans',sans-serif;text-decoration:none;transition:all .15s;cursor:pointer;border:none;width:100%}
+.btn-gratis{background:var(--bg2);color:var(--body);border:1px solid var(--line)}
+.btn-gratis:hover{border-color:var(--blue);color:var(--blue)}
+.btn-pago{background:var(--blue);color:#fff}
+.btn-pago:hover{background:#2563EB}
+.btn-sub{background:var(--purple);color:#fff}
+.btn-sub:hover{background:#7C3AED}
+
+/* FAQ */
+.faq{margin-bottom:56px}
+.faq-title{font-family:'DM Sans',sans-serif;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:24px}
+.faq-item{border-bottom:1px solid var(--line);padding:16px 0;cursor:pointer}
+.faq-item:first-of-type{border-top:1px solid var(--line)}
+.faq-q{font-size:14px;font-weight:600;color:var(--white);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-ico{color:var(--blue);font-size:18px;flex-shrink:0;transition:transform .2s}
+.faq-item.open .faq-ico{transform:rotate(45deg)}
+.faq-a{font-size:13px;color:var(--sub);line-height:1.7;margin-top:10px;display:none}
+.faq-item.open .faq-a{display:block}
+
+/* CTA */
+.cta{background:var(--bg2);border-top:1px solid var(--line);padding:64px 24px;text-align:center}
+.cta-title{font-family:'DM Sans',sans-serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:800;letter-spacing:-.025em;margin-bottom:10px}
+.cta-sub{font-size:14px;color:var(--muted);margin-bottom:28px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:999;padding:20px}
+.modal-overlay.on{display:flex}
+.modal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px;max-width:420px;width:100%}
+.modal-title{font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:6px}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.modal-field{margin-bottom:13px}
+.modal-field label{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.modal-field input{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:'Inter',sans-serif;font-size:14px;padding:11px 14px;outline:none}
+.modal-resumen{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13px}
+.modal-row{display:flex;justify-content:space-between;padding:4px 0}
+.modal-row.total{font-weight:700;color:var(--white);border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
+.btn-pagar{width:100%;background:var(--blue);color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;padding:13px;border:none;border-radius:10px;cursor:pointer;margin-bottom:10px}
+.btn-pagar:hover{background:#2563EB}
+.btn-pagar:disabled{opacity:.5;cursor:not-allowed}
+.btn-cancelar{width:100%;background:transparent;border:1px solid var(--line);color:var(--muted);font-size:13px;padding:10px;border-radius:8px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">Agent<span>IA</span></div>
+  <div class="header-nav">
+    <a href="creditos.html" class="header-link">Generador de Prompts</a>
+    <a href="api.html" class="header-link active">Llamadas a la IA</a>
+    <a href="index.html" class="header-link">← Inicio</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-kicker">🔑 Renta de API Key</div>
+  <h1 class="hero-title">Tu programa funciona<br>sin configuraciones.</h1>
+  <p class="hero-sub">Renta mi API Key de Claude y úsala en los programas que construiste. Sin crear cuentas técnicas, sin pagar directo a Anthropic. Yo me encargo de todo, tú solo usas.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">10</div><div class="hero-stat-lbl">llamadas gratis</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">$0.007</div><div class="hero-stat-lbl">MXN costo real por llamada</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">98%</div><div class="hero-stat-lbl">de margen para ti</div></div>
+  </div>
+</div>
+
+<!-- EXPLICACIÓN -->
+<div class="explain">
+  <div class="page">
+    <div class="explain-grid">
+      <div>
+        <div class="explain-title">¿Qué es una llamada a la IA?</div>
+        <p class="explain-text">Cada vez que un programa le manda información a Claude y recibe una respuesta, eso es una llamada. Es como una consulta: tú preguntas, la IA responde, y eso tiene un costo de tokens.</p>
+        <p class="explain-text">Normalmente necesitas una API Key propia para hacer esto. Con este servicio, usas la mía — tú solo pagas por lo que consumes, sin configuraciones técnicas.</p>
+        <div class="explain-cards">
+          <div class="explain-card">
+            <div class="explain-card-ico">🧾</div>
+            <div><div class="explain-card-t">Clasificar una lista de facturas</div><div class="explain-card-s">= 1 llamada · ~700 tokens · $0.007 MXN</div></div>
+          </div>
+          <div class="explain-card">
+            <div class="explain-card-ico">💰</div>
+            <div><div class="explain-card-t">Generar una cotización</div><div class="explain-card-s">= 1 llamada · ~500 tokens · $0.005 MXN</div></div>
+          </div>
+          <div class="explain-card">
+            <div class="explain-card-ico">📝</div>
+            <div><div class="explain-card-t">Redactar una nota clínica</div><div class="explain-card-s">= 1 llamada · ~600 tokens · $0.006 MXN</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="flujo">
+        <div class="flujo-title">¿Cómo funciona?</div>
+        <div class="flujo-step"><div class="flujo-num">1</div><div>Compras un pack de créditos aquí</div></div>
+        <div class="flujo-arrow">↓</div>
+        <div class="flujo-step"><div class="flujo-num">2</div><div>Recibes tu <strong>API Key rentada</strong> por correo — empieza con <code style="background:var(--bg2);padding:1px 5px;border-radius:3px;font-size:11px">agentia_</code></div></div>
+        <div class="flujo-arrow">↓</div>
+        <div class="flujo-step"><div class="flujo-num">3</div><div>La pegas en el campo "API Key" de tu programa o en el <a href="creditos.html" style="color:var(--blue)">Generador de Prompts</a></div></div>
+        <div class="flujo-arrow">↓</div>
+        <div class="flujo-step"><div class="flujo-num">4</div><div>Cada llamada descuenta 1 crédito de tu cuenta</div></div>
+        <div class="flujo-arrow">↓</div>
+        <div class="flujo-step"><div class="flujo-num">5</div><div>Cuando se acaban, recargas aquí</div></div>
+        <div style="margin-top:14px;padding:10px 12px;background:var(--bg);border:1px solid rgba(59,130,246,.2);border-radius:8px;font-size:12px;color:var(--muted);line-height:1.6">
+          🔒 <strong style="color:var(--white)">Tu API Key nunca se expone.</strong> Todo pasa por nuestro servidor seguro. El usuario solo ingresa su correo.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SIMULADOR -->
+<div class="simulador">
+  <div class="page">
+    <div class="sim-title">¿Cuántas llamadas necesitas?</div>
+    <div class="sim-sub">Ajusta según tu uso y te decimos qué pack te conviene más.</div>
+    <div class="sim-grid">
+      <div>
+        <div class="sim-field">
+          <div class="sim-label">¿A qué te dedicas? <span id="out-prof">Contador</span></div>
+          <select class="sim-select" id="sl-prof" onchange="calcSim()">
+            <option value="10">Contador / Auditor — 10 llamadas/día</option>
+            <option value="5">Abogado / Notario — 5 llamadas/día</option>
+            <option value="8">Dueño de negocio — 8 llamadas/día</option>
+            <option value="3">Administrador / RH — 3 llamadas/día</option>
+            <option value="6">Médico — 6 llamadas/día</option>
+            <option value="3">Uso casual — 3 llamadas/día</option>
+          </select>
+        </div>
+        <div class="sim-field">
+          <div class="sim-label">Días de trabajo por semana <span id="out-dias">5</span></div>
+          <input type="range" id="sl-dias" min="1" max="7" value="5" oninput="calcSim()">
+        </div>
+        <div class="sim-field">
+          <div class="sim-label">Intensidad de uso <span id="out-int">Normal</span></div>
+          <input type="range" id="sl-int" min="1" max="3" value="2" oninput="calcSim()">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px"><span>Ligero</span><span>Normal</span><span>Intensivo</span></div>
+          <div class="int-ejemplo-box" id="int-ejemplo">Normal: clasificas entre 8-12 facturas al día durante la operación regular.</div>
+        </div>
+      </div>
+      <div>
+        <div class="sim-result">
+          <div class="sim-result-title">Tu estimado mensual</div>
+          <div class="sim-stat"><span class="sim-stat-label">Llamadas por día</span><span class="sim-stat-val" id="r-dia">10</span></div>
+          <div class="sim-stat"><span class="sim-stat-label">Llamadas por semana</span><span class="sim-stat-val" id="r-sem">50</span></div>
+          <div class="sim-stat"><span class="sim-stat-label">Llamadas por mes</span><span class="sim-stat-val" id="r-mes">200</span></div>
+          <div class="sim-stat"><span class="sim-stat-label">Costo estimado</span><span class="sim-stat-val" id="r-costo">$99 MXN</span></div>
+          <div class="sim-rec rec-amber" id="r-rec">⚡ Te recomendamos el Pack Pro</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- PROBADOR EN VIVO -->
+  <div class="probador" id="probador">
+    <div class="prob-title">Pruébalo ahora — 10 llamadas gratis</div>
+    <div class="prob-sub">Escribe tu prompt de sistema y un mensaje de prueba. Claude responde en segundos usando mis créditos.</div>
+
+    <div class="prob-card">
+      <div class="prob-top">
+        <div class="prob-top-left">🤖 Probador en vivo con Claude Haiku</div>
+        <div class="prob-top-badge" id="badge-calls" style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--green)">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block"></span>
+          <span id="badge-num">10 llamadas gratis</span>
+        </div>
+      </div>
+      <div class="prob-body">
+        <div>
+          <label class="field-label">Tu API Key rentada</label>
+          <input type="password" id="prob-email" class="field-input" placeholder="agentia_xxxxxxxxxxxxxxxx">
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">La recibirás por correo al comprar tu pack. Para las 10 gratis usa tu correo.</div>
+        </div>
+        <div>
+          <label class="field-label">Prompt de sistema (instrucciones para el agente)</label>
+          <textarea id="prob-sistema" class="field-input" rows="3" placeholder="Ej: Eres un contador público certificado. Cuando recibas una lista de facturas, clasifica cada una como DEDUCIBLE, NO_DEDUCIBLE o REVISAR según los criterios del SAT. Devuelve una tabla organizada."></textarea>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">¿No tienes uno? <a href="creditos.html" style="color:var(--amber)">Genera tu prompt aquí →</a></div>
+        </div>
+        <div>
+          <label class="field-label">Tu mensaje (lo que quieres procesar)</label>
+          <textarea id="prob-msg" class="field-input" rows="4" placeholder="Ej: Clasifica estas facturas:&#10;1. OXXO - Bebidas - $285 MXN&#10;2. CFE - Electricidad oficina - $1,850 MXN&#10;3. Netflix - Suscripción - $219 MXN&#10;4. Telmex - Internet oficina - $599 MXN"></textarea>
+        </div>
+        <button class="btn-probar" id="btn-probar" onclick="probar()">⚡ Llamar a la IA →</button>
+        <div class="prob-loading" id="prob-loading">
+          <div class="dots"><span></span><span></span><span></span></div>
+          Claude está procesando tu solicitud...
+        </div>
+        <div class="prob-resultado" id="prob-resultado">
+          <div class="prob-res-top">
+            <div class="prob-res-label"><div class="live-dot"></div>Respuesta de Claude</div>
+            <button class="btn-copy-res" onclick="copiarRes()">Copiar</button>
+          </div>
+          <div class="prob-res-body" id="prob-res-txt"></div>
+          <div class="prob-res-footer" id="prob-res-footer"></div>
+        </div>
+        <div class="prob-sin-creditos" id="prob-sin-creditos">
+          <div style="font-size:24px;margin-bottom:10px">⚡</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:6px">Se agotaron tus 10 llamadas gratis</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:16px">¿Listo para seguir? Compra un pack y sigue usando la IA sin interrupciones.</div>
+          <a href="#planes" style="display:inline-block;background:var(--blue);color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;padding:10px 24px;border-radius:8px;text-decoration:none">Ver planes →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CÓMO OBTENER -->
+  <div style="background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:32px">
+    <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:14px;display:flex;align-items:center;gap:8px">🔑 ¿Cómo funciona tu API Key rentada?</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Lo que recibes al comprar</div>
+        <div style="background:var(--bg);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:12px 14px;font-family:monospace;font-size:13px;color:var(--blue);word-break:break-all">agentia_a1b2c3d4e5f6g7h8</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px">Una clave única que funciona como identificador en nuestro proxy seguro</div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Dónde la pegas</div>
+        <div style="display:grid;gap:6px">
+          <div style="background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:12px;color:var(--body);display:flex;align-items:center;gap:8px"><span>📝</span>Generador de Prompts — campo "API Key rentada"</div>
+          <div style="background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:12px;color:var(--body);display:flex;align-items:center;gap:8px"><span>🤖</span>Tus programas construidos en el taller</div>
+          <div style="background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:12px;color:var(--body);display:flex;align-items:center;gap:8px"><span>📱</span>Cualquier programa generado con AgentIA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANES -->
+  <div class="planes-title" id="planes">Elige tu pack de llamadas</div>
+  <div class="planes-sub">1 crédito = 1 llamada a Claude. Sin mensualidades obligatorias.</div>
+
+  <div class="planes-grid">
+    <div class="plan">
+      <div class="plan-top">
+        <div class="plan-badge badge-gratis">Gratis</div>
+        <div class="plan-nombre">Prueba</div>
+        <div class="plan-precio-wrap"><div class="plan-precio">$0</div><div class="plan-precio-unit">MXN</div></div>
+        <div class="plan-calls">10 llamadas incluidas</div>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-feats">
+          <li>10 llamadas a Claude Haiku</li>
+          <li>Todos los programas del curso</li>
+          <li>Sin tarjeta de crédito</li>
+          <li class="no">Llamadas adicionales</li>
+          <li class="no">Soporte prioritario</li>
+        </ul>
+      </div>
+      <div class="plan-footer">
+        <a href="#probador" class="btn-plan btn-gratis">Empezar gratis →</a>
+      </div>
+    </div>
+
+    <div class="plan">
+      <div class="plan-top">
+        <div class="plan-badge badge-starter">Starter</div>
+        <div class="plan-nombre">Starter</div>
+        <div class="plan-precio-wrap"><div class="plan-precio">$49</div><div class="plan-precio-unit">MXN</div></div>
+        <div class="plan-calls">100 llamadas · pago único</div>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-feats">
+          <li>100 llamadas a Claude Haiku</li>
+          <li>Para uso casual (2-3/día)</li>
+          <li>Te duran ~1-2 meses</li>
+          <li>Sin vencimiento</li>
+          <li class="no">Soporte prioritario</li>
+        </ul>
+      </div>
+      <div class="plan-footer">
+        <button class="btn-plan btn-pago" onclick="abrirModal('Starter','100 llamadas','$49 MXN',49)">Comprar Starter →</button>
+      </div>
+    </div>
+
+    <div class="plan destacado">
+      <div class="plan-top">
+        <div class="plan-badge badge-pro">Más popular</div>
+        <div class="plan-nombre">Pro</div>
+        <div class="plan-precio-wrap"><div class="plan-precio">$199</div><div class="plan-precio-unit">MXN</div></div>
+        <div class="plan-calls">500 llamadas · pago único</div>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-feats">
+          <li>500 llamadas a Claude Haiku</li>
+          <li>Para uso frecuente (5-10/día)</li>
+          <li>Te duran 2-3 meses</li>
+          <li>Sin vencimiento</li>
+          <li>Soporte por WhatsApp</li>
+        </ul>
+      </div>
+      <div class="plan-footer">
+        <button class="btn-plan btn-pago" onclick="abrirModal('Pro','500 llamadas','$199 MXN',199)">Comprar Pro →</button>
+      </div>
+    </div>
+
+    <div class="plan">
+      <div class="plan-top">
+        <div class="plan-badge badge-ilim">Ilimitado</div>
+        <div class="plan-nombre">Ilimitado</div>
+        <div class="plan-precio-wrap"><div class="plan-precio">$299</div><div class="plan-precio-unit">MXN/mes</div></div>
+        <div class="plan-calls">2,000 llamadas/mes · se renuevan</div>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-feats">
+          <li>2,000 llamadas cada mes</li>
+          <li>Para uso intensivo (+10/día)</li>
+          <li>Se renuevan automáticamente</li>
+          <li>Soporte prioritario WhatsApp</li>
+          <li>Cancela cuando quieras</li>
+        </ul>
+      </div>
+      <div class="plan-footer">
+        <button class="btn-plan btn-sub" onclick="abrirModal('Ilimitado','2,000 llamadas/mes','$299 MXN/mes',299)">Suscribirse →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq">
+    <div class="faq-title">Preguntas frecuentes</div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">¿En qué programas puedo usar las llamadas? <span class="faq-ico">+</span></div>
+      <div class="faq-a">En todos los programas que construiste en la clase magistral de AgentIA, y en cualquier programa generado con nuestro generador de prompts.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">¿Qué pasa si subo un archivo grande con muchas filas? <span class="faq-ico">+</span></div>
+      <div class="faq-a">Si el texto supera 2,000 palabras se descuentan 2 créditos en lugar de 1. El programa te avisa antes de procesar para que decidas.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">¿Los créditos tienen fecha de vencimiento? <span class="faq-ico">+</span></div>
+      <div class="faq-a">No. Los créditos de pago único (Starter y Pro) no vencen. Solo el plan Ilimitado se renueva mensualmente.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">¿Mi información es segura? <span class="faq-ico">+</span></div>
+      <div class="faq-a">Sí. Tu API Key nunca se expone — todo pasa por nuestro servidor seguro. El texto que procesas va directo a Claude y no lo almacenamos.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">¿Hay factura (CFDI)? <span class="faq-ico">+</span></div>
+      <div class="faq-a">Sí. Envía tus datos fiscales a hola@argentia.agency después de tu compra.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2 class="cta-title">Empieza con 10 llamadas gratis.</h2>
+  <p class="cta-sub">Sin tarjeta. Sin configuración técnica. Solo ingresa tu correo y empieza.</p>
+  <a href="#probador" style="display:inline-block;background:var(--blue);color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:16px;padding:14px 36px;border-radius:10px;text-decoration:none">Probar gratis →</a>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title" id="m-title">Comprar pack</div>
+    <div class="modal-sub">Ingresa tu correo para recibir tus créditos.</div>
+    <div class="modal-resumen" id="m-resumen"></div>
+    <div class="modal-field"><label>Correo electrónico</label><input type="email" id="m-email" class="field-input" placeholder="tu@correo.com"></div>
+    <div class="modal-field"><label>Tu nombre</label><input type="text" id="m-nombre" class="field-input" placeholder="Nombre completo"></div>
+    <button class="btn-pagar" id="btn-pagar" onclick="pagar()">Pagar con Stripe →</button>
+    <button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+  </div>
+</div>
+
+<script>
+const PROXY = 'https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/proxy-claude';
+const CHECKOUT = 'https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/checkout';
+let resTexto = '';
+
+// ── SIMULADOR ──
+const INT_LABELS = {1:'Ligero',2:'Normal',3:'Intensivo'};
+const INTENSIDAD = {1:0.5,2:1,3:1.8};
+const EJEMPLOS = {
+  1:{'Contador / Auditor':'Ligero: revisas 3-4 facturas al día, solo cuando tienes dudas específicas.','Abogado / Notario':'Ligero: consultas el agente para revisar 1-2 cláusulas por semana.','Dueño de negocio':'Ligero: generas 2-3 cotizaciones por día, clientes esporádicos.','Administrador / RH':'Ligero: respondes 1-2 preguntas de empleados al día.','Médico':'Ligero: generas notas solo para casos complejos, 2-3 por día.','Uso casual':'Ligero: usas el agente de vez en cuando para tareas puntuales.'},
+  2:{'Contador / Auditor':'Normal: clasificas entre 8-12 facturas al día durante la operación regular del despacho.','Abogado / Notario':'Normal: revisas 4-5 contratos por semana y respondes consultas frecuentes.','Dueño de negocio':'Normal: generas 6-8 cotizaciones al día y atiendes preguntas de clientes.','Administrador / RH':'Normal: procesas documentos de 3-5 empleados al día, minutas y comunicados.','Médico':'Normal: generas 5-8 notas clínicas al día durante tu jornada regular.','Uso casual':'Normal: usas el agente varias veces al día para diferentes tareas.'},
+  3:{'Contador / Auditor':'Intensivo: temporada de declaraciones, procesas 20+ facturas al día y múltiples clientes.','Abogado / Notario':'Intensivo: despacho activo, revisas contratos y generas documentos todo el día.','Dueño de negocio':'Intensivo: 15+ cotizaciones diarias y atención constante a clientes.','Administrador / RH':'Intensivo: empresa grande, procesas nómina, comunicados y RH todo el día.','Médico':'Intensivo: 15+ pacientes al día, notas y seguimientos constantes.','Uso casual':'Intensivo: usas el agente como herramienta principal durante todo el día.'}
+};
+
+function calcSim(){
+  const usoDia = parseInt(document.getElementById('sl-prof').value);
+  const dias = parseInt(document.getElementById('sl-dias').value);
+  const int = parseInt(document.getElementById('sl-int').value);
+  const profSel = document.getElementById('sl-prof');
+  const profTxt = profSel.options[profSel.selectedIndex].text.split('—')[0].trim();
+
+  document.getElementById('out-prof').textContent = profTxt.split('/')[0].trim();
+  document.getElementById('out-dias').textContent = dias;
+  document.getElementById('out-int').textContent = INT_LABELS[int];
+
+  const ejKey = Object.keys(EJEMPLOS[int]).find(k=>profTxt.includes(k.split('/')[0].trim())) || 'Uso casual';
+  document.getElementById('int-ejemplo').textContent = EJEMPLOS[int][ejKey];
+
+  const diario = Math.round(usoDia * INTENSIDAD[int]);
+  const semanal = diario * dias;
+  const mensual = Math.round(semanal * 4.3);
+
+  document.getElementById('r-dia').textContent = diario;
+  document.getElementById('r-sem').textContent = semanal;
+  document.getElementById('r-mes').textContent = mensual;
+
+  let rec, costo, cls;
+  if(mensual <= 100){ rec='⚡ Te recomendamos el Pack Starter ($49 MXN)'; costo='$49 MXN pago único'; cls='rec-verde'; }
+  else if(mensual <= 500){ rec='🚀 Te recomendamos el Pack Pro ($199 MXN)'; costo='$199 MXN pago único'; cls='rec-amber'; }
+  else { rec='♾️ Te recomendamos el plan Ilimitado ($299 MXN/mes)'; costo='$299 MXN/mes'; cls='rec-purple'; }
+
+  document.getElementById('r-costo').textContent = costo;
+  const recEl = document.getElementById('r-rec');
+  recEl.textContent = rec;
+  recEl.className = 'sim-rec ' + cls;
+}
+
+calcSim();
+
+// ── PROBADOR ──
+async function probar(){
+  const email = document.getElementById('prob-email').value.trim();
+  const sistema = document.getElementById('prob-sistema').value.trim();
+  const msg = document.getElementById('prob-msg').value.trim();
+
+  if(!email||!email.includes('@')){ alert('Ingresa tu correo electrónico.'); return; }
+  if(!msg){ alert('Escribe el mensaje que quieres procesar.'); return; }
+
+  const btn = document.getElementById('btn-probar');
+  btn.disabled = true;
+  document.getElementById('prob-loading').style.display = 'flex';
+  document.getElementById('prob-resultado').style.display = 'none';
+  document.getElementById('prob-sin-creditos').style.display = 'none';
+
+  try {
+    const body = {
+      model: 'claude-haiku-4-5',
+      max_tokens: 800,
+      messages: [{ role: 'user', content: msg }],
+      tipo: 'llamada_api',
+      email
+    };
+    if(sistema) body.system = sistema;
+
+    const res = await fetch(PROXY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-user-email': email },
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+
+    if(data.error === 'sin_creditos'){
+      document.getElementById('prob-sin-creditos').style.display = 'block';
+    } else {
+      resTexto = data.content&&data.content[0]?data.content[0].text:'Sin respuesta.';
+      document.getElementById('prob-res-txt').textContent = resTexto;
+      document.getElementById('prob-resultado').style.display = 'block';
+      if(data._creditos){
+        const left = data._creditos.restantes;
+        document.getElementById('prob-res-footer').textContent = '⚡ Usaste 1 crédito · Te quedan '+left+' llamadas gratuitas';
+        document.getElementById('badge-num').textContent = left+' llamadas '+(left<=0?'agotadas':'disponibles');
+        const badge = document.getElementById('badge-calls');
+        badge.style.background = left<=0?'rgba(239,68,68,.1)':left<=3?'rgba(249,115,22,.1)':'rgba(34,197,94,.1)';
+        badge.style.borderColor = left<=0?'rgba(239,68,68,.2)':left<=3?'rgba(249,115,22,.2)':'rgba(34,197,94,.2)';
+        badge.style.color = left<=0?'#EF4444':left<=3?'#F97316':'#22C55E';
+      }
+    }
+  } catch(e){ alert('Error de conexión. Intenta de nuevo.'); }
+
+  btn.disabled = false;
+  document.getElementById('prob-loading').style.display = 'none';
+}
+
+function copiarRes(){
+  navigator.clipboard.writeText(resTexto);
+  const btn = event.currentTarget;
+  btn.textContent = '✓'; setTimeout(()=>btn.textContent='Copiar',2000);
+}
+
+// ── FAQ ──
+function toggleFaq(el){ el.classList.toggle('open'); }
+
+// ── MODAL ──
+let planActual = {};
+function abrirModal(nombre, calls, precio, monto){
+  planActual = {nombre,calls,precio,monto};
+  document.getElementById('m-title').textContent = 'Comprar '+nombre;
+  document.getElementById('m-resumen').innerHTML =
+    '<div class="modal-row"><span style="color:var(--sub)">Plan</span><span style="color:var(--white);font-weight:600">'+nombre+'</span></div>'+
+    '<div class="modal-row"><span style="color:var(--sub)">Llamadas</span><span style="color:var(--blue);font-weight:700">'+calls+'</span></div>'+
+    '<div class="modal-row total"><span>Total</span><span>'+precio+'</span></div>';
+  document.getElementById('modal').classList.add('on');
+}
+
+function cerrarModal(){
+  document.getElementById('modal').classList.remove('on');
+  document.getElementById('m-email').value='';
+  document.getElementById('m-nombre').value='';
+}
+
+async function pagar(){
+  const email = document.getElementById('m-email').value.trim();
+  const nombre = document.getElementById('m-nombre').value.trim();
+  if(!email||!nombre){ alert('Ingresa tu nombre y correo.'); return; }
+  if(!email.includes('@')){ alert('Correo inválido.'); return; }
+
+  const btn = document.getElementById('btn-pagar');
+  btn.disabled=true; btn.textContent='Redirigiendo...';
+
+  try {
+    const res = await fetch(CHECKOUT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({nombre,email,fecha:planActual.nombre+' — '+planActual.calls,telefono:'',profesion:'Créditos API AgentIA'})
+    });
+    const data = await res.json();
+    if(data.url) window.location.href = data.url;
+    else alert('Error al procesar. Intenta de nuevo.');
+  } catch(e){ alert('Error de conexión.'); }
+
+  btn.disabled=false; btn.textContent='Pagar con Stripe →';
+}
+
+document.getElementById('modal').addEventListener('click',function(e){ if(e.target===this)cerrarModal(); });
+</script>
+</body>
+</html>

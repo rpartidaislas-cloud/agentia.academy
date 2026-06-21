@@ -133,14 +133,14 @@ input[type=range]{width:100%;accent-color:var(--amber)}
 <!-- HERO -->
 <div class="hero">
   <div class="hero-kicker">⚡ Créditos de IA</div>
-  <h1 class="hero-title">Usa la IA sin<br>complicaciones técnicas.</h1>
-  <p class="hero-sub">Compra créditos y úsalos en todos los programas que construiste en la clase magistral. Sin API Keys, sin configuraciones, sin sorpresas.</p>
+  <h1 class="hero-title">El prompt perfecto<br>para tu trabajo.</h1>
+  <p class="hero-sub">Describe tu tarea, sube tu archivo de referencia y obtén un prompt listo para usar en Claude, ChatGPT o Gemini. Sin saber de tecnología.</p>
 </div>
 
 <!-- SIMULADOR -->
 <div class="simulador">
   <div class="page">
-    <div class="sim-title">¿Cuántos créditos necesitas?</div>
+    <div class="sim-title">¿Cuántos prompts necesitas?</div>
     <div class="sim-sub">Ajusta según tu uso real y te decimos qué pack conviene más.</div>
     <div class="sim-grid">
       <div>
@@ -171,9 +171,9 @@ input[type=range]{width:100%;accent-color:var(--amber)}
       <div>
         <div class="sim-result">
           <div class="sim-result-title">Tu estimado mensual</div>
-          <div class="sim-stat"><span class="sim-stat-label">Créditos por día</span><span class="sim-stat-val" id="r-dia">10</span></div>
-          <div class="sim-stat"><span class="sim-stat-label">Créditos por semana</span><span class="sim-stat-val" id="r-sem">50</span></div>
-          <div class="sim-stat"><span class="sim-stat-label">Créditos por mes</span><span class="sim-stat-val" id="r-mes">200</span></div>
+          <div class="sim-stat"><span class="sim-stat-label">Prompts por día</span><span class="sim-stat-val" id="r-dia">2</span></div>
+          <div class="sim-stat"><span class="sim-stat-label">Prompts por semana</span><span class="sim-stat-val" id="r-sem">10</span></div>
+          <div class="sim-stat"><span class="sim-stat-label">Prompts por mes</span><span class="sim-stat-val" id="r-mes">40</span></div>
           <div class="sim-stat"><span class="sim-stat-label">Costo estimado</span><span class="sim-stat-val" id="r-costo">$99 MXN/mes</span></div>
           <div class="sim-rec" id="r-rec">⚡ Te recomendamos el Pack Pro</div>
         </div>
@@ -185,92 +185,100 @@ input[type=range]{width:100%;accent-color:var(--amber)}
 <div class="page">
 
   <!-- PLANES -->
-  <div class="planes-title">Elige tu pack de créditos</div>
-  <div class="planes-sub">Un crédito = una llamada a la IA. Sin mensualidades obligatorias.</div>
+  <div class="planes-title" id="planes">Elige tu pack de prompts</div>
+  <div class="planes-sub">Genera prompts perfectos para Claude, ChatGPT o Gemini. Sin mensualidades obligatorias.</div>
 
   <div class="planes-grid">
 
+    <!-- GRATIS -->
     <div class="plan">
       <div class="plan-top">
         <div class="plan-badge gratis">Gratis</div>
         <div class="plan-nombre">Prueba</div>
         <div class="plan-precio-wrap"><div class="plan-precio">$0</div><div class="plan-precio-unit">MXN</div></div>
-        <div class="plan-creditos">10 créditos incluidos</div>
+        <div class="plan-creditos">2 prompts incluidos</div>
       </div>
       <div class="plan-body">
         <ul class="plan-feats">
-          <li>10 llamadas a la IA</li>
-          <li>Todos los programas del curso</li>
-          <li>Sin tarjeta de crédito</li>
-          <li class="no">Créditos adicionales</li>
-          <li class="no">Soporte prioritario</li>
+          <li>2 prompts generados</li>
+          <li>Sube archivos de referencia</li>
+          <li>Claude, ChatGPT o Gemini</li>
+          <li class="no">Prompts adicionales</li>
+          <li class="no">Plantillas por profesión</li>
+          <li class="no">Soporte</li>
         </ul>
       </div>
       <div class="plan-footer">
-        <a href="https://argentia.agency/curso-agente.html" class="btn-plan gratis">Empezar gratis →</a>
+        <a href="#generador" class="btn-plan gratis">Probar gratis →</a>
       </div>
     </div>
 
+    <!-- STARTER -->
     <div class="plan">
       <div class="plan-top">
         <div class="plan-badge starter">Starter</div>
         <div class="plan-nombre">Starter</div>
         <div class="plan-precio-wrap"><div class="plan-precio">$49</div><div class="plan-precio-unit">MXN</div></div>
-        <div class="plan-creditos">100 créditos · pago único</div>
+        <div class="plan-creditos">20 prompts · pago único</div>
       </div>
       <div class="plan-body">
         <ul class="plan-feats">
-          <li>100 llamadas a la IA</li>
-          <li>Para uso casual (2-3/día)</li>
-          <li>Te duran ~1-2 meses</li>
-          <li>Todos los programas del curso</li>
-          <li class="no">Soporte prioritario</li>
+          <li>20 prompts generados</li>
+          <li>Sube archivos de referencia</li>
+          <li>Guía de uso en PDF</li>
+          <li>Claude, ChatGPT o Gemini</li>
+          <li class="no">Plantillas por profesión</li>
+          <li class="no">Soporte WhatsApp</li>
         </ul>
       </div>
       <div class="plan-footer">
-        <button class="btn-plan pago" onclick="abrirModal('Starter','100 créditos','$49 MXN',49,'price_starter')">Comprar Starter →</button>
+        <button class="btn-plan pago" onclick="abrirModal('Starter','20 prompts','$49 MXN',49,'price_starter')">Comprar Starter →</button>
       </div>
     </div>
 
+    <!-- PRO -->
     <div class="plan destacado">
       <div class="plan-top">
         <div class="plan-badge pro">Más popular</div>
         <div class="plan-nombre">Pro</div>
-        <div class="plan-precio-wrap"><div class="plan-precio">$199</div><div class="plan-precio-unit">MXN</div></div>
-        <div class="plan-creditos">500 créditos · pago único</div>
+        <div class="plan-precio-wrap"><div class="plan-precio">$149</div><div class="plan-precio-unit">MXN</div></div>
+        <div class="plan-creditos">100 prompts · pago único</div>
       </div>
       <div class="plan-body">
         <ul class="plan-feats">
-          <li>500 llamadas a la IA</li>
-          <li>Para uso frecuente (5-10/día)</li>
-          <li>Te duran 2-3 meses</li>
-          <li>Todos los programas del curso</li>
+          <li>100 prompts generados</li>
+          <li>Sube archivos de referencia</li>
+          <li>Plantillas por profesión</li>
           <li>Soporte por WhatsApp</li>
+          <li>Claude, ChatGPT o Gemini</li>
+          <li>Acceso a nuevas funciones</li>
         </ul>
       </div>
       <div class="plan-footer">
-        <button class="btn-plan pago" onclick="abrirModal('Pro','500 créditos','$199 MXN',199,'price_pro')">Comprar Pro →</button>
+        <button class="btn-plan pago" onclick="abrirModal('Pro','100 prompts','$149 MXN',149,'price_pro')">Comprar Pro →</button>
       </div>
     </div>
 
+    <!-- ILIMITADO -->
     <div class="plan">
       <div class="plan-top">
         <div class="plan-badge ilimitado">Mensual</div>
         <div class="plan-nombre">Ilimitado</div>
-        <div class="plan-precio-wrap"><div class="plan-precio">$299</div><div class="plan-precio-unit">MXN/mes</div></div>
-        <div class="plan-creditos">2,000 créditos/mes · se renuevan</div>
+        <div class="plan-precio-wrap"><div class="plan-precio">$249</div><div class="plan-precio-unit">MXN/mes</div></div>
+        <div class="plan-creditos">Prompts ilimitados · se renuevan</div>
       </div>
       <div class="plan-body">
         <ul class="plan-feats">
-          <li>2,000 créditos cada mes</li>
-          <li>Para uso intensivo (+10/día)</li>
-          <li>Se renuevan automáticamente</li>
-          <li>Todos los programas del curso</li>
+          <li>Prompts ilimitados cada mes</li>
+          <li>Sube cualquier tipo de archivo</li>
+          <li>Todas las plantillas incluidas</li>
           <li>Soporte prioritario WhatsApp</li>
+          <li>Acceso anticipado a funciones</li>
+          <li>Cancela cuando quieras</li>
         </ul>
       </div>
       <div class="plan-footer">
-        <button class="btn-plan sub" onclick="abrirModal('Ilimitado','2,000 créditos/mes','$299 MXN/mes',299,'price_ilimitado')">Suscribirse →</button>
+        <button class="btn-plan sub" onclick="abrirModal('Ilimitado','Prompts ilimitados/mes','$249 MXN/mes',249,'price_ilimitado')">Suscribirse →</button>
       </div>
     </div>
 
@@ -302,138 +310,190 @@ input[type=range]{width:100%;accent-color:var(--amber)}
   </div>
 
 
-  <!-- PROBADOR DE PROMPTS -->
-  <div style="margin-bottom:56px">
-    <div style="font-family:'DM Sans',sans-serif;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:6px">Prueba tu prompt aquí</div>
-    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px">Construye tu prompt con las 5 partes y pruébalo en vivo con IA real. Usa tus 10 créditos gratis.</div>
+  <!-- GENERADOR DE PROMPTS -->
+  <div style="margin-bottom:56px" id="generador">
+    <div style="font-family:'DM Sans',sans-serif;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:6px">Genera tu prompt perfecto</div>
+    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px">Describe tu tarea, sube tu archivo de referencia y obten un prompt listo para usar en Claude, ChatGPT o Gemini.</div>
 
     <div style="background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden">
 
-      <!-- TABS PARTES -->
-      <div style="background:var(--bg2);border-bottom:1px solid var(--line);padding:16px 20px">
-        <div style="font-size:12px;font-weight:700;color:var(--amber);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Construye tu prompt de sistema — 5 partes</div>
-        <div style="display:grid;gap:10px">
+      <!-- 5 PARTES -->
+      <div style="background:var(--bg2);border-bottom:1px solid var(--line);padding:20px 22px">
+        <div style="font-size:12px;font-weight:700;color:var(--amber);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px">Las 5 partes de tu prompt</div>
+        <div style="display:grid;gap:14px">
 
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-              <div style="width:20px;height:20px;border-radius:4px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
-              <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Rol — ¿Quién ES el agente?</label>
+              <div style="width:22px;height:22px;border-radius:5px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+              <label style="font-size:12px;font-weight:700;color:var(--white)">Rol <span style="color:var(--muted);font-weight:400">— ¿Quién es el agente?</span></label>
             </div>
-            <textarea id="p-rol" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6" placeholder="Ej: Eres un contador público certificado con 10 años de experiencia en fiscalidad mexicana y declaraciones ante el SAT..."></textarea>
-            <div style="font-size:11px;color:var(--muted);margin-top:4px">💡 Sé específico: especialidad, años de experiencia, conocimientos clave</div>
+            <textarea id="g-rol" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6;transition:border-color .15s" placeholder="Ej: Eres un contador público certificado con experiencia en fiscalidad mexicana..." onfocus="this.style.borderColor='#F97316'" onblur="this.style.borderColor='#28283A'"></textarea>
+            <div style="font-size:11px;color:var(--muted);margin-top:3px">💡 Especialidad, años de experiencia, conocimientos clave</div>
           </div>
 
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-              <div style="width:20px;height:20px;border-radius:4px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
-              <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Contexto — ¿En qué empresa o situación trabaja?</label>
+              <div style="width:22px;height:22px;border-radius:5px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+              <label style="font-size:12px;font-weight:700;color:var(--white)">Contexto <span style="color:var(--muted);font-weight:400">— ¿En qué empresa o situación?</span></label>
             </div>
-            <textarea id="p-ctx" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6" placeholder="Ej: Trabajas en un despacho contable en Guadalajara que atiende a 40 empresas del sector manufactura..."></textarea>
-            <div style="font-size:11px;color:var(--muted);margin-top:4px">💡 Describe el tipo de empresa, clientes y herramientas que usa</div>
+            <textarea id="g-ctx" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6;transition:border-color .15s" placeholder="Ej: Trabajas en un despacho contable en Guadalajara que atiende a 40 empresas..." onfocus="this.style.borderColor='#F97316'" onblur="this.style.borderColor='#28283A'"></textarea>
+            <div style="font-size:11px;color:var(--muted);margin-top:3px">💡 Tipo de empresa, clientes, herramientas que usan</div>
           </div>
 
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-              <div style="width:20px;height:20px;border-radius:4px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
-              <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Tarea — ¿Qué debe hacer exactamente?</label>
+              <div style="width:22px;height:22px;border-radius:5px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+              <label style="font-size:12px;font-weight:700;color:var(--white)">Tarea <span style="color:var(--muted);font-weight:400">— ¿Qué debe hacer exactamente?</span></label>
             </div>
-            <textarea id="p-tarea" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6" placeholder="Ej: Cuando recibas una lista de facturas CFDI, clasifica cada una como DEDUCIBLE, NO_DEDUCIBLE o REVISAR según los criterios del SAT..."></textarea>
-            <div style="font-size:11px;color:var(--muted);margin-top:4px">💡 Describe el proceso paso a paso: qué recibe, qué analiza, qué produce</div>
+            <textarea id="g-tarea" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6;transition:border-color .15s" placeholder="Ej: Cuando recibas una lista de facturas CFDI, clasifica cada una como DEDUCIBLE, NO_DEDUCIBLE o REVISAR..." onfocus="this.style.borderColor='#F97316'" onblur="this.style.borderColor='#28283A'"></textarea>
+            <div style="font-size:11px;color:var(--muted);margin-top:3px">💡 Qué recibe, qué analiza, qué produce al final</div>
           </div>
 
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-              <div style="width:20px;height:20px;border-radius:4px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
-              <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Formato — ¿Cómo entrega el resultado?</label>
+              <div style="width:22px;height:22px;border-radius:5px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+              <label style="font-size:12px;font-weight:700;color:var(--white)">Formato <span style="color:var(--muted);font-weight:400">— ¿Cómo entrega el resultado?</span></label>
             </div>
-            <textarea id="p-fmt" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6" placeholder="Ej: Tabla con columnas: N° | Concepto | Monto | Clasificación | Observación. Una fila por factura, sin texto adicional..."></textarea>
-            <div style="font-size:11px;color:var(--muted);margin-top:4px">💡 ¿Tabla, lista, correo, resumen? Define la estructura exacta del resultado</div>
+            <textarea id="g-fmt" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6;transition:border-color .15s" placeholder="Ej: Tabla con columnas: N° | Concepto | Monto | Clasificación | Observación..." onfocus="this.style.borderColor='#F97316'" onblur="this.style.borderColor='#28283A'"></textarea>
+            <div style="font-size:11px;color:var(--muted);margin-top:3px">💡 ¿Tabla, lista, correo, resumen? Define la estructura exacta</div>
           </div>
 
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-              <div style="width:20px;height:20px;border-radius:4px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div>
-              <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Restricciones — ¿Qué NO debe hacer?</label>
+              <div style="width:22px;height:22px;border-radius:5px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div>
+              <label style="font-size:12px;font-weight:700;color:var(--white)">Restricciones <span style="color:var(--muted);font-weight:400">— ¿Qué NO debe hacer?</span></label>
             </div>
-            <textarea id="p-rest" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6" placeholder="Ej: Nunca inventes datos. Si falta información, marca como REVISAR. No uses lenguaje técnico excesivo..."></textarea>
-            <div style="font-size:11px;color:var(--muted);margin-top:4px">💡 Qué no debe asumir, inventar ni hacer cuando le falte información</div>
+            <textarea id="g-rest" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6;transition:border-color .15s" placeholder="Ej: Nunca inventes datos. Si falta información marca como REVISAR. No uses lenguaje técnico..." onfocus="this.style.borderColor='#F97316'" onblur="this.style.borderColor='#28283A'"></textarea>
+            <div style="font-size:11px;color:var(--muted);margin-top:3px">💡 Qué no debe asumir, inventar ni hacer si le falta información</div>
           </div>
 
         </div>
       </div>
 
-      <!-- ÁREA DE GENERACIÓN -->
-      <div style="padding:20px">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:2px">Genera tu programa con IA</div>
-            <div style="font-size:12px;color:var(--muted)">Llena las 5 partes arriba y genera tu programa HTML descargable</div>
+      <!-- ARCHIVO DE REFERENCIA -->
+      <div style="padding:20px 22px;border-bottom:1px solid var(--line)">
+        <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:4px;display:flex;align-items:center;gap:8px">
+          📎 Archivo de referencia <span style="font-size:11px;font-weight:400;color:var(--muted)">(opcional pero recomendado)</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Sube un archivo con datos reales de tu trabajo. El generador lo analiza y personaliza el prompt para tu caso exacto.</div>
+
+        <div id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.style.borderColor='#F97316'" ondragleave="this.style.borderColor='#28283A'" ondrop="handleDrop(event)" style="border:2px dashed var(--line);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:border-color .15s;background:var(--bg)">
+          <div style="font-size:28px;margin-bottom:8px">📂</div>
+          <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px">Arrastra tu archivo aquí o haz clic</div>
+          <div style="font-size:12px;color:var(--muted)">Excel (.xlsx, .csv) · PDF · TXT · Máximo 5MB</div>
+          <input type="file" id="file-input" style="display:none" accept=".xlsx,.xls,.csv,.pdf,.txt" onchange="handleFile(this.files[0])">
+        </div>
+
+        <div id="file-preview" style="display:none;margin-top:12px;background:var(--bg);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:12px 14px;display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span id="file-ico" style="font-size:20px">📄</span>
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--white)" id="file-nombre">archivo.xlsx</div>
+                <div style="font-size:11px;color:var(--muted)" id="file-info">Procesando...</div>
+              </div>
+            </div>
+            <button onclick="quitarArchivo()" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px">✕</button>
           </div>
+          <div id="file-preview-txt" style="margin-top:10px;font-size:12px;color:var(--muted);background:var(--card);border-radius:6px;padding:8px 10px;max-height:80px;overflow-y:auto;font-family:monospace;white-space:pre-wrap;display:none"></div>
+        </div>
+      </div>
+
+      <!-- BOTÓN GENERAR -->
+      <div style="padding:20px 22px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
           <div id="usos-badge" style="font-size:12px;font-weight:700;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--green);padding:5px 12px;border-radius:99px;display:flex;align-items:center;gap:6px">
             <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block"></span>
-            2 programas gratis disponibles
+            2 prompts gratis disponibles
           </div>
+          <div style="font-size:12px;color:var(--muted)">Genera en Claude, ChatGPT o Gemini — tú eliges</div>
         </div>
 
-        <div style="margin-bottom:14px">
-          <label style="display:block;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">Nombre de tu programa</label>
-          <input type="text" id="prob-nombre" placeholder="Ej: Clasificador Fiscal · Cotizador Express · Asistente Legal..." style="width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;outline:none">
-        </div>
-
-        <button onclick="generarPrograma()" id="btn-generar" style="width:100%;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;padding:13px;border:none;border-radius:10px;cursor:pointer;transition:all .15s;margin-bottom:14px">⚡ Generar mi programa gratis →</button>
+        <button onclick="generarPrompt()" id="btn-generar" style="width:100%;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;padding:13px;border:none;border-radius:10px;cursor:pointer;transition:all .15s">⚡ Generar mi prompt →</button>
 
         <!-- LOADING -->
-        <div id="gen-loading" style="display:none;align-items:center;gap:10px;font-size:13px;color:var(--muted);padding:12px 0">
+        <div id="gen-loading" style="display:none;align-items:center;gap:10px;font-size:13px;color:var(--muted);padding:14px 0">
           <span style="display:inline-flex;gap:4px">
-            <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);animation:b .8s ease infinite;display:inline-block"></span>
-            <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);animation:b .8s .15s ease infinite;display:inline-block"></span>
-            <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);animation:b .8s .3s ease infinite;display:inline-block"></span>
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);animation:bx .8s ease infinite;display:inline-block"></span>
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);animation:bx .8s .15s ease infinite;display:inline-block"></span>
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);animation:bx .8s .3s ease infinite;display:inline-block"></span>
           </span>
-          Generando tu programa con Claude... esto toma unos segundos.
+          Analizando y construyendo tu prompt...
         </div>
-        <style>@keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}</style>
+        <style>@keyframes bx{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}</style>
 
-        <!-- RESULTADO -->
-        <div id="gen-resultado" style="display:none;background:var(--bg2);border:1px solid rgba(34,197,94,.2);border-radius:12px;overflow:hidden">
-          <div style="padding:20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px">
-            <div style="width:40px;height:40px;border-radius:10px;background:rgba(34,197,94,.15);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">✓</div>
-            <div>
-              <div style="font-size:14px;font-weight:700;color:var(--white)" id="gen-nombre-resultado">Tu programa</div>
-              <div style="font-size:12px;color:var(--green)">Listo para usar — comparte el link con quien quieras</div>
+        <!-- RESULTADO PROMPT -->
+        <div id="gen-resultado" style="display:none;margin-top:14px">
+          <div style="background:var(--bg2);border:1px solid rgba(34,197,94,.2);border-radius:12px;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line)">
+              <div style="font-size:12px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:6px">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block"></span>
+                Tu prompt está listo
+              </div>
+              <div style="display:flex;gap:8px">
+                <button onclick="copiarPrompt()" id="btn-copiar" style="font-size:12px;font-weight:700;color:var(--amber);background:none;border:1px solid rgba(249,115,22,.25);border-radius:6px;cursor:pointer;padding:5px 12px;transition:background .15s">Copiar</button>
+              </div>
+            </div>
+            <div id="prompt-output" style="padding:18px;font-size:13px;color:var(--body);line-height:1.8;white-space:pre-wrap;font-family:monospace;max-height:320px;overflow-y:auto"></div>
+          </div>
+
+          <!-- ÁREA DE API KEY Y PRUEBA -->
+          <div style="margin-top:14px;background:var(--bg2);border:1px solid rgba(249,115,22,.2);border-radius:12px;overflow:hidden">
+            <div style="padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+              <div style="font-size:13px;font-weight:700;color:var(--white)">Prueba tu prompt con IA real</div>
+              <a href="api.html" style="font-size:12px;font-weight:700;color:var(--amber);text-decoration:none;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);padding:4px 12px;border-radius:99px">¿No tienes API Key? Rentar aquí →</a>
+            </div>
+            <div style="padding:16px">
+              <div style="margin-bottom:12px">
+                <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Tu API Key rentada</label>
+                <input type="password" id="test-apikey" placeholder="Pega aquí tu API Key..." style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='#F97316'" onblur="this.style.borderColor='#28283A'">
+                <div style="font-size:11px;color:var(--muted);margin-top:4px">La API Key que compraste en <a href="api.html" style="color:var(--amber)">api.html</a> — empieza con <code style="background:var(--card);padding:1px 5px;border-radius:3px">agentia_</code></div>
+              </div>
+              <div style="margin-bottom:12px">
+                <label style="display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Tu mensaje de prueba</label>
+                <textarea id="test-msg" rows="3" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6;transition:border-color .15s" placeholder="Escribe aquí el caso real que quieres procesar con tu prompt..." onfocus="this.style.borderColor='#F97316'" onblur="this.style.borderColor='#28283A'"></textarea>
+              </div>
+              <button onclick="probarConKey()" id="btn-probar-key" style="width:100%;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;padding:11px;border:none;border-radius:9px;cursor:pointer;transition:all .15s">⚡ Probar con mi API Key →</button>
+
+              <div id="test-loading" style="display:none;align-items:center;gap:10px;font-size:13px;color:var(--muted);padding:10px 0">
+                <span style="display:inline-flex;gap:4px">
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);animation:bx .8s ease infinite;display:inline-block"></span>
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);animation:bx .8s .15s ease infinite;display:inline-block"></span>
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);animation:bx .8s .3s ease infinite;display:inline-block"></span>
+                </span>
+                Procesando con tu API Key...
+              </div>
+
+              <div id="test-resultado" style="display:none;margin-top:10px;background:var(--bg);border:1px solid rgba(34,197,94,.2);border-radius:8px;overflow:hidden">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--line)">
+                  <div style="font-size:11px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:5px">
+                    <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block"></span>
+                    Respuesta del agente
+                  </div>
+                  <button onclick="copiarTestRes()" style="font-size:11px;font-weight:700;color:var(--muted);background:none;border:1px solid var(--line);border-radius:5px;cursor:pointer;padding:3px 8px">Copiar</button>
+                </div>
+                <div id="test-res-txt" style="padding:12px 14px;font-size:13px;color:var(--body);line-height:1.8;white-space:pre-wrap;max-height:250px;overflow-y:auto"></div>
+                <div id="test-res-creditos" style="padding:6px 12px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)"></div>
+              </div>
+
+              <div id="test-error" style="display:none;margin-top:10px;padding:10px 12px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;font-size:12px;color:#FCA5A5"></div>
             </div>
           </div>
-          <div style="padding:20px">
-            <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">Tu link permanente</div>
-            <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
-              <a id="gen-link" href="#" target="_blank" style="flex:1;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--amber);text-decoration:none;font-family:monospace;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">—</a>
-              <button onclick="copiarLink()" style="background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:13px;padding:10px 16px;border:none;border-radius:8px;cursor:pointer;flex-shrink:0" id="btn-copiar-link">Copiar link</button>
-            </div>
-            <div style="font-size:12px;color:var(--muted);line-height:1.6;padding:10px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--line)">
-              📱 <strong style="color:var(--white)">¿Cómo usar tu programa?</strong> Abre el link en cualquier navegador, ingresa tu correo para usar tus créditos y empieza a usarlo. Funciona en computadora, tablet y celular.
-            </div>
+
+          <div style="margin-top:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--muted);line-height:1.6;text-align:center">
+            💡 También puedes copiar el prompt y usarlo directamente en 
+            <a href="https://claude.ai" target="_blank" style="color:var(--amber)">Claude.ai</a> · 
+            <a href="https://chatgpt.com" target="_blank" style="color:var(--amber)">ChatGPT</a> · 
+            <a href="https://gemini.google.com" target="_blank" style="color:var(--amber)">Gemini</a>
           </div>
-          <div style="padding:0 20px 16px;font-size:12px;color:var(--muted)" id="gen-info"></div>
         </div>
 
         <!-- BLOQUEADO -->
-        <div id="gen-bloqueado" style="display:none;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.25);border-radius:12px;padding:24px;text-align:center">
+        <div id="gen-bloqueado" style="display:none;margin-top:14px;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.25);border-radius:12px;padding:24px;text-align:center">
           <div style="font-size:32px;margin-bottom:12px">🔒</div>
-          <div style="font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:8px">Usaste tus 2 programas gratuitos</div>
-          <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;max-width:380px;margin-inline:auto">Para seguir generando programas ilimitados necesitas créditos. Cada programa cuesta 5 créditos.</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:380px;margin:0 auto">
-            <div style="background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center">
-              <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Pack Starter</div>
-              <div style="font-family:'DM Sans',sans-serif;font-size:1.4rem;font-weight:800;color:var(--white);margin-bottom:2px">$49</div>
-              <div style="font-size:11px;color:var(--amber);margin-bottom:10px">100 créditos = 20 programas</div>
-              <button onclick="abrirModal('Starter','100 créditos','$49 MXN',49,'price_starter')" style="width:100%;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:13px;padding:8px;border:none;border-radius:7px;cursor:pointer">Comprar →</button>
-            </div>
-            <div style="background:var(--card);border:1px solid rgba(139,92,246,.3);border-radius:10px;padding:14px;text-align:center">
-              <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Pack Pro</div>
-              <div style="font-family:'DM Sans',sans-serif;font-size:1.4rem;font-weight:800;color:var(--white);margin-bottom:2px">$199</div>
-              <div style="font-size:11px;color:var(--purple);margin-bottom:10px">500 créditos = 100 programas</div>
-              <button onclick="abrirModal('Pro','500 créditos','$199 MXN',199,'price_pro')" style="width:100%;background:var(--purple);color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:13px;padding:8px;border:none;border-radius:7px;cursor:pointer">Comprar →</button>
-            </div>
-          </div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:8px">Usaste tus 2 prompts gratuitos</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;max-width:380px;margin-inline:auto">Para seguir generando prompts ilimitados necesitas créditos. Cada prompt cuesta 2 créditos.</div>
+          <a href="#planes" style="display:inline-block;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;padding:11px 28px;border-radius:9px;text-decoration:none">Ver planes de créditos →</a>
         </div>
 
       </div>
@@ -445,20 +505,20 @@ input[type=range]{width:100%;accent-color:var(--amber)}
     <div class="faq-title">Preguntas frecuentes</div>
 
     <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">¿Los créditos tienen fecha de vencimiento? <span class="faq-ico">+</span></div>
-      <div class="faq-a">No. Los créditos de pago único (Starter y Pro) no vencen — los puedes usar cuando quieras. Solo el plan Ilimitado se renueva mensualmente.</div>
+      <div class="faq-q">¿Los prompts tienen fecha de vencimiento? <span class="faq-ico">+</span></div>
+      <div class="faq-a">No. Los prompts de pago único (Starter y Pro) no vencen — los puedes usar cuando quieras. Solo el plan Ilimitado se renueva mensualmente.</div>
     </div>
     <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">¿En qué programas puedo usar los créditos? <span class="faq-ico">+</span></div>
-      <div class="faq-a">En todos los programas que construiste durante la clase magistral de AgentIA. También en los que construyas con el Generador de Programas.</div>
+      <div class="faq-q">¿Dónde puedo usar los prompts generados? <span class="faq-ico">+</span></div>
+      <div class="faq-a">En cualquier IA que uses: Claude, ChatGPT o Gemini. Copia el prompt generado y pégalo en una conversación nueva.</div>
     </div>
     <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">¿Qué pasa si proceso un archivo grande con muchas filas? <span class="faq-ico">+</span></div>
-      <div class="faq-a">Si el texto de entrada supera 2,000 palabras se descuentan 2 créditos en lugar de 1. El programa te avisa antes de procesar para que decidas.</div>
+      <div class="faq-q">¿Qué tipo de archivos puedo subir como referencia? <span class="faq-ico">+</span></div>
+      <div class="faq-a">Excel (.xlsx, .csv), PDF y TXT de hasta 5MB. El generador analiza el contenido y personaliza el prompt para tu formato de datos específico.</div>
     </div>
     <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">¿Necesito saber de tecnología para usar los créditos? <span class="faq-ico">+</span></div>
-      <div class="faq-a">No. Solo recibes un código por correo y lo pegas en el campo que aparece en tu programa. Es como activar una tarjeta de regalo.</div>
+      <div class="faq-q">¿Necesito saber de tecnología para usar esto? <span class="faq-ico">+</span></div>
+      <div class="faq-a">No. Solo llenas los 5 campos, subes tu archivo si tienes uno y das clic en "Generar". El prompt aparece listo para copiar y pegar en Claude o ChatGPT.</div>
     </div>
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-q">¿Puedo cancelar el plan Ilimitado cuando quiera? <span class="faq-ico">+</span></div>
@@ -474,8 +534,8 @@ input[type=range]{width:100%;accent-color:var(--amber)}
 
 <!-- CTA FINAL -->
 <div class="cta-final">
-  <h2 class="cta-title">Empieza con 10 créditos gratis.</h2>
-  <p class="cta-sub">Sin tarjeta. Sin configuraciones. Solo entra al curso y empieza.</p>
+  <h2 class="cta-title">Empieza con 2 prompts gratis.</h2>
+  <p class="cta-sub">Sin tarjeta. Sin configuraciones. Solo llena las 5 partes y genera tu primer prompt.</p>
   <a href="https://argentia.agency/curso-agente.html" style="display:inline-block;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:16px;padding:14px 36px;border-radius:10px;text-decoration:none">Tomar la clase magistral →</a>
 </div>
 
@@ -556,14 +616,15 @@ function calcSim(){
   const semanal = diario * dias;
   const mensual = Math.round(semanal * 4.3);
 
-  document.getElementById('r-dia').textContent = diario;
-  document.getElementById('r-sem').textContent = semanal;
-  document.getElementById('r-mes').textContent = mensual;
+  document.getElementById('r-dia').textContent = Math.ceil(diario/5);
+  document.getElementById('r-sem').textContent = Math.ceil(semanal/5);
+  document.getElementById('r-mes').textContent = Math.ceil(mensual/5);
 
   let rec, costo, cls;
-  if(mensual <= 100){ rec = '⚡ Te recomendamos el Pack Starter ($49 MXN)'; costo = '$49 MXN/mes aprox'; cls = 'verde'; }
-  else if(mensual <= 500){ rec = '🚀 Te recomendamos el Pack Pro ($199 MXN)'; costo = '$99-199 MXN/mes aprox'; cls = 'amber'; }
-  else { rec = '♾️ Te recomendamos el plan Ilimitado ($299 MXN/mes)'; costo = '$299 MXN/mes'; cls = 'purple'; }
+  const promtsMes = Math.ceil(mensual/5);
+  if(promtsMes <= 20){ rec = '⚡ Te recomendamos el Pack Starter ($49 MXN)'; costo = '$49 MXN pago único'; cls = 'verde'; }
+  else if(promtsMes <= 100){ rec = '🚀 Te recomendamos el Pack Pro ($149 MXN)'; costo = '$149 MXN pago único'; cls = 'amber'; }
+  else { rec = '♾️ Te recomendamos el plan Ilimitado ($249 MXN/mes)'; costo = '$249 MXN/mes'; cls = 'purple'; }
 
   document.getElementById('r-costo').textContent = costo;
   const recEl = document.getElementById('r-rec');
@@ -591,29 +652,96 @@ function updateBadge(){
     badge.style.background = 'rgba(239,68,68,.1)';
     badge.style.borderColor = 'rgba(239,68,68,.2)';
     badge.style.color = '#EF4444';
-    badge.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:#EF4444;display:inline-block"></span> Sin programas gratis';
+    badge.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:#EF4444;display:inline-block"></span> Sin prompts gratis';
   } else {
-    badge.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block"></span> '+left+' programa'+(left===1?'':'s')+' gratis disponible'+(left===1?'':'s');
+    badge.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block"></span> '+left+' prompt'+(left===1?'':'s')+' gratis disponible'+(left===1?'':'s');
   }
 }
 
-const GUARDAR_URL = 'https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/guardar-programa';
+// ── MANEJO DE ARCHIVOS ──
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('upload-zone').style.borderColor = '#28283A';
+  if(e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+}
 
-async function generarPrograma(){
+function handleFile(file){
+  if(!file) return;
+  const maxSize = 5 * 1024 * 1024;
+  if(file.size > maxSize){ alert('El archivo no debe superar 5MB.'); return; }
+
+  const ext = file.name.split('.').pop().toLowerCase();
+  const iconos = {xlsx:'📊',xls:'📊',csv:'📊',pdf:'📄',txt:'📝'};
+  document.getElementById('file-ico').textContent = iconos[ext] || '📄';
+  document.getElementById('file-nombre').textContent = file.name;
+  document.getElementById('file-info').textContent = 'Procesando...';
+  document.getElementById('file-preview').style.display = 'block';
+
+  if(ext === 'txt' || ext === 'csv'){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      contextoArchivo = e.target.result.substring(0, 3000);
+      document.getElementById('file-info').textContent = Math.round(file.size/1024)+'KB · '+contextoArchivo.split('\n').length+' líneas leídas';
+      const prev = document.getElementById('file-preview-txt');
+      prev.textContent = contextoArchivo.substring(0, 200)+'...';
+      prev.style.display = 'block';
+    };
+    reader.readAsText(file, 'utf-8');
+  } else if(ext === 'xlsx' || ext === 'xls'){
+    // Leer Excel con FileReader como binario
+    const reader = new FileReader();
+    reader.onload = function(e){
+      try {
+        // Extraer texto básico del Excel (simplificado)
+        const bytes = new Uint8Array(e.target.result);
+        let text = '';
+        for(let i=0;i<Math.min(bytes.length,10000);i++){
+          if(bytes[i]>31 && bytes[i]<127) text += String.fromCharCode(bytes[i]);
+          else if(bytes[i]===10 || bytes[i]===13) text += ' ';
+        }
+        // Filtrar texto legible
+        const palabras = text.match(/[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s\$\.\,\-\/\:]{3,}/g) || [];
+        contextoArchivo = 'Archivo Excel: '+file.name+'\nContenido detectado:\n'+palabras.slice(0,50).join(' | ');
+        document.getElementById('file-info').textContent = Math.round(file.size/1024)+'KB · Excel procesado';
+        const prev = document.getElementById('file-preview-txt');
+        prev.textContent = contextoArchivo.substring(0,200)+'...';
+        prev.style.display = 'block';
+      } catch(err){
+        contextoArchivo = 'Archivo adjunto: '+file.name+' (Excel)';
+        document.getElementById('file-info').textContent = 'Excel cargado — se usará como referencia';
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  } else if(ext === 'pdf'){
+    contextoArchivo = 'Archivo PDF adjunto: '+file.name+'. El usuario tiene un PDF con información relevante para su tarea.';
+    document.getElementById('file-info').textContent = Math.round(file.size/1024)+'KB · PDF referenciado';
+  } else {
+    contextoArchivo = 'Archivo de referencia: '+file.name;
+    document.getElementById('file-info').textContent = 'Archivo cargado como referencia';
+  }
+}
+
+function quitarArchivo(){
+  contextoArchivo = '';
+  document.getElementById('file-preview').style.display = 'none';
+  document.getElementById('file-input').value = '';
+  document.getElementById('file-preview-txt').style.display = 'none';
+}
+
+async function generarPrompt(){
   if(getUsos() >= MAX_GRATIS){
     document.getElementById('gen-bloqueado').style.display = 'block';
     document.getElementById('gen-resultado').style.display = 'none';
     return;
   }
 
-  const rol = document.getElementById('p-rol').value.trim();
-  const ctx = document.getElementById('p-ctx').value.trim();
-  const tarea = document.getElementById('p-tarea').value.trim();
-  const fmt = document.getElementById('p-fmt').value.trim();
-  const rest = document.getElementById('p-rest').value.trim();
-  const nombre = document.getElementById('prob-nombre').value.trim() || 'Mi Programa IA';
+  const rol = document.getElementById('g-rol').value.trim();
+  const ctx = document.getElementById('g-ctx').value.trim();
+  const tarea = document.getElementById('g-tarea').value.trim();
+  const fmt = document.getElementById('g-fmt').value.trim();
+  const rest = document.getElementById('g-rest').value.trim();
 
-  if(!rol || !tarea){ alert('Llena al menos el Rol y la Tarea para generar tu programa.'); return; }
+  if(!rol || !tarea){ alert('Llena al menos el Rol y la Tarea para generar tu prompt.'); return; }
 
   const btn = document.getElementById('btn-generar');
   btn.disabled = true;
@@ -622,60 +750,120 @@ async function generarPrograma(){
   document.getElementById('gen-resultado').style.display = 'none';
   document.getElementById('gen-bloqueado').style.display = 'none';
 
-  // Construir el sistema prompt con las 5 partes
-  const sistemaPrompt = [
-    rol ? 'ROL:\n' + rol : '',
-    ctx ? '\nCONTEXTO:\n' + ctx : '',
-    tarea ? '\nTAREA:\n' + tarea : '',
-    fmt ? '\nFORMATO DE RESPUESTA:\n' + fmt : '',
-    rest ? '\nRESTRICCIONES:\n' + rest : ''
-  ].filter(Boolean).join('\n');
+  const partes = [
+    rol ? 'ROL: '+rol : '',
+    ctx ? 'CONTEXTO: '+ctx : '',
+    tarea ? 'TAREA: '+tarea : '',
+    fmt ? 'FORMATO: '+fmt : '',
+    rest ? 'RESTRICCIONES: '+rest : '',
+    contextoArchivo ? 'ARCHIVO DE REFERENCIA DEL USUARIO:\n'+contextoArchivo : ''
+  ].filter(Boolean).join('\n\n');
+
+  const userMsg = 'Tengo estas partes para mi prompt:\n\n'+partes+'\n\n'+
+    'Crea un prompt de sistema profesional, cohesivo y en español mexicano que combine todas las partes de forma natural. '+
+    (contextoArchivo ? 'Analiza el archivo de referencia e inclúyelo como contexto específico en el prompt para que el agente entienda el formato y tipo de datos con el que trabajará. ' : '')+
+    'El prompt debe sonar como instrucciones reales para un especialista, no como una lista de pasos. '+
+    'Máximo 250 palabras. Sin títulos ni secciones marcadas. Solo el texto del prompt listo para usar.';
 
   try {
-    // Guardar en Supabase y obtener el link
-    const res = await fetch(GUARDAR_URL, {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        nombre,
-        sistema_prompt: sistemaPrompt,
-        email_creador: ''
+        model: 'claude-haiku-4-5',
+        max_tokens: 600,
+        system: 'Eres experto en prompt engineering para profesionales en México. Creas prompts de sistema precisos, prácticos y en español mexicano profesional.',
+        messages: [{ role: 'user', content: userMsg }]
       })
     });
-
     const data = await res.json();
-
-    if(data.error){ alert('Error al guardar el programa. Intenta de nuevo.'); return; }
-
-    // Mostrar el link
-    document.getElementById('gen-link').textContent = data.link;
-    document.getElementById('gen-link').href = data.link;
-    document.getElementById('gen-nombre-resultado').textContent = nombre;
+    promptGenerado = data.content && data.content[0] ? data.content[0].text.trim() : 'Error al generar.';
+    document.getElementById('prompt-output').textContent = promptGenerado;
     document.getElementById('gen-resultado').style.display = 'block';
-    document.getElementById('gen-preview').textContent = sistemaPrompt.substring(0,300)+'...';
-    document.getElementById('gen-info').innerHTML =
-      '✓ Programa guardado · ID: <strong style="color:var(--amber)">' + data.id + '</strong>';
-
     addUso();
     if(getUsos() >= MAX_GRATIS){
       document.getElementById('btn-generar').style.display = 'none';
     }
-
   } catch(e){
     alert('Error de conexión. Intenta de nuevo.');
   }
 
   btn.disabled = false;
-  btn.textContent = '⚡ Generar mi programa gratis →';
+  btn.textContent = '⚡ Generar mi prompt →';
   document.getElementById('gen-loading').style.display = 'none';
 }
 
-function copiarLink(){
-  const link = document.getElementById('gen-link').href;
-  navigator.clipboard.writeText(link);
-  const btn = document.getElementById('btn-copiar-link');
+async function probarConKey(){
+  const apiKey = document.getElementById('test-apikey').value.trim();
+  const msg = document.getElementById('test-msg').value.trim();
+
+  if(!apiKey){ alert('Ingresa tu API Key rentada.'); return; }
+  if(!msg){ alert('Escribe un mensaje de prueba.'); return; }
+  if(!promptGenerado){ alert('Primero genera tu prompt.'); return; }
+
+  const btn = document.getElementById('btn-probar-key');
+  btn.disabled = true;
+  document.getElementById('test-loading').style.display = 'flex';
+  document.getElementById('test-resultado').style.display = 'none';
+  document.getElementById('test-error').style.display = 'none';
+
+  try {
+    // Llamar al proxy con la API Key rentada en el header
+    const res = await fetch('https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/proxy-claude', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-user-email': apiKey  // La API Key rentada sirve como identificador
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5',
+        max_tokens: 800,
+        system: promptGenerado,
+        messages: [{ role: 'user', content: msg }],
+        tipo: 'prueba_prompt_key'
+      })
+    });
+
+    const data = await res.json();
+
+    if(data.error === 'sin_creditos'){
+      document.getElementById('test-error').textContent = '⚡ Sin créditos disponibles. Recarga tu API Key en api.html';
+      document.getElementById('test-error').style.display = 'block';
+    } else if(data.error){
+      document.getElementById('test-error').textContent = '❌ Error: ' + (data.mensaje || data.error);
+      document.getElementById('test-error').style.display = 'block';
+    } else {
+      const resp = data.content && data.content[0] ? data.content[0].text : 'Sin respuesta.';
+      document.getElementById('test-res-txt').textContent = resp;
+      document.getElementById('test-resultado').style.display = 'block';
+      if(data._creditos){
+        document.getElementById('test-res-creditos').textContent =
+          '⚡ Usaste 1 crédito · Te quedan ' + data._creditos.restantes + ' llamadas';
+      }
+    }
+  } catch(e){
+    document.getElementById('test-error').textContent = '❌ Error de conexión. Intenta de nuevo.';
+    document.getElementById('test-error').style.display = 'block';
+  }
+
+  btn.disabled = false;
+  document.getElementById('test-loading').style.display = 'none';
+}
+
+let testResTexto = '';
+function copiarTestRes(){
+  testResTexto = document.getElementById('test-res-txt').textContent;
+  navigator.clipboard.writeText(testResTexto);
+  const btn = event.currentTarget;
+  btn.textContent = '✓'; setTimeout(()=>btn.textContent='Copiar', 2000);
+}
+
+function copiarPrompt(){
+  if(!promptGenerado) return;
+  navigator.clipboard.writeText(promptGenerado);
+  const btn = document.getElementById('btn-copiar');
   btn.textContent = '✓ Copiado';
-  setTimeout(()=>{ btn.textContent = 'Copiar link'; }, 2000);
+  setTimeout(()=>{ btn.textContent = 'Copiar'; }, 2000);
 }
 
 // Inicializar badge
