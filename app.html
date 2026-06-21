@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentIA — Tu programa</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0E0E14;--bg2:#16161E;--card:#1C1C26;--line:#28283A;--muted:#6B6B88;--sub:#A0A0C0;--body:#D0D0E8;--white:#F4F4F8;--amber:#F97316;--green:#22C55E;--red:#EF4444;--r:12px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+.header{background:var(--bg2);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'DM Sans',sans-serif;font-weight:800;font-size:1rem}
+.logo span{color:var(--amber)}
+.prog-name{font-size:14px;font-weight:700;color:var(--white)}
+.creditos-badge{font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;display:flex;align-items:center;gap:6px}
+.layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 53px)}
+@media(max-width:640px){.layout{grid-template-columns:1fr}}
+.sidebar{background:var(--bg2);border-right:1px solid var(--line);padding:22px 18px;display:flex;flex-direction:column;gap:18px}
+@media(max-width:640px){.sidebar{border-right:none;border-bottom:1px solid var(--line)}}
+.sb-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+.sb-input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:'Inter',sans-serif;font-size:13px;padding:10px 12px;outline:none;transition:border-color .15s}
+.sb-input:focus{border-color:var(--amber)}
+.sb-input::placeholder{color:var(--muted)}
+.sb-link{font-size:11px;color:var(--muted);text-decoration:none;margin-top:4px;display:block}
+.sb-link:hover{color:var(--amber)}
+.sb-hint{font-size:11px;color:var(--muted);line-height:1.6;padding:10px;background:var(--bg);border:1px solid var(--line);border-radius:8px}
+.main{padding:28px;display:flex;flex-direction:column;gap:18px;max-width:800px}
+.page-title{font-family:'DM Sans',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--muted)}
+.input-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.input-top{padding:12px 16px;border-bottom:1px solid var(--line);font-size:13px;font-weight:600;color:var(--sub)}
+.input-body{padding:16px}
+textarea{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:'Inter',sans-serif;font-size:13px;padding:12px 14px;resize:vertical;min-height:120px;outline:none;transition:border-color .15s;line-height:1.6}
+textarea:focus{border-color:var(--amber)}
+textarea::placeholder{color:var(--muted)}
+.input-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-top:1px solid var(--line);background:var(--bg2)}
+.btn{background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;padding:10px 22px;border:none;border-radius:9px;cursor:pointer;transition:all .15s}
+.btn:hover{background:#FB923C}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.result-card{background:var(--card);border:1px solid rgba(34,197,94,.2);border-radius:var(--r);overflow:hidden;display:none}
+.result-top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--bg2)}
+.result-label{font-size:12px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:6px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.btn-copy{font-size:12px;font-weight:700;color:var(--amber);background:none;border:1px solid rgba(249,115,22,.25);border-radius:6px;cursor:pointer;padding:5px 12px;transition:background .15s}
+.btn-copy:hover{background:rgba(249,115,22,.1)}
+.result-body{padding:18px;font-size:14px;color:var(--body);line-height:1.8;white-space:pre-wrap;min-height:80px}
+.loading{display:none;align-items:center;gap:10px;padding:16px;font-size:13px;color:var(--muted)}
+.dots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--amber);animation:b .8s ease infinite;margin:0 2px}
+.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+@keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-7px)}}
+/* ESTADO INICIAL */
+.estado{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center;min-height:60vh}
+.estado-ico{font-size:48px;margin-bottom:16px}
+.estado-title{font-family:'DM Sans',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:8px}
+.estado-sub{font-size:14px;color:var(--muted);max-width:400px;line-height:1.6}
+/* SIN CREDITOS */
+.sin-creditos{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:var(--r);padding:20px;text-align:center;display:none}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">Agent<span>IA</span></div>
+  <div class="prog-name" id="header-nombre">Cargando programa...</div>
+  <div class="creditos-badge" id="creditos-badge" style="display:none;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);color:var(--amber)">⚡ <span id="creditos-num">—</span></div>
+</div>
+
+<div id="estado-cargando" class="layout" style="display:block">
+  <div class="estado">
+    <div class="estado-ico">⏳</div>
+    <div class="estado-title">Cargando tu programa...</div>
+    <div class="estado-sub">Un momento.</div>
+  </div>
+</div>
+
+<div id="estado-error" style="display:none">
+  <div class="estado">
+    <div class="estado-ico">❌</div>
+    <div class="estado-title">Programa no encontrado</div>
+    <div class="estado-sub">El link no es válido o el programa fue eliminado.</div>
+    <a href="https://argentia.agency/creditos.html" style="display:inline-block;margin-top:20px;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;padding:11px 24px;border-radius:9px;text-decoration:none">Crear mi programa →</a>
+  </div>
+</div>
+
+<div class="layout" id="app-layout" style="display:none">
+  <div class="sidebar">
+    <div>
+      <label class="sb-label">🔑 Tu correo</label>
+      <input class="sb-input" type="email" id="user-email" placeholder="tu@correo.com" onblur="verificarCreditos()">
+      <div class="sb-link" style="cursor:pointer;color:var(--amber)" onclick="verificarCreditos()">Verificar mis créditos →</div>
+    </div>
+
+    <div id="creditos-info" style="display:none">
+      <label class="sb-label">⚡ Tus créditos</label>
+      <div style="background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px">
+        <div style="font-family:'DM Sans',sans-serif;font-size:2rem;font-weight:800;color:var(--amber)" id="sb-creditos-num">—</div>
+        <div style="font-size:12px;color:var(--muted)">créditos disponibles</div>
+        <div style="margin-top:8px;height:4px;background:var(--line);border-radius:99px;overflow:hidden">
+          <div id="creditos-bar" style="height:100%;background:var(--amber);border-radius:99px;transition:width .3s;width:100%"></div>
+        </div>
+      </div>
+      <a href="https://argentia.agency/creditos.html#planes" style="display:block;margin-top:8px;text-align:center;font-size:12px;font-weight:700;color:var(--amber);text-decoration:none;padding:7px;border:1px solid rgba(249,115,22,.25);border-radius:7px">+ Recargar créditos</a>
+    </div>
+
+    <div class="sb-hint" style="margin-top:auto">
+      💡 Cada vez que usas el agente se descuenta 1 crédito de tu cuenta.
+    </div>
+  </div>
+
+  <div class="main">
+    <div>
+      <div class="page-title" id="main-nombre">Tu programa</div>
+      <div class="page-sub" id="main-desc">Ingresa tu correo y escribe lo que necesitas procesar.</div>
+    </div>
+
+    <div class="input-card">
+      <div class="input-top">✏️ ¿Qué necesitas procesar?</div>
+      <div class="input-body">
+        <textarea id="user-input" placeholder="Escribe aquí la información que quieres que procese tu agente..."></textarea>
+      </div>
+      <div class="input-footer">
+        <div style="font-size:12px;color:var(--muted)" id="char-count">0 caracteres</div>
+        <button class="btn" id="btn-procesar" onclick="procesar()">⚡ Procesar →</button>
+      </div>
+    </div>
+
+    <div class="loading" id="loading">
+      <div class="dots"><span></span><span></span><span></span></div>
+      Procesando con IA...
+    </div>
+
+    <div class="result-card" id="result-card">
+      <div class="result-top">
+        <div class="result-label"><div class="live-dot"></div>Resultado</div>
+        <button class="btn-copy" onclick="copiar()">Copiar</button>
+      </div>
+      <div class="result-body" id="result-body"></div>
+    </div>
+
+    <div class="sin-creditos" id="sin-creditos">
+      <div style="font-size:24px;margin-bottom:10px">⚡</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px">Sin créditos disponibles</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Recarga para seguir usando tu agente.</div>
+      <a href="https://argentia.agency/creditos.html#planes" style="display:inline-block;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;padding:10px 24px;border-radius:8px;text-decoration:none">Recargar créditos →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROXY = 'https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/proxy-claude';
+const GUARDAR = 'https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/guardar-programa';
+let sistemaPrompt = '';
+let resultadoTexto = '';
+
+// Cargar programa al inicio
+async function cargarPrograma(){
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+
+  if(!id){
+    document.getElementById('estado-cargando').style.display = 'none';
+    document.getElementById('estado-error').style.display = 'block';
+    return;
+  }
+
+  try {
+    const res = await fetch(GUARDAR + '?id=' + id);
+    const data = await res.json();
+
+    if(data.error){
+      document.getElementById('estado-cargando').style.display = 'none';
+      document.getElementById('estado-error').style.display = 'block';
+      return;
+    }
+
+    sistemaPrompt = data.sistema_prompt;
+    document.getElementById('header-nombre').textContent = data.nombre;
+    document.getElementById('main-nombre').textContent = data.nombre;
+    document.getElementById('main-desc').textContent = 'Ingresa tu información y el agente la procesará automáticamente.';
+    document.title = data.nombre + ' — AgentIA';
+
+    document.getElementById('estado-cargando').style.display = 'none';
+    document.getElementById('app-layout').style.display = 'grid';
+
+  } catch(e){
+    document.getElementById('estado-cargando').style.display = 'none';
+    document.getElementById('estado-error').style.display = 'block';
+  }
+}
+
+async function verificarCreditos(){
+  const email = document.getElementById('user-email').value.trim();
+  if(!email || !email.includes('@')) return;
+
+  try {
+    const res = await fetch(PROXY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-user-email': email },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5',
+        max_tokens: 5,
+        messages: [{ role: 'user', content: 'hola' }],
+        tipo: 'verificar'
+      })
+    });
+    const data = await res.json();
+    if(data._creditos !== undefined){
+      mostrarCreditos(data._creditos.restantes + 1);
+    }
+  } catch(e){}
+}
+
+function mostrarCreditos(num){
+  document.getElementById('creditos-info').style.display = 'block';
+  document.getElementById('sb-creditos-num').textContent = num;
+  document.getElementById('creditos-num').textContent = num + ' créditos';
+  document.getElementById('creditos-badge').style.display = 'flex';
+  const pct = Math.min(100, (num/100)*100);
+  document.getElementById('creditos-bar').style.width = pct + '%';
+  document.getElementById('creditos-bar').style.background = num <= 3 ? '#EF4444' : num <= 10 ? '#F97316' : '#22C55E';
+}
+
+async function procesar(){
+  const email = document.getElementById('user-email').value.trim();
+  const input = document.getElementById('user-input').value.trim();
+
+  if(!email || !email.includes('@')){ alert('Ingresa tu correo primero.'); document.getElementById('user-email').focus(); return; }
+  if(!input){ alert('Escribe la información a procesar.'); return; }
+  if(!sistemaPrompt){ alert('Error: programa no cargado.'); return; }
+
+  const btn = document.getElementById('btn-procesar');
+  btn.disabled = true;
+  document.getElementById('loading').style.display = 'flex';
+  document.getElementById('result-card').style.display = 'none';
+  document.getElementById('sin-creditos').style.display = 'none';
+
+  try {
+    const res = await fetch(PROXY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-user-email': email },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5',
+        max_tokens: 1000,
+        system: sistemaPrompt,
+        messages: [{ role: 'user', content: input }],
+        tipo: 'uso_programa'
+      })
+    });
+
+    const data = await res.json();
+
+    if(data.error === 'sin_creditos'){
+      document.getElementById('sin-creditos').style.display = 'block';
+    } else {
+      resultadoTexto = data.content && data.content[0] ? data.content[0].text : 'Sin respuesta.';
+      document.getElementById('result-body').textContent = resultadoTexto;
+      document.getElementById('result-card').style.display = 'block';
+      if(data._creditos) mostrarCreditos(data._creditos.restantes);
+    }
+  } catch(e){
+    alert('Error de conexión. Intenta de nuevo.');
+  }
+
+  btn.disabled = false;
+  document.getElementById('loading').style.display = 'none';
+}
+
+function copiar(){
+  navigator.clipboard.writeText(resultadoTexto);
+  const btn = event.currentTarget;
+  btn.textContent = '✓ Copiado';
+  setTimeout(() => btn.textContent = 'Copiar', 2000);
+}
+
+document.getElementById('user-input').addEventListener('input', function(){
+  document.getElementById('char-count').textContent = this.value.length + ' caracteres';
+});
+
+cargarPrograma();
+</script>
+</body>
+</html>

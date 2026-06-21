@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Créditos IA — AgentIA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0E0E14;--bg2:#16161E;--card:#1C1C26;--line:#28283A;--muted:#6B6B88;--sub:#A0A0C0;--body:#D0D0E8;--white:#F4F4F8;--amber:#F97316;--green:#22C55E;--purple:#8B5CF6;--r:12px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.header{background:var(--bg2);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'DM Sans',sans-serif;font-weight:800;font-size:1.1rem}
+.logo span{color:var(--amber)}
+.header-link{font-size:13px;color:var(--muted);text-decoration:none}
+.header-link:hover{color:var(--amber)}
+
+.hero{text-align:center;padding:64px 24px 48px}
+.hero-kicker{display:inline-flex;align-items:center;gap:6px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);color:var(--amber);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 14px;border-radius:99px;margin-bottom:16px}
+.hero-title{font-family:'DM Sans',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;margin-bottom:12px;line-height:1.15}
+.hero-sub{font-size:15px;color:var(--sub);max-width:520px;margin:0 auto;line-height:1.65}
+
+.page{max-width:960px;margin:0 auto;padding:0 24px}
+
+/* SIMULADOR */
+.simulador{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:40px 0;margin-bottom:56px}
+.sim-title{font-family:'DM Sans',sans-serif;font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:6px}
+.sim-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px}
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+@media(max-width:640px){.sim-grid{grid-template-columns:1fr}}
+.sim-field{margin-bottom:16px}
+.sim-label{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.sim-label span{font-size:13px;font-weight:800;color:var(--white);text-transform:none;letter-spacing:0}
+input[type=range]{width:100%;accent-color:var(--amber)}
+.sim-select{width:100%;background:var(--card);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:'Inter',sans-serif;font-size:14px;padding:10px 12px;outline:none;-webkit-appearance:none}
+.sim-result{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.sim-result-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.sim-stat{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.sim-stat:last-child{border-bottom:none;padding-bottom:0}
+.sim-stat-label{color:var(--sub)}
+.sim-stat-val{font-weight:700;color:var(--white);font-family:'DM Sans',sans-serif}
+.sim-rec{margin-top:14px;padding:12px 14px;border-radius:8px;font-size:13px;font-weight:600;text-align:center}
+.sim-rec.verde{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--green)}
+.sim-rec.amber{background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);color:var(--amber)}
+.sim-rec.purple{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);color:var(--purple)}
+
+/* PLANES */
+.planes-title{font-family:'DM Sans',sans-serif;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:6px}
+.planes-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:32px}
+.planes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:56px}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s}
+.plan:hover{transform:translateY(-2px)}
+.plan.destacado{border-color:var(--amber)}
+.plan-top{padding:20px 20px 16px;border-bottom:1px solid var(--line)}
+.plan-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:4px;margin-bottom:10px}
+.plan-badge.gratis{background:rgba(34,197,94,.12);color:var(--green)}
+.plan-badge.starter{background:rgba(249,115,22,.12);color:var(--amber)}
+.plan-badge.pro{background:rgba(59,130,246,.12);color:#60A5FA}
+.plan-badge.ilimitado{background:rgba(139,92,246,.12);color:var(--purple)}
+.plan-nombre{font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:6px}
+.plan-precio-wrap{display:flex;align-items:baseline;gap:6px}
+.plan-precio{font-family:'DM Sans',sans-serif;font-size:2rem;font-weight:800;color:var(--white);letter-spacing:-.03em;line-height:1}
+.plan-precio-unit{font-size:13px;color:var(--muted)}
+.plan-creditos{font-size:12px;color:var(--amber);font-weight:700;margin-top:4px}
+.plan-body{padding:16px 20px}
+.plan-feats{list-style:none;display:grid;gap:8px}
+.plan-feats li{font-size:13px;color:var(--body);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.plan-feats li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px}
+.plan-feats li.no{color:var(--muted)}
+.plan-feats li.no::before{content:'✕';color:var(--muted)}
+.plan-footer{padding:4px 20px 20px}
+.btn-plan{display:block;text-align:center;padding:12px;border-radius:10px;font-size:14px;font-weight:800;font-family:'DM Sans',sans-serif;text-decoration:none;transition:all .15s;cursor:pointer;border:none;width:100%}
+.btn-plan.gratis{background:var(--bg2);color:var(--body);border:1px solid var(--line)}
+.btn-plan.gratis:hover{border-color:var(--amber);color:var(--amber)}
+.btn-plan.pago{background:var(--amber);color:#000}
+.btn-plan.pago:hover{background:#FB923C}
+.btn-plan.sub{background:var(--purple);color:#fff}
+.btn-plan.sub:hover{background:#7C3AED}
+
+/* CÓMO FUNCIONA */
+.como-title{font-family:'DM Sans',sans-serif;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:32px}
+.pasos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:56px}
+.paso{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.paso-num{width:32px;height:32px;border-radius:8px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.25);color:var(--amber);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.paso-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:6px}
+.paso-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* FAQ */
+.faq{margin-bottom:56px}
+.faq-title{font-family:'DM Sans',sans-serif;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:24px}
+.faq-item{border-bottom:1px solid var(--line);padding:16px 0;cursor:pointer}
+.faq-item:first-of-type{border-top:1px solid var(--line)}
+.faq-q{font-size:14px;font-weight:600;color:var(--white);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-ico{color:var(--amber);font-size:18px;flex-shrink:0;transition:transform .2s}
+.faq-item.open .faq-ico{transform:rotate(45deg)}
+.faq-a{font-size:13px;color:var(--sub);line-height:1.7;margin-top:10px;display:none}
+.faq-item.open .faq-a{display:block}
+
+/* CTA FINAL */
+.cta-final{background:var(--bg2);border-top:1px solid var(--line);padding:64px 24px;text-align:center;margin-bottom:0}
+.cta-title{font-family:'DM Sans',sans-serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:800;letter-spacing:-.025em;margin-bottom:10px}
+.cta-sub{font-size:14px;color:var(--muted);margin-bottom:28px}
+
+/* MODAL PAGO */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:999;padding:20px}
+.modal-overlay.on{display:flex}
+.modal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px;max-width:440px;width:100%}
+.modal-title{font-family:'DM Sans',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:6px}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.modal-field{margin-bottom:14px}
+.modal-field label{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.modal-field input{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:'Inter',sans-serif;font-size:14px;padding:11px 14px;outline:none;transition:border-color .15s}
+.modal-field input:focus{border-color:var(--amber)}
+.modal-resumen{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:13px}
+.modal-resumen-row{display:flex;justify-content:space-between;padding:4px 0}
+.modal-resumen-row.total{font-weight:700;color:var(--white);border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
+.btn-pagar{width:100%;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;padding:13px;border:none;border-radius:10px;cursor:pointer;transition:all .15s;margin-bottom:10px}
+.btn-pagar:hover{background:#FB923C}
+.btn-pagar:disabled{opacity:.5;cursor:not-allowed}
+.btn-cancelar{width:100%;background:transparent;border:1px solid var(--line);color:var(--muted);font-size:13px;padding:10px;border-radius:8px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">Agent<span>IA</span></div>
+  <a href="https://argentia.agency" class="header-link">← Volver al inicio</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-kicker">⚡ Créditos de IA</div>
+  <h1 class="hero-title">Usa la IA sin<br>complicaciones técnicas.</h1>
+  <p class="hero-sub">Compra créditos y úsalos en todos los programas que construiste en la clase magistral. Sin API Keys, sin configuraciones, sin sorpresas.</p>
+</div>
+
+<!-- SIMULADOR -->
+<div class="simulador">
+  <div class="page">
+    <div class="sim-title">¿Cuántos créditos necesitas?</div>
+    <div class="sim-sub">Ajusta según tu uso real y te decimos qué pack conviene más.</div>
+    <div class="sim-grid">
+      <div>
+        <div class="sim-field">
+          <div class="sim-label">¿A qué te dedicas? <span id="out-prof">Contador</span></div>
+          <select class="sim-select" id="sl-prof" onchange="calcSim()">
+            <option value="10">Contador / Auditor — 10 usos/día</option>
+            <option value="5">Abogado / Notario — 5 usos/día</option>
+            <option value="8">Dueño de negocio — 8 usos/día</option>
+            <option value="3">Administrador / RH — 3 usos/día</option>
+            <option value="6">Médico — 6 usos/día</option>
+            <option value="3">Uso casual — 3 usos/día</option>
+          </select>
+        </div>
+        <div class="sim-field">
+          <div class="sim-label">Días de trabajo por semana <span id="out-dias">5</span></div>
+          <input type="range" id="sl-dias" min="1" max="7" value="5" oninput="calcSim()">
+        </div>
+        <div class="sim-field">
+          <div class="sim-label">Intensidad de uso <span id="out-int">Normal</span></div>
+          <input type="range" id="sl-int" min="1" max="3" value="2" oninput="calcSim()">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px">
+            <span>Ligero</span><span>Normal</span><span>Intensivo</span>
+          </div>
+          <div id="int-ejemplo" style="margin-top:10px;padding:10px 12px;background:var(--bg2);border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--muted);line-height:1.6"></div>
+        </div>
+      </div>
+      <div>
+        <div class="sim-result">
+          <div class="sim-result-title">Tu estimado mensual</div>
+          <div class="sim-stat"><span class="sim-stat-label">Créditos por día</span><span class="sim-stat-val" id="r-dia">10</span></div>
+          <div class="sim-stat"><span class="sim-stat-label">Créditos por semana</span><span class="sim-stat-val" id="r-sem">50</span></div>
+          <div class="sim-stat"><span class="sim-stat-label">Créditos por mes</span><span class="sim-stat-val" id="r-mes">200</span></div>
+          <div class="sim-stat"><span class="sim-stat-label">Costo estimado</span><span class="sim-stat-val" id="r-costo">$99 MXN/mes</span></div>
+          <div class="sim-rec" id="r-rec">⚡ Te recomendamos el Pack Pro</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- PLANES -->
+  <div class="planes-title">Elige tu pack de créditos</div>
+  <div class="planes-sub">Un crédito = una llamada a la IA. Sin mensualidades obligatorias.</div>
+
+  <div class="planes-grid">
+
+    <div class="plan">
+      <div class="plan-top">
+        <div class="plan-badge gratis">Gratis</div>
+        <div class="plan-nombre">Prueba</div>
+        <div class="plan-precio-wrap"><div class="plan-precio">$0</div><div class="plan-precio-unit">MXN</div></div>
+        <div class="plan-creditos">10 créditos incluidos</div>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-feats">
+          <li>10 llamadas a la IA</li>
+          <li>Todos los programas del curso</li>
+          <li>Sin tarjeta de crédito</li>
+          <li class="no">Créditos adicionales</li>
+          <li class="no">Soporte prioritario</li>
+        </ul>
+      </div>
+      <div class="plan-footer">
+        <a href="https://argentia.agency/curso-agente.html" class="btn-plan gratis">Empezar gratis →</a>
+      </div>
+    </div>
+
+    <div class="plan">
+      <div class="plan-top">
+        <div class="plan-badge starter">Starter</div>
+        <div class="plan-nombre">Starter</div>
+        <div class="plan-precio-wrap"><div class="plan-precio">$49</div><div class="plan-precio-unit">MXN</div></div>
+        <div class="plan-creditos">100 créditos · pago único</div>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-feats">
+          <li>100 llamadas a la IA</li>
+          <li>Para uso casual (2-3/día)</li>
+          <li>Te duran ~1-2 meses</li>
+          <li>Todos los programas del curso</li>
+          <li class="no">Soporte prioritario</li>
+        </ul>
+      </div>
+      <div class="plan-footer">
+        <button class="btn-plan pago" onclick="abrirModal('Starter','100 créditos','$49 MXN',49,'price_starter')">Comprar Starter →</button>
+      </div>
+    </div>
+
+    <div class="plan destacado">
+      <div class="plan-top">
+        <div class="plan-badge pro">Más popular</div>
+        <div class="plan-nombre">Pro</div>
+        <div class="plan-precio-wrap"><div class="plan-precio">$199</div><div class="plan-precio-unit">MXN</div></div>
+        <div class="plan-creditos">500 créditos · pago único</div>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-feats">
+          <li>500 llamadas a la IA</li>
+          <li>Para uso frecuente (5-10/día)</li>
+          <li>Te duran 2-3 meses</li>
+          <li>Todos los programas del curso</li>
+          <li>Soporte por WhatsApp</li>
+        </ul>
+      </div>
+      <div class="plan-footer">
+        <button class="btn-plan pago" onclick="abrirModal('Pro','500 créditos','$199 MXN',199,'price_pro')">Comprar Pro →</button>
+      </div>
+    </div>
+
+    <div class="plan">
+      <div class="plan-top">
+        <div class="plan-badge ilimitado">Mensual</div>
+        <div class="plan-nombre">Ilimitado</div>
+        <div class="plan-precio-wrap"><div class="plan-precio">$299</div><div class="plan-precio-unit">MXN/mes</div></div>
+        <div class="plan-creditos">2,000 créditos/mes · se renuevan</div>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-feats">
+          <li>2,000 créditos cada mes</li>
+          <li>Para uso intensivo (+10/día)</li>
+          <li>Se renuevan automáticamente</li>
+          <li>Todos los programas del curso</li>
+          <li>Soporte prioritario WhatsApp</li>
+        </ul>
+      </div>
+      <div class="plan-footer">
+        <button class="btn-plan sub" onclick="abrirModal('Ilimitado','2,000 créditos/mes','$299 MXN/mes',299,'price_ilimitado')">Suscribirse →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CÓMO FUNCIONA -->
+  <div class="como-title">¿Cómo funcionan los créditos?</div>
+  <div class="pasos">
+    <div class="paso">
+      <div class="paso-num">1</div>
+      <div class="paso-title">Compras tu pack</div>
+      <div class="paso-desc">Eliges el plan que mejor se adapta a tu uso y pagas con tarjeta o OXXO.</div>
+    </div>
+    <div class="paso">
+      <div class="paso-num">2</div>
+      <div class="paso-title">Recibes tu token</div>
+      <div class="paso-desc">Te llega por correo un código único. Lo pegas en cualquier programa del curso.</div>
+    </div>
+    <div class="paso">
+      <div class="paso-num">3</div>
+      <div class="paso-title">Usas la IA</div>
+      <div class="paso-desc">Cada vez que el programa llama a la IA se descuenta 1 crédito. Ves cuántos te quedan en tiempo real.</div>
+    </div>
+    <div class="paso">
+      <div class="paso-num">4</div>
+      <div class="paso-title">Recargas cuando quieras</div>
+      <div class="paso-desc">Cuando se acaben, vuelves aquí y compras más. Sin contratos ni compromisos.</div>
+    </div>
+  </div>
+
+
+  <!-- PROBADOR DE PROMPTS -->
+  <div style="margin-bottom:56px">
+    <div style="font-family:'DM Sans',sans-serif;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:6px">Prueba tu prompt aquí</div>
+    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px">Construye tu prompt con las 5 partes y pruébalo en vivo con IA real. Usa tus 10 créditos gratis.</div>
+
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden">
+
+      <!-- TABS PARTES -->
+      <div style="background:var(--bg2);border-bottom:1px solid var(--line);padding:16px 20px">
+        <div style="font-size:12px;font-weight:700;color:var(--amber);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Construye tu prompt de sistema — 5 partes</div>
+        <div style="display:grid;gap:10px">
+
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <div style="width:20px;height:20px;border-radius:4px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+              <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Rol — ¿Quién ES el agente?</label>
+            </div>
+            <textarea id="p-rol" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6" placeholder="Ej: Eres un contador público certificado con 10 años de experiencia en fiscalidad mexicana y declaraciones ante el SAT..."></textarea>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">💡 Sé específico: especialidad, años de experiencia, conocimientos clave</div>
+          </div>
+
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <div style="width:20px;height:20px;border-radius:4px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+              <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Contexto — ¿En qué empresa o situación trabaja?</label>
+            </div>
+            <textarea id="p-ctx" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6" placeholder="Ej: Trabajas en un despacho contable en Guadalajara que atiende a 40 empresas del sector manufactura..."></textarea>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">💡 Describe el tipo de empresa, clientes y herramientas que usa</div>
+          </div>
+
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <div style="width:20px;height:20px;border-radius:4px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+              <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Tarea — ¿Qué debe hacer exactamente?</label>
+            </div>
+            <textarea id="p-tarea" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6" placeholder="Ej: Cuando recibas una lista de facturas CFDI, clasifica cada una como DEDUCIBLE, NO_DEDUCIBLE o REVISAR según los criterios del SAT..."></textarea>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">💡 Describe el proceso paso a paso: qué recibe, qué analiza, qué produce</div>
+          </div>
+
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <div style="width:20px;height:20px;border-radius:4px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+              <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Formato — ¿Cómo entrega el resultado?</label>
+            </div>
+            <textarea id="p-fmt" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6" placeholder="Ej: Tabla con columnas: N° | Concepto | Monto | Clasificación | Observación. Una fila por factura, sin texto adicional..."></textarea>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">💡 ¿Tabla, lista, correo, resumen? Define la estructura exacta del resultado</div>
+          </div>
+
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <div style="width:20px;height:20px;border-radius:4px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:var(--amber);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div>
+              <label style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Restricciones — ¿Qué NO debe hacer?</label>
+            </div>
+            <textarea id="p-rest" rows="2" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6" placeholder="Ej: Nunca inventes datos. Si falta información, marca como REVISAR. No uses lenguaje técnico excesivo..."></textarea>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px">💡 Qué no debe asumir, inventar ni hacer cuando le falte información</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ÁREA DE GENERACIÓN -->
+      <div style="padding:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:2px">Genera tu programa con IA</div>
+            <div style="font-size:12px;color:var(--muted)">Llena las 5 partes arriba y genera tu programa HTML descargable</div>
+          </div>
+          <div id="usos-badge" style="font-size:12px;font-weight:700;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--green);padding:5px 12px;border-radius:99px;display:flex;align-items:center;gap:6px">
+            <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block"></span>
+            2 programas gratis disponibles
+          </div>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <label style="display:block;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">Nombre de tu programa</label>
+          <input type="text" id="prob-nombre" placeholder="Ej: Clasificador Fiscal · Cotizador Express · Asistente Legal..." style="width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Inter,sans-serif;font-size:13px;padding:10px 12px;outline:none">
+        </div>
+
+        <button onclick="generarPrograma()" id="btn-generar" style="width:100%;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;padding:13px;border:none;border-radius:10px;cursor:pointer;transition:all .15s;margin-bottom:14px">⚡ Generar mi programa gratis →</button>
+
+        <!-- LOADING -->
+        <div id="gen-loading" style="display:none;align-items:center;gap:10px;font-size:13px;color:var(--muted);padding:12px 0">
+          <span style="display:inline-flex;gap:4px">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);animation:b .8s ease infinite;display:inline-block"></span>
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);animation:b .8s .15s ease infinite;display:inline-block"></span>
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);animation:b .8s .3s ease infinite;display:inline-block"></span>
+          </span>
+          Generando tu programa con Claude... esto toma unos segundos.
+        </div>
+        <style>@keyframes b{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}</style>
+
+        <!-- RESULTADO -->
+        <div id="gen-resultado" style="display:none;background:var(--bg2);border:1px solid rgba(34,197,94,.2);border-radius:12px;overflow:hidden">
+          <div style="padding:20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(34,197,94,.15);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">✓</div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--white)" id="gen-nombre-resultado">Tu programa</div>
+              <div style="font-size:12px;color:var(--green)">Listo para usar — comparte el link con quien quieras</div>
+            </div>
+          </div>
+          <div style="padding:20px">
+            <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">Tu link permanente</div>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
+              <a id="gen-link" href="#" target="_blank" style="flex:1;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--amber);text-decoration:none;font-family:monospace;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">—</a>
+              <button onclick="copiarLink()" style="background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:13px;padding:10px 16px;border:none;border-radius:8px;cursor:pointer;flex-shrink:0" id="btn-copiar-link">Copiar link</button>
+            </div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.6;padding:10px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--line)">
+              📱 <strong style="color:var(--white)">¿Cómo usar tu programa?</strong> Abre el link en cualquier navegador, ingresa tu correo para usar tus créditos y empieza a usarlo. Funciona en computadora, tablet y celular.
+            </div>
+          </div>
+          <div style="padding:0 20px 16px;font-size:12px;color:var(--muted)" id="gen-info"></div>
+        </div>
+
+        <!-- BLOQUEADO -->
+        <div id="gen-bloqueado" style="display:none;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.25);border-radius:12px;padding:24px;text-align:center">
+          <div style="font-size:32px;margin-bottom:12px">🔒</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:8px">Usaste tus 2 programas gratuitos</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;max-width:380px;margin-inline:auto">Para seguir generando programas ilimitados necesitas créditos. Cada programa cuesta 5 créditos.</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:380px;margin:0 auto">
+            <div style="background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Pack Starter</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:1.4rem;font-weight:800;color:var(--white);margin-bottom:2px">$49</div>
+              <div style="font-size:11px;color:var(--amber);margin-bottom:10px">100 créditos = 20 programas</div>
+              <button onclick="abrirModal('Starter','100 créditos','$49 MXN',49,'price_starter')" style="width:100%;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:13px;padding:8px;border:none;border-radius:7px;cursor:pointer">Comprar →</button>
+            </div>
+            <div style="background:var(--card);border:1px solid rgba(139,92,246,.3);border-radius:10px;padding:14px;text-align:center">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Pack Pro</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:1.4rem;font-weight:800;color:var(--white);margin-bottom:2px">$199</div>
+              <div style="font-size:11px;color:var(--purple);margin-bottom:10px">500 créditos = 100 programas</div>
+              <button onclick="abrirModal('Pro','500 créditos','$199 MXN',199,'price_pro')" style="width:100%;background:var(--purple);color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:13px;padding:8px;border:none;border-radius:7px;cursor:pointer">Comprar →</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq">
+    <div class="faq-title">Preguntas frecuentes</div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">¿Los créditos tienen fecha de vencimiento? <span class="faq-ico">+</span></div>
+      <div class="faq-a">No. Los créditos de pago único (Starter y Pro) no vencen — los puedes usar cuando quieras. Solo el plan Ilimitado se renueva mensualmente.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">¿En qué programas puedo usar los créditos? <span class="faq-ico">+</span></div>
+      <div class="faq-a">En todos los programas que construiste durante la clase magistral de AgentIA. También en los que construyas con el Generador de Programas.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">¿Qué pasa si proceso un archivo grande con muchas filas? <span class="faq-ico">+</span></div>
+      <div class="faq-a">Si el texto de entrada supera 2,000 palabras se descuentan 2 créditos en lugar de 1. El programa te avisa antes de procesar para que decidas.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">¿Necesito saber de tecnología para usar los créditos? <span class="faq-ico">+</span></div>
+      <div class="faq-a">No. Solo recibes un código por correo y lo pegas en el campo que aparece en tu programa. Es como activar una tarjeta de regalo.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">¿Puedo cancelar el plan Ilimitado cuando quiera? <span class="faq-ico">+</span></div>
+      <div class="faq-a">Sí. Puedes cancelar en cualquier momento desde tu correo de confirmación. No hay penalización ni periodo mínimo.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">¿Hay factura (CFDI)? <span class="faq-ico">+</span></div>
+      <div class="faq-a">Sí. Al completar tu compra puedes solicitar CFDI enviando un correo a hola@argentia.agency con tus datos fiscales.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA FINAL -->
+<div class="cta-final">
+  <h2 class="cta-title">Empieza con 10 créditos gratis.</h2>
+  <p class="cta-sub">Sin tarjeta. Sin configuraciones. Solo entra al curso y empieza.</p>
+  <a href="https://argentia.agency/curso-agente.html" style="display:inline-block;background:var(--amber);color:#000;font-family:'DM Sans',sans-serif;font-weight:800;font-size:16px;padding:14px 36px;border-radius:10px;text-decoration:none">Tomar la clase magistral →</a>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title" id="m-title">Comprar Starter</div>
+    <div class="modal-sub">Ingresa tu correo para recibir tus créditos.</div>
+    <div class="modal-resumen" id="m-resumen"></div>
+    <div class="modal-field">
+      <label>Tu correo electrónico</label>
+      <input type="email" id="m-email" placeholder="tu@correo.com">
+    </div>
+    <div class="modal-field">
+      <label>Tu nombre</label>
+      <input type="text" id="m-nombre" placeholder="Tu nombre completo">
+    </div>
+    <button class="btn-pagar" id="btn-pagar" onclick="pagar()">Pagar con Stripe →</button>
+    <button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+  </div>
+</div>
+
+<script>
+const CHECKOUT_URL = 'https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/checkout';
+
+// ── SIMULADOR ──
+const INTENSIDAD = {1: 0.5, 2: 1, 3: 1.8};
+const INT_LABELS = {1: 'Ligero', 2: 'Normal', 3: 'Intensivo'};
+
+const EJEMPLOS_INT = {
+  1: {
+    'Contador / Auditor': 'Ligero: revisas 3-4 facturas al día, solo cuando tienes dudas específicas.',
+    'Abogado / Notario': 'Ligero: consultas el agente para revisar 1-2 cláusulas puntuales por semana.',
+    'Dueño de negocio': 'Ligero: generas 2-3 cotizaciones por día, clientes esporádicos.',
+    'Administrador / RH': 'Ligero: respondes 1-2 preguntas de empleados al día.',
+    'Médico': 'Ligero: generas notas clínicas solo para casos complejos, 2-3 por día.',
+    'Uso casual': 'Ligero: usas el agente de vez en cuando para tareas puntuales.'
+  },
+  2: {
+    'Contador / Auditor': 'Normal: clasificas entre 8-12 facturas al día durante la operación regular del despacho.',
+    'Abogado / Notario': 'Normal: revisas 4-5 contratos por semana y respondes consultas frecuentes de clientes.',
+    'Dueño de negocio': 'Normal: generas 6-8 cotizaciones al día y atiendes preguntas de clientes.',
+    'Administrador / RH': 'Normal: procesas documentos de 3-5 empleados al día, minutas y comunicados.',
+    'Médico': 'Normal: generas 5-8 notas clínicas al día durante tu jornada regular.',
+    'Uso casual': 'Normal: usas el agente varias veces al día para diferentes tareas.'
+  },
+  3: {
+    'Contador / Auditor': 'Intensivo: temporada de declaraciones, procesas 20+ facturas al día y múltiples clientes simultáneos.',
+    'Abogado / Notario': 'Intensivo: despacho activo, revisas contratos, generas documentos y atiendes consultas todo el día.',
+    'Dueño de negocio': 'Intensivo: negocio en crecimiento, 15+ cotizaciones diarias y atención constante a clientes.',
+    'Administrador / RH': 'Intensivo: empresa grande, procesas nómina, comunicados, minutas y RH todo el día.',
+    'Médico': 'Intensivo: consulta llena, 15+ pacientes al día, notas clínicas y seguimientos constantes.',
+    'Uso casual': 'Intensivo: usas el agente como herramienta principal de trabajo durante todo el día.'
+  }
+};
+
+function calcSim(){
+  const usoDia = parseInt(document.getElementById('sl-prof').value);
+  const dias = parseInt(document.getElementById('sl-dias').value);
+  const int = parseInt(document.getElementById('sl-int').value);
+  const profSel = document.getElementById('sl-prof');
+  const profTxt = profSel.options[profSel.selectedIndex].text.split('—')[0].trim();
+  const profKey = profSel.options[profSel.selectedIndex].text.split('—')[0].trim().split('/')[0].trim();
+
+  document.getElementById('out-prof').textContent = profTxt;
+  document.getElementById('out-dias').textContent = dias;
+  document.getElementById('out-int').textContent = INT_LABELS[int];
+
+  // Ejemplo de intensidad
+  const ejEl = document.getElementById('int-ejemplo');
+  if(ejEl){
+    const ejemplos = EJEMPLOS_INT[int];
+    const key = Object.keys(ejemplos).find(k => profTxt.includes(k.split(' /')[0])) || 'Uso casual';
+    ejEl.textContent = ejemplos[key] || ejemplos['Uso casual'];
+  }
+
+  const diario = Math.round(usoDia * INTENSIDAD[int]);
+  const semanal = diario * dias;
+  const mensual = Math.round(semanal * 4.3);
+
+  document.getElementById('r-dia').textContent = diario;
+  document.getElementById('r-sem').textContent = semanal;
+  document.getElementById('r-mes').textContent = mensual;
+
+  let rec, costo, cls;
+  if(mensual <= 100){ rec = '⚡ Te recomendamos el Pack Starter ($49 MXN)'; costo = '$49 MXN/mes aprox'; cls = 'verde'; }
+  else if(mensual <= 500){ rec = '🚀 Te recomendamos el Pack Pro ($199 MXN)'; costo = '$99-199 MXN/mes aprox'; cls = 'amber'; }
+  else { rec = '♾️ Te recomendamos el plan Ilimitado ($299 MXN/mes)'; costo = '$299 MXN/mes'; cls = 'purple'; }
+
+  document.getElementById('r-costo').textContent = costo;
+  const recEl = document.getElementById('r-rec');
+  recEl.textContent = rec;
+  recEl.className = 'sim-rec ' + cls;
+}
+
+calcSim();
+
+// ── GENERADOR DE PROGRAMAS CON CRÉDITOS ──
+const PROXY = 'https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/proxy-claude';
+const MAX_GRATIS = 2;
+const KEY_USOS = 'agentia_gen_usos';
+let codigoGenerado = '';
+
+function getUsos(){ return parseInt(localStorage.getItem(KEY_USOS)||'0'); }
+function addUso(){ localStorage.setItem(KEY_USOS, getUsos()+1); updateBadge(); }
+
+function updateBadge(){
+  const usos = getUsos();
+  const left = MAX_GRATIS - usos;
+  const badge = document.getElementById('usos-badge');
+  if(!badge) return;
+  if(left <= 0){
+    badge.style.background = 'rgba(239,68,68,.1)';
+    badge.style.borderColor = 'rgba(239,68,68,.2)';
+    badge.style.color = '#EF4444';
+    badge.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:#EF4444;display:inline-block"></span> Sin programas gratis';
+  } else {
+    badge.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block"></span> '+left+' programa'+(left===1?'':'s')+' gratis disponible'+(left===1?'':'s');
+  }
+}
+
+const GUARDAR_URL = 'https://rpxshsiwoxdbuevjjpfw.supabase.co/functions/v1/guardar-programa';
+
+async function generarPrograma(){
+  if(getUsos() >= MAX_GRATIS){
+    document.getElementById('gen-bloqueado').style.display = 'block';
+    document.getElementById('gen-resultado').style.display = 'none';
+    return;
+  }
+
+  const rol = document.getElementById('p-rol').value.trim();
+  const ctx = document.getElementById('p-ctx').value.trim();
+  const tarea = document.getElementById('p-tarea').value.trim();
+  const fmt = document.getElementById('p-fmt').value.trim();
+  const rest = document.getElementById('p-rest').value.trim();
+  const nombre = document.getElementById('prob-nombre').value.trim() || 'Mi Programa IA';
+
+  if(!rol || !tarea){ alert('Llena al menos el Rol y la Tarea para generar tu programa.'); return; }
+
+  const btn = document.getElementById('btn-generar');
+  btn.disabled = true;
+  btn.textContent = 'Generando...';
+  document.getElementById('gen-loading').style.display = 'flex';
+  document.getElementById('gen-resultado').style.display = 'none';
+  document.getElementById('gen-bloqueado').style.display = 'none';
+
+  // Construir el sistema prompt con las 5 partes
+  const sistemaPrompt = [
+    rol ? 'ROL:\n' + rol : '',
+    ctx ? '\nCONTEXTO:\n' + ctx : '',
+    tarea ? '\nTAREA:\n' + tarea : '',
+    fmt ? '\nFORMATO DE RESPUESTA:\n' + fmt : '',
+    rest ? '\nRESTRICCIONES:\n' + rest : ''
+  ].filter(Boolean).join('\n');
+
+  try {
+    // Guardar en Supabase y obtener el link
+    const res = await fetch(GUARDAR_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre,
+        sistema_prompt: sistemaPrompt,
+        email_creador: ''
+      })
+    });
+
+    const data = await res.json();
+
+    if(data.error){ alert('Error al guardar el programa. Intenta de nuevo.'); return; }
+
+    // Mostrar el link
+    document.getElementById('gen-link').textContent = data.link;
+    document.getElementById('gen-link').href = data.link;
+    document.getElementById('gen-nombre-resultado').textContent = nombre;
+    document.getElementById('gen-resultado').style.display = 'block';
+    document.getElementById('gen-preview').textContent = sistemaPrompt.substring(0,300)+'...';
+    document.getElementById('gen-info').innerHTML =
+      '✓ Programa guardado · ID: <strong style="color:var(--amber)">' + data.id + '</strong>';
+
+    addUso();
+    if(getUsos() >= MAX_GRATIS){
+      document.getElementById('btn-generar').style.display = 'none';
+    }
+
+  } catch(e){
+    alert('Error de conexión. Intenta de nuevo.');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '⚡ Generar mi programa gratis →';
+  document.getElementById('gen-loading').style.display = 'none';
+}
+
+function copiarLink(){
+  const link = document.getElementById('gen-link').href;
+  navigator.clipboard.writeText(link);
+  const btn = document.getElementById('btn-copiar-link');
+  btn.textContent = '✓ Copiado';
+  setTimeout(()=>{ btn.textContent = 'Copiar link'; }, 2000);
+}
+
+// Inicializar badge
+updateBadge();
+
+// ── FAQ ──
+function toggleFaq(el){
+  el.classList.toggle('open');
+}
+
+// ── MODAL ──
+let planActual = {};
+
+function abrirModal(nombre, creditos, precio, monto, priceId){
+  planActual = { nombre, creditos, precio, monto, priceId };
+  document.getElementById('m-title').textContent = 'Comprar ' + nombre;
+  document.getElementById('m-resumen').innerHTML =
+    '<div class="modal-resumen-row"><span style="color:var(--sub)">Plan</span><span style="color:var(--white);font-weight:600">'+nombre+'</span></div>'+
+    '<div class="modal-resumen-row"><span style="color:var(--sub)">Créditos</span><span style="color:var(--amber);font-weight:700">'+creditos+'</span></div>'+
+    '<div class="modal-resumen-row total"><span>Total</span><span>'+precio+'</span></div>';
+  document.getElementById('modal').classList.add('on');
+}
+
+function cerrarModal(){
+  document.getElementById('modal').classList.remove('on');
+  document.getElementById('m-email').value = '';
+  document.getElementById('m-nombre').value = '';
+}
+
+async function pagar(){
+  const email = document.getElementById('m-email').value.trim();
+  const nombre = document.getElementById('m-nombre').value.trim();
+  if(!email || !nombre){ alert('Ingresa tu nombre y correo.'); return; }
+  if(!email.includes('@')){ alert('Correo inválido.'); return; }
+
+  const btn = document.getElementById('btn-pagar');
+  btn.disabled = true;
+  btn.textContent = 'Redirigiendo a Stripe...';
+
+  try {
+    const res = await fetch(CHECKOUT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre,
+        email,
+        fecha: planActual.nombre + ' — ' + planActual.creditos,
+        telefono: '',
+        profesion: 'Créditos AgentIA'
+      })
+    });
+    const data = await res.json();
+    if(data.url){
+      window.location.href = data.url;
+    } else {
+      alert('Error al procesar. Intenta de nuevo.');
+    }
+  } catch(e){
+    alert('Error de conexión. Intenta de nuevo.');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Pagar con Stripe →';
+}
+
+// Cerrar modal al hacer clic fuera
+document.getElementById('modal').addEventListener('click', function(e){
+  if(e.target === this) cerrarModal();
+});
+</script>
+</body>
+</html>
